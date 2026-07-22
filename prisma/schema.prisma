@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model Company {
+  id            String                @id @default(uuid())
+  companyCode   String                @unique
+  companyName   String
+  email         String                @unique
+  passwordHash  String
+  companyImage  String?
+  status        CompanyStatus         @default(PENDING)
+  ownerFullname String
+  ownerEmail    String
+  ownerPhone    String
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @default(now()) @updatedAt
+  staff         Staff[]
+  customers     Customer[]
+  templates     MeasurementTemplate[]
+  orders        Order[]
+}
+
+model Staff {
+  id               String          @id @default(uuid())
+  companyId        String
+  fullName         String
+  email            String          @unique
+  phone            String?
+  passwordHash     String
+  role             Role            @default(STAFF)
+  status           StaffStatus     @default(PENDING)
+  createdAt        DateTime        @default(now())
+  company          Company         @relation(fields: [companyId], references: [id])
+  customersCreated Customer[]
+  measurementsCreated Measurement[]
+  measurementsUpdated Measurement[] @relation("MeasurementUpdatedBy")
+  photosUploaded   OrderPhoto[]
+  orders           Order[]
+  statusHistory    StatusHistory[]
+}
+
+model Customer {
+  id             String        @id @default(uuid())
+  companyId      String
+  fullName       String
+  email          String
+  phone          String?
+  createdBy      String
+  createdAt      DateTime      @default(now())
+  company        Company       @relation(fields: [companyId], references: [id])
+  createdByStaff Staff         @relation(fields: [createdBy], references: [id])
+  measurements   Measurement[]
+  orders         Order[]
+}
+
+model MeasurementTemplate {
+  id               String        @id @default(uuid())
+  companyId        String
+  name             String
+  fieldDefinitions Json
+  createdAt        DateTime      @default(now())
+  company          Company       @relation(fields: [companyId], references: [id])
+  measurements     Measurement[]
+  
+}
+
+model Measurement {
+  id         String              @id @default(uuid())
+  customerId String
+  templateId String
+  unit       String              @default("cm")
+  createdBy  String 
+  updatedBy  String?              
+  values     Json
+  snapshot   Json
+  notes      Json?
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  customer   Customer            @relation(fields: [customerId], references: [id])
+  template   MeasurementTemplate @relation(fields: [templateId], references: [id])
+  createdByStaff Staff           @relation(fields: [createdBy], references: [id])
+  updatedByStaff Staff?              @relation("MeasurementUpdatedBy", fields: [updatedBy], references: [id])
+
+}
+
+model Order {
+  id            String          @id @default(uuid())
+  customerId    String
+  companyId     String
+  staffId       String
+  parentOrderId String?
+  title         String
+  type          OrderType       @default(NEW)
+  status        OrderStatus     @default(RECEIVED)
+  notes         Json
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+  customer      Customer        @relation(fields: [customerId], references: [id])
+  company       Company         @relation(fields: [companyId], references: [id])
+  staff         Staff           @relation(fields: [staffId], references: [id])
+  parentOrder   Order?          @relation("OrderAmendments", fields: [parentOrderId], references: [id])
+  amendments    Order[]         @relation("OrderAmendments")
+  photos        OrderPhoto[]
+  statusHistory StatusHistory[]
+}
+
+model OrderPhoto {
+  id         String   @id @default(uuid())
+  orderId    String
+  uploadedBy String
+  url        String
+  caption    String?
+  uploadedAt DateTime @default(now())
+  order      Order    @relation(fields: [orderId], references: [id])
+  uploadedByStaff Staff @relation(fields: [uploadedBy], references: [id])
+}
+
+model StatusHistory {
+  id          String      @id @default(uuid())
+  orderId     String
+  updatedById String
+  status      OrderStatus
+  note        String?
+  createdAt   DateTime    @default(now())
+  order       Order       @relation(fields: [orderId], references: [id])
+  updatedBy   Staff       @relation(fields: [updatedById], references: [id])
+}
+
+enum CompanyStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+  REJECTED
+}
+
+enum Role {
+  SUPER_ADMIN
+  STAFF
+}
+
+enum StaffStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum OrderType {
+  NEW
+  AMENDMENT
+}
+
+enum OrderStatus {
+  RECEIVED
+  CUT_IN_PROGRESS
+  SEWING_IN_PROGRESS
+  FINISHING
+  COMPLETED
+}
