@@ -44,3 +44,5 @@ next-env.d.ts
 skills-lock.json
 /app/generated/prisma
 /generated/prisma
+workflow.js
+

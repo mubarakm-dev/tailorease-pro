@@ -1,5 +1,4 @@
-"use server"
-
+import 'server-only'
 import { JWTPayload, jwtVerify, SignJWT } from "jose"
 
 import { cookies } from "next/headers"
@@ -47,6 +46,7 @@ export const decrypt = async (token: string): Promise<{
     }
 }
 
+// save token to the cookie
 export const setSession = async (payload: SessionPayload): Promise<void> => {
      const expiresAt = new Date(Date.now() + 7 * 60 * 60 * 1000)
     const token = await encrypt(payload)
@@ -62,6 +62,8 @@ export const setSession = async (payload: SessionPayload): Promise<void> => {
 
 }
 
+
+// get token from the cookie, verify and decrypt it
 export const getSession = async (): Promise<SessionPayload | null> => {
   const cookieStore = await cookies()
   const token = cookieStore.get("token")
@@ -75,7 +77,7 @@ export const getSession = async (): Promise<SessionPayload | null> => {
   return result.payload
 }
 
-
+// check if the user is authenticated, if not redirect to login page
 export const isAuth = async (): Promise<SessionPayload> => {
   const session = await getSession()
 
@@ -84,4 +86,10 @@ export const isAuth = async (): Promise<SessionPayload> => {
   }
 
   return session
+}
+
+// clear the session by deleting the token from the cookie
+export const clearSession = async (): Promise<void> => {
+  const cookieStore = await cookies()
+  cookieStore.delete("token")
 }
