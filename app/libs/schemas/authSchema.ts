@@ -31,4 +31,15 @@ export const registerStaffSchema = z.object({
 })
 export type RegisterStaffInput = z.infer<typeof registerStaffSchema>
 
+export const verifyOtpSchema = z.object({
+  email: z.email("Invalid email address"),
+  code: z.string().regex(/^\d{6}$/, "Code must be 6 digits"),
+})
+export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>
+
+export const resendOtpSchema = z.object({
+  email: z.email("Invalid email address"),
+})
+export type ResendOtpInput = z.infer<typeof resendOtpSchema>
+
 

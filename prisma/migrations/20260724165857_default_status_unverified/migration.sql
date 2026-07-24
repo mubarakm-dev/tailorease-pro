@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Company" ALTER COLUMN "status" SET DEFAULT 'UNVERIFIED';
+
+-- AlterTable
+ALTER TABLE "Staff" ALTER COLUMN "status" SET DEFAULT 'UNVERIFIED';

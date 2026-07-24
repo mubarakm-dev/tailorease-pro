@@ -3,13 +3,16 @@
 import { prisma } from "@/app/libs/prisma"
 import { registerCompanySchema } from "../../libs/schemas/authSchema"
 import bcrypt from "bcryptjs"
+import { createOtp } from "@/app/libs/otp"
+import { sendOTPEmail } from "@/app/libs/email"
 
 
 export type RegisterCompanyState = {
     success: boolean
     error: string | null
     message?: string
-    companyCode?: string
+    companyCode?: string,
+    email?: string
 }
 
 
@@ -49,7 +52,7 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
         ownerFullname: formData.get("ownerFullname"),
         ownerEmail: formData.get("ownerEmail"),
         ownerPhone: formData.get("ownerPhone")
-    
+
 
     })
 
@@ -96,7 +99,7 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
                     companyName,
                     email,
                     passwordHash: hashedPassword,
-                    status: "PENDING",
+                    status: "UNVERIFIED",
                     ownerFullname,
                     ownerEmail,
                     ownerPhone,
@@ -110,7 +113,7 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
                     email: ownerEmail,
                     passwordHash: hashedPassword,
                     role: "SUPER_ADMIN",
-                    status: "PENDING",
+                    status: "UNVERIFIED",
                 }
             })
 
@@ -118,12 +121,18 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
 
         })
 
+        const code = await createOtp(ownerEmail)
+        await sendOTPEmail(ownerEmail, code)
+
         return {
             success: true,
             error: null,
-            message: "Company registered successfully. Awaiting platform approval.",
+            message: "Company registered. Check your email for the verification code.",
             companyCode: result.company.companyCode,
+            email: ownerEmail,
         }
+
+
 
     } catch (error) {
         if (error instanceof Error) {

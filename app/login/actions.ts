@@ -51,6 +51,14 @@ export const login = async (prevState: LoginState, formData: FormData):Promise<L
             }
         }
 
+         if (staff.company.status === 'UNVERIFIED') {
+            return {
+                error: "Your acount has not been verified",
+                success: false
+            }
+
+        }
+
         if (staff.company.status === 'PENDING') {
             return {
                 error: "Your company is awaiting platform approval",
@@ -74,6 +82,14 @@ export const login = async (prevState: LoginState, formData: FormData):Promise<L
         }
 
 
+
+        if (staff.status === 'UNVERIFIED') {
+            return {
+                error: "Your account has not been verified",
+                success: false
+            }
+
+        }
         if (staff.status === 'PENDING') {
             return {
                 error: "Your account is awaiting approval from your company admin",
