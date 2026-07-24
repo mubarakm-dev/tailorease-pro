@@ -49,6 +49,13 @@ export default function RegisterCompanyForm() {
                 className="w-full border border-gray-300 rounded px-3 py-2" />
             </div>
 
+             <div>
+              <label className="block text-sm font-medium mb-1">Confirm Password</label>
+              <input type="password" name="confirmPassword" required
+                className="w-full border border-gray-300 rounded px-3 py-2" />
+            </div>
+
+
             <div>
               <label className="block text-sm font-medium mb-1">Owner Full Name</label>
               <input type="text" name="ownerFullname" required

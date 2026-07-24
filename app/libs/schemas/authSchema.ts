@@ -11,9 +11,13 @@ export const registerCompanySchema = z.object({
   companyName: z.string().min(2, "Company name is required"),
   email: z.string().email("Invalid company email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+   confirmPassword: z.string(),
   ownerFullname: z.string().min(2, "Owner full name is required"),
   ownerEmail: z.string().email("Invalid owner email"),
   ownerPhone: z.string().min(7, "Valid phone number is required"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 })
 export type RegisterCompanyInput = z.infer<typeof registerCompanySchema>
 
@@ -26,3 +30,5 @@ export const registerStaffSchema = z.object({
 
 })
 export type RegisterStaffInput = z.infer<typeof registerStaffSchema>
+
+

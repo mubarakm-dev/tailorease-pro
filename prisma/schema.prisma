@@ -132,6 +132,16 @@ model StatusHistory {
   updatedBy   Staff       @relation(fields: [updatedById], references: [id])
 }
 
+model VerificationCode {
+  id        String   @id @default(uuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
 enum CompanyStatus {
   PENDING
   APPROVED
