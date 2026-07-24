@@ -25,7 +25,7 @@ export default function RegisterCompanyForm() {
             <p className="font-bold">{state.message}</p>
             <p className="mt-2">Your company code: <strong>{state.companyCode}</strong></p>
             <p className="text-sm mt-1">Share this code with your staff to register</p>
-            <a href="/login" className="inline-block mt-4 text-blue-600 underline">Go to Login</a>
+            <a href="/verify" className="inline-block mt-4 text-blue-600 underline">Go to verify</a>
           </div>
         )}
 
