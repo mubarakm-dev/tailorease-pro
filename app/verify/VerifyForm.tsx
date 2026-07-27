@@ -1,8 +1,8 @@
 
 "use client"
 
-import { useActionState, useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { useActionState, useState, useEffect, useRef, startTransition } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
 import { verifyCode, resendCode, VerifyState } from "./actions"
 
 const initialState: VerifyState = {
@@ -12,13 +12,34 @@ const initialState: VerifyState = {
 
 export default function VerifyForm() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const email = searchParams.get("email") || ""
+  const fresh = searchParams.get("fresh") === "1"
 
   const [state, formAction, isPending] = useActionState(verifyCode, initialState)
   const [resendState, resendAction, isResending] = useActionState(resendCode, initialState)
 
   // which action the user did last, so only that one's feedback shows
   const [lastAction, setLastAction] = useState<"verify" | "resend" | null>(null)
+
+  // arriving from the login "Verify your account" link (?fresh=1): send a code
+  // once on mount so the "code sent to ..." copy is actually true. The ref guards
+  // against React re-invoking the effect (e.g. Strict Mode) and double-sending.
+  const autoSent = useRef(false)
+  useEffect(() => {
+    if (fresh && email && !autoSent.current) {
+      autoSent.current = true
+      const formData = new FormData()
+      formData.append("email", email)
+      // dispatch inside a transition so isResending tracks correctly
+      startTransition(() => {
+        setLastAction("resend")
+        resendAction(formData)
+      })
+      // drop ?fresh=1 from the URL so a refresh won't auto-send again
+      router.replace(`/verify?email=${encodeURIComponent(email)}`)
+    }
+  }, [fresh, email, resendAction, router])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -28,15 +49,15 @@ export default function VerifyForm() {
           Enter the 6-digit code sent to <strong>{email}</strong>
         </p>
 
-        {lastAction === "verify" && state.error && (
+        {lastAction === "verify" && !isPending && state.error && (
           <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{state.error}</p>
         )}
 
-        {lastAction === "resend" && resendState.error && (
+        {lastAction === "resend" && !isResending && resendState.error && (
           <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{resendState.error}</p>
         )}
 
-        {lastAction === "resend" && resendState.message && (
+        {lastAction === "resend" && !isResending && resendState.message && (
           <p className="bg-blue-100 text-blue-700 p-3 rounded mb-4">{resendState.message}</p>
         )}
 

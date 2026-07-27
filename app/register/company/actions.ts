@@ -122,7 +122,12 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
         })
 
         const code = await createOtp(ownerEmail)
-        await sendOTPEmail(ownerEmail, code)
+        try {
+            await sendOTPEmail(ownerEmail, code)
+        } catch( error) {
+            
+            console.error("Failed to send OTP email during registration:", error)
+        }
 
         return {
             success: true,

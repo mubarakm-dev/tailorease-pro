@@ -1,5 +1,6 @@
 import "server-only"
 import { prisma } from "./prisma"
+import { randomInt } from "crypto"
 
 const OTP_LENGTH = 6
 const OTP_TTL_MINUTES = 10
@@ -9,7 +10,7 @@ export const MAX_OTP_ATTEMPTS = 5
 export const generateOtpCode = (): string => {
     let code = ""
     for (let i = 0; i < OTP_LENGTH; i++) {
-        code += Math.floor(Math.random() * 10).toString()
+        code += randomInt(0, 10).toString()
     }
     return code
 }
@@ -51,13 +52,12 @@ export const verifyOtp = async (email: string, code: string): Promise<VerifyResu
     }
 
     if (record.code !== code) {
-        const attempts = record.attempts + 1
-        await prisma.verificationCode.update({
+        const updated = await prisma.verificationCode.update({
             where: { id: record.id },
-            data: { attempts },
+            data: { attempts: { increment: 1 } },   // DB adds 1, atomically
         })
 
-        if (attempts >= MAX_OTP_ATTEMPTS) {
+        if (updated.attempts >= MAX_OTP_ATTEMPTS) {
             return { ok: false, error: "Too many attempts, request a new code", canResend: true }
         }
         return { ok: false, error: "Invalid verification code", canResend: false }

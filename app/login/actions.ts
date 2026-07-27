@@ -9,6 +9,8 @@ import { redirect } from "next/navigation";
 export type LoginState = {
   success: boolean
   error: string | null
+  needsVerification?: boolean
+  email?: string
 }
 
 
@@ -51,12 +53,13 @@ export const login = async (prevState: LoginState, formData: FormData):Promise<L
             }
         }
 
-         if (staff.company.status === 'UNVERIFIED') {
+          if (staff.company.status === 'UNVERIFIED' || staff.status === 'UNVERIFIED') {
             return {
-                error: "Your acount has not been verified",
-                success: false
+                error: "Your account has not been verified",
+                success: false,
+                needsVerification: true,
+                email,
             }
-
         }
 
         if (staff.company.status === 'PENDING') {
@@ -81,15 +84,6 @@ export const login = async (prevState: LoginState, formData: FormData):Promise<L
 
         }
 
-
-
-        if (staff.status === 'UNVERIFIED') {
-            return {
-                error: "Your account has not been verified",
-                success: false
-            }
-
-        }
         if (staff.status === 'PENDING') {
             return {
                 error: "Your account is awaiting approval from your company admin",
