@@ -47,7 +47,13 @@ export const verifyCode = async (prevState: VerifyState, formData: FormData): Pr
             ])
         }
 
-        return { success: true, error: null, message: "Email verified. Your company is now awaiting platform approval." }
+        // owner (SUPER_ADMIN) waits on the platform; a regular staff waits on their company admin
+        const message =
+            staff?.role === "SUPER_ADMIN"
+                ? "Email verified. Your company is now awaiting platform approval."
+                : "Email verified. Your account is now awaiting approval from your company admin."
+
+        return { success: true, error: null, message }
     } catch (error) {
         return { error: "Something went wrong", success: false }
     }

@@ -24,6 +24,7 @@ model Company {
   customers     Customer[]
   templates     MeasurementTemplate[]
   orders        Order[]
+  activityLogs  ActivityLog[]
 }
 
 model Staff {
@@ -43,6 +44,7 @@ model Staff {
   photosUploaded   OrderPhoto[]
   orders           Order[]
   statusHistory    StatusHistory[]
+  activityLogs     ActivityLog[]
 
   @@index([companyId])
 }
@@ -162,6 +164,23 @@ model VerificationCode {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+model ActivityLog {
+  id         String   @id @default(uuid())
+  companyId  String
+  staffId    String?              
+  action     String              
+  entityType String?              
+  entityId   String?              
+  summary    String               
+  createdAt  DateTime @default(now())
+
+  company    Company  @relation(fields: [companyId], references: [id])
+  staff      Staff?   @relation(fields: [staffId], references: [id])
+
+  @@index([companyId, createdAt])
+  @@index([staffId])
 }
 
 enum CompanyStatus {

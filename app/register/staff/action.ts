@@ -4,6 +4,7 @@ import { createOtp } from "@/app/libs/otp"
 import { prisma } from "@/app/libs/prisma"
 import { registerStaffSchema } from "@/app/libs/schemas/authSchema"
 import bcrypt from "bcryptjs"
+import { redirect } from "next/navigation"
 
 export type StaffRegistrationState = {
     success: boolean
@@ -70,7 +71,7 @@ export const registerStaff = async (prevState: StaffRegistrationState, formData:
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const staff = await prisma.staff.create({
+        await prisma.staff.create({
             data: {
                 companyId: company.id,
                 fullName,
@@ -79,7 +80,6 @@ export const registerStaff = async (prevState: StaffRegistrationState, formData:
                 passwordHash: hashedPassword,
                 role: "STAFF",
                 status: "UNVERIFIED",
-                
             }
         })
 
@@ -87,18 +87,8 @@ export const registerStaff = async (prevState: StaffRegistrationState, formData:
         try {
             await sendOTPEmail(email, code)
         } catch (error) {
-
             console.error("Failed to send OTP email during registration:", error)
         }
-
-        return {
-            success: true,
-            error: null,
-            message: "Staff registered. Check your email for the verification code.",
-            companyCode: company.companyCode,
-            email: email,
-        }
-
     }
     catch (error) {
         return {
@@ -107,7 +97,8 @@ export const registerStaff = async (prevState: StaffRegistrationState, formData:
         }
     }
 
-
-
-
+    // Redirect from the action (not the client) so no success screen flashes
+    // before the /verify page loads. redirect() must be OUTSIDE the try/catch —
+    // it throws internally, and the catch would otherwise swallow it.
+    redirect(`/verify?email=${encodeURIComponent(email)}`)
 }

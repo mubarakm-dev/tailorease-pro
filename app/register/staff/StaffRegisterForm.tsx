@@ -1,7 +1,6 @@
 "use client"
 
-import { useActionState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useActionState } from "react"
 import { registerStaff, StaffRegistrationState } from "./action"
 
 
@@ -12,13 +11,7 @@ const initialState: StaffRegistrationState = {
 
 
 export default function StaffRegisterForm() {
-    const router = useRouter()
     const [state, formAction, isPending] = useActionState(registerStaff, initialState)
-    useEffect(() => {
-        if (state.success && state.email) {
-            router.push(`/verify?email=${encodeURIComponent(state.email)}`)
-        }
-    }, [state.success, state.email, router])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -27,13 +20,6 @@ export default function StaffRegisterForm() {
 
                 {state.error && (
                     <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{state.error}</p>
-                )}
-
-                {state.success && (
-                    <div className="bg-green-100 text-green-700 p-4 rounded">
-                        <p className="font-bold">{state.message}</p>
-                        <p className="mt-2">Redirecting you to email verification…</p>
-                    </div>
                 )}
 
                 {!state.success && (
