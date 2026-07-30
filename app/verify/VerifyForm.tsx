@@ -45,9 +45,11 @@ export default function VerifyForm() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
         <h1 className="text-2xl font-bold mb-2">Verify Your Email</h1>
-        <p className="text-gray-600 mb-6">
-          Enter the 6-digit code sent to <strong>{email}</strong>
-        </p>
+        {!state.success && (
+          <p className="text-gray-600 mb-6">
+            Enter the 6-digit code sent to <strong>{email}</strong>
+          </p>
+        )}
 
         {lastAction === "verify" && !isPending && state.error && (
           <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{state.error}</p>
