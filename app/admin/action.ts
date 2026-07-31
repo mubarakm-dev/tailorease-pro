@@ -4,6 +4,7 @@ import { clearAdminSession, isAuthAdmin } from "@/app/libs/adminSession"
 import { prisma } from "@/app/libs/prisma"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import { sendCompanyApprovalEmail, sendCompanyReactivatedEmail, sendCompanyRejectedEmail, sendCompanySuspendedEmail } from "../libs/email"
 
 export const adminLogout = async () => {
     await clearAdminSession()
@@ -11,13 +12,11 @@ export const adminLogout = async () => {
 }
 
 export const approveCompany = async (companyId: string) => {
-    // server-side authorization: a server action is a public endpoint,
-    // so it must guard itself even though the proxy protects the page.
     await isAuthAdmin()
 
     // approve the company AND its owner (SUPER_ADMIN) staff together —
     // login checks both, and the owner has no one above them to approve them.
-    await prisma.$transaction([
+    const [company] = await prisma.$transaction([
         prisma.company.update({
             where: { id: companyId },
             data: { status: "APPROVED" },
@@ -28,39 +27,68 @@ export const approveCompany = async (companyId: string) => {
         }),
     ])
 
+    try {
+        await sendCompanyApprovalEmail(company.ownerEmail, company.companyName, company.ownerFullname, company.companyCode)
+    } catch (error) {
+
+        console.error("Company Approval Email failed", error)
+    }
+
     revalidatePath("/admin")
 }
 
 export const rejectCompany = async (companyId: string) => {
     await isAuthAdmin()
 
-    await prisma.company.update({
+    const company = await prisma.company.update({
         where: { id: companyId },
         data: { status: "REJECTED" },
     })
+
+    try {
+        await sendCompanyRejectedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+    } catch (error) {
+
+        console.error("Company Rejection Email failed", error)
+    }
+
 
     revalidatePath("/admin")
 }
 
 
-export const suspendCompany = async(companyId:string) =>{
+export const suspendCompany = async (companyId: string) => {
     await isAuthAdmin()
-    await prisma.company.update({
-        where:{id: companyId},
-        data:{status: "SUSPENDED"}
+    const company = await prisma.company.update({
+        where: { id: companyId },
+        data: { status: "SUSPENDED" }
     })
 
-      revalidatePath("/admin")
+
+    try {
+        await sendCompanySuspendedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+    } catch (error) {
+
+        console.error("Company Suspension Email failed", error)
+    }
+    revalidatePath("/admin")
 
 }
 
-export const reactivateCompany = async(companyId:string) =>{
+export const reactivateCompany = async (companyId: string) => {
     await isAuthAdmin()
-    await prisma.company.update({
-        where:{id: companyId},
-        data:{status: "APPROVED"}
+  const company =  await prisma.company.update({
+        where: { id: companyId },
+        data: { status: "APPROVED" }
     })
 
-      revalidatePath("/admin")
+    try {
+        await sendCompanyReactivatedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+    } catch (error) {
+
+        console.error("Company Reactivation Email failed", error)
+    }
+
+    revalidatePath("/admin")
 
 }

@@ -96,6 +96,19 @@ export async function sendStaffRejectedEmail(to: string, companyName: string, st
 
 }
 
+export async function sendStaffApprovalEmail(to: string, companyName: string, staffFullname: string): Promise<void> {
+  const subject = "Your Registration has been Approved"
+  const html = `
+        <div>
+            <h2>Account Approved</h2>
+            <p>Dear ${staffFullname}, The Management of ${companyName} has Approved your registration.</p>
+        </div>
+    `
+
+  await sendEmail(to, subject, html)
+
+}
+
 export async function sendStaffSuspendedEmail(to: string, companyName: string, staffFullname: string): Promise<void> {
   const subject = "Your Accounnt has been Suspended"
   const html = `
@@ -108,6 +121,20 @@ export async function sendStaffSuspendedEmail(to: string, companyName: string, s
   await sendEmail(to, subject, html)
 
 }
+
+export async function sendStaffReactivateEmail(to: string, companyName: string, staffFullname: string): Promise<void> {
+  const subject = "Your Accounnt has been Reactivated"
+  const html = `
+        <div>
+            <h2>Account Reactivated</h2>
+            <p>Dear ${staffFullname}, The Management of ${companyName} has reactivated your account.</p>
+        </div>
+    `
+
+  await sendEmail(to, subject, html)
+
+}
+
 
 
 

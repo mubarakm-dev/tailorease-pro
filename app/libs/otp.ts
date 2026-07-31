@@ -6,7 +6,7 @@ const OTP_LENGTH = 6
 const OTP_TTL_MINUTES = 10
 export const MAX_OTP_ATTEMPTS = 5
 
-// generate a random 6-digit numeric code
+
 export const generateOtpCode = (): string => {
     let code = ""
     for (let i = 0; i < OTP_LENGTH; i++) {
@@ -15,7 +15,7 @@ export const generateOtpCode = (): string => {
     return code
 }
 
-// delete any existing codes for the email, then create a fresh one
+
 export const createOtp = async (email: string): Promise<string> => {
     const code = generateOtpCode()
     const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000)

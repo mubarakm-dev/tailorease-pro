@@ -31,8 +31,7 @@ export const verifyCode = async (prevState: VerifyState, formData: FormData): Pr
             return { error: result.error, success: false, canResend: result.canResend }
         }
 
-        // verified — move the owner (and their company) from UNVERIFIED to PENDING approval.
-        // guarded on status so an already-approved account can't be knocked back.
+       
         const staff = await prisma.staff.findUnique({ where: { email } })
         if (staff) {
             await prisma.$transaction([
