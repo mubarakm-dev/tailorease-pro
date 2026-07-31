@@ -82,7 +82,9 @@ export default async function OverviewPage() {
                 <StatTile label="Customers" value={customerCount} hint="total" />
                 <StatTile label="Active orders" value={activeOrderCount} hint="in progress" />
                 <StatTile label="Staff" value={staffCount} hint="approved" />
-                <StatTile label="Pending approvals" value={pendingCount} hint="needs review" attn={pendingCount > 0} />
+                {isAdmin && (
+                    <StatTile label="Pending approvals" value={pendingCount} hint="needs review" attn={pendingCount > 0} />
+                )}
             </div>
 
             {/* ORDERS PIPELINE */}
