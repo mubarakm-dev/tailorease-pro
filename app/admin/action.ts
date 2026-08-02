@@ -4,6 +4,7 @@ import { clearAdminSession, isAuthAdmin } from "@/app/libs/adminSession"
 import { prisma } from "@/app/libs/prisma"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import { after } from "next/server"
 import { sendCompanyApprovalEmail, sendCompanyReactivatedEmail, sendCompanyRejectedEmail, sendCompanySuspendedEmail } from "../libs/email"
 
 export const adminLogout = async () => {
@@ -27,12 +28,13 @@ export const approveCompany = async (companyId: string) => {
         }),
     ])
 
-    try {
-        await sendCompanyApprovalEmail(company.ownerEmail, company.companyName, company.ownerFullname, company.companyCode)
-    } catch (error) {
-
-        console.error("Company Approval Email failed", error)
-    }
+    after(async () => {
+        try {
+            await sendCompanyApprovalEmail(company.ownerEmail, company.companyName, company.ownerFullname, company.companyCode)
+        } catch (error) {
+            console.error("Company Approval Email failed", error)
+        }
+    })
 
     revalidatePath("/admin")
 }
@@ -45,13 +47,13 @@ export const rejectCompany = async (companyId: string) => {
         data: { status: "REJECTED" },
     })
 
-    try {
-        await sendCompanyRejectedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
-    } catch (error) {
-
-        console.error("Company Rejection Email failed", error)
-    }
-
+    after(async () => {
+        try {
+            await sendCompanyRejectedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+        } catch (error) {
+            console.error("Company Rejection Email failed", error)
+        }
+    })
 
     revalidatePath("/admin")
 }
@@ -65,12 +67,13 @@ export const suspendCompany = async (companyId: string) => {
     })
 
 
-    try {
-        await sendCompanySuspendedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
-    } catch (error) {
-
-        console.error("Company Suspension Email failed", error)
-    }
+    after(async () => {
+        try {
+            await sendCompanySuspendedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+        } catch (error) {
+            console.error("Company Suspension Email failed", error)
+        }
+    })
     revalidatePath("/admin")
 
 }
@@ -82,12 +85,13 @@ export const reactivateCompany = async (companyId: string) => {
         data: { status: "APPROVED" }
     })
 
-    try {
-        await sendCompanyReactivatedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
-    } catch (error) {
-
-        console.error("Company Reactivation Email failed", error)
-    }
+    after(async () => {
+        try {
+            await sendCompanyReactivatedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+        } catch (error) {
+            console.error("Company Reactivation Email failed", error)
+        }
+    })
 
     revalidatePath("/admin")
 

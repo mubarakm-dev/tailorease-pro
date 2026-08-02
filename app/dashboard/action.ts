@@ -42,12 +42,13 @@ export const approveStaff = async (staffId: string) => {
 
     })
 
-    try {
-        await sendStaffApprovalEmail(staff.email, staff.company.companyName, staff.fullName)
-    } catch (error) {
-
-        console.error("Staff Approval Email failed", error)
-    }
+    after(async () => {
+        try {
+            await sendStaffApprovalEmail(staff.email, staff.company.companyName, staff.fullName)
+        } catch (error) {
+            console.error("Staff Approval Email failed", error)
+        }
+    })
 
     revalidatePath("/dashboard")
     revalidatePath("/dashboard/staff")
@@ -76,11 +77,13 @@ export const rejectStaff = async (staffId: string) => {
         }
     })
 
-    try {
-         await sendStaffRejectedEmail(staff.email, staff.company.companyName,  staff.fullName)
-    } catch (error) {
-          console.error("Staff Rejection Email failed", error)
-    }
+    after(async () => {
+        try {
+            await sendStaffRejectedEmail(staff.email, staff.company.companyName, staff.fullName)
+        } catch (error) {
+            console.error("Staff Rejection Email failed", error)
+        }
+    })
 
    
 

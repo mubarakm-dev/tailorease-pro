@@ -2,6 +2,7 @@ import { isAuth } from "@/app/libs/session"
 import { prisma } from "@/app/libs/prisma"
 import { approveStaff, rejectStaff } from "./action"
 import type { OrderStatus } from "@prisma/client"
+import SubmitButton from "@/app/components/SubmitButton"
 
 
 const STAGES: { key: OrderStatus; label: string; color: string }[] = [
@@ -104,7 +105,7 @@ export default async function OverviewPage() {
             </section>
 
             <div className="grid lg:grid-cols-2 gap-5">
-                {/* PENDING STAFF — SUPER_ADMIN only */}
+            
                 {isAdmin && (
                     <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
@@ -124,10 +125,10 @@ export default async function OverviewPage() {
                                         <p className="text-xs text-gray-400 truncate">{s.email}</p>
                                     </div>
                                     <form action={rejectStaff.bind(null, s.id)}>
-                                        <button className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100">Reject</button>
+                                        <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100" pendingText="Rejecting…">Reject</SubmitButton>
                                     </form>
                                     <form action={approveStaff.bind(null, s.id)}>
-                                        <button className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100">Approve</button>
+                                        <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100" pendingText="Approving…">Approve</SubmitButton>
                                     </form>
                                 </div>
                             ))

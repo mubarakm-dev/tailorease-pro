@@ -1,6 +1,7 @@
 import { isAuthAdmin } from "@/app/libs/adminSession"
 import { prisma } from "@/app/libs/prisma"
 import { adminLogout, approveCompany, reactivateCompany, rejectCompany, suspendCompany } from "./action"
+import SubmitButton from "@/app/components/SubmitButton"
 
 function StatCard({ label, value }: { label: string; value: number }) {
     return (
@@ -111,14 +112,14 @@ export default async function AdminDashboardPage() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <form action={approveCompany.bind(null, company.id)}>
-                                            <button className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                                            <SubmitButton className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" pendingText="Approving…">
                                                 Approve
-                                            </button>
+                                            </SubmitButton>
                                         </form>
                                         <form action={rejectCompany.bind(null, company.id)}>
-                                            <button className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                                            <SubmitButton className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" pendingText="Rejecting…">
                                                 Reject
-                                            </button>
+                                            </SubmitButton>
                                         </form>
                                     </div>
                                 </div>
@@ -151,9 +152,9 @@ export default async function AdminDashboardPage() {
                                         <div>
                                             {company.status === "APPROVED" && (
                                                 <form action={suspendCompany.bind(null, company.id)}>
-                                                    <button className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                                                    <SubmitButton className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" pendingText="Suspending…">
                                                         Suspend
-                                                    </button>
+                                                    </SubmitButton>
                                                 </form>
                                             )}
 
@@ -161,9 +162,9 @@ export default async function AdminDashboardPage() {
 
                                             {company.status === "SUSPENDED" && (
                                                 <form action={reactivateCompany.bind(null, company.id)}>
-                                                    <button className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                                                    <SubmitButton className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" pendingText="Reactivating…">
                                                         Re-activate
-                                                    </button>
+                                                    </SubmitButton>
                                                 </form>
                                             )}
                                         </div>

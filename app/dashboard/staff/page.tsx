@@ -3,6 +3,7 @@ import { prisma } from "@/app/libs/prisma"
 import { redirect } from "next/navigation"
 import { approveStaff, rejectStaff, suspendStaff, reactivateStaff } from "../action"
 import CopyButton from "../components/CopyButton"
+import SubmitButton from "@/app/components/SubmitButton"
 
 function StatusBadge({ status }: { status: string }) {
     const styles: Record<string, string> = {
@@ -88,21 +89,21 @@ export default async function StaffManagementPage() {
                                         {s.status === "PENDING" && (
                                             <>
                                                 <form action={rejectStaff.bind(null, s.id)}>
-                                                    <button className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100">Reject</button>
+                                                    <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100" pendingText="Rejecting…">Reject</SubmitButton>
                                                 </form>
                                                 <form action={approveStaff.bind(null, s.id)}>
-                                                    <button className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100">Approve</button>
+                                                    <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100" pendingText="Approving…">Approve</SubmitButton>
                                                 </form>
                                             </>
                                         )}
                                         {s.status === "APPROVED" && (
                                             <form action={suspendStaff.bind(null, s.id)}>
-                                                <button className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100">Suspend</button>
+                                                <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100" pendingText="Suspending…">Suspend</SubmitButton>
                                             </form>
                                         )}
                                         {s.status === "SUSPENDED" && (
                                             <form action={reactivateStaff.bind(null, s.id)}>
-                                                <button className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100">Reactivate</button>
+                                                <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100" pendingText="Reactivating…">Reactivate</SubmitButton>
                                             </form>
                                         )}
                                     </div>
