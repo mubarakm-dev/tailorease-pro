@@ -1,6 +1,7 @@
 "use server"
 
-import { clearSession, isAuth } from "@/app/libs/session"
+import { clearSession } from "@/app/libs/session"
+import { requireActiveStaff } from "@/app/libs/auth"
 import { redirect } from "next/navigation"
 
 import { prisma } from "../libs/prisma"
@@ -15,7 +16,7 @@ export const logout = async () => {
 }
 
 export const approveStaff = async (staffId: string) => {
-    const session = await isAuth()
+    const session = await requireActiveStaff()
 
     if (session.role !== "SUPER_ADMIN") {
         return
@@ -57,7 +58,7 @@ export const approveStaff = async (staffId: string) => {
 
 export const rejectStaff = async (staffId: string) => {
 
-    const session = await isAuth()
+    const session = await requireActiveStaff()
 
     if (session.role !== "SUPER_ADMIN") {
         return
@@ -92,7 +93,7 @@ export const rejectStaff = async (staffId: string) => {
 }
 
 export const suspendStaff = async (staffId: string)=>{
-    const session = await isAuth()
+    const session = await requireActiveStaff()
     if (session.role !== "SUPER_ADMIN") {
         return
     }
@@ -122,7 +123,7 @@ export const suspendStaff = async (staffId: string)=>{
 
 
 export const reactivateStaff = async (staffId: string)=>{
-    const session = await isAuth()
+    const session = await requireActiveStaff()
     if (session.role !== "SUPER_ADMIN") {
         return
     }

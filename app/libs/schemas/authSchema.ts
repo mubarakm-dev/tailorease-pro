@@ -47,3 +47,20 @@ export const resendOtpSchema = z.object({
 export type ResendOtpInput = z.infer<typeof resendOtpSchema>
 
 
+export const updateCompanyDetailsSchema = z.object({
+  companyName: z.string().min(2, "Company name is required"),
+  ownerFullname: z.string().optional(),
+  ownerPhone: z.string().optional(),
+})
+
+export type UpdateCompanyDetailsInput = z.infer<typeof updateCompanyDetailsSchema>
+
+export const createCustomerSchema = z.object({
+
+  fullName: z.string().min(2, "Customer name is required"),
+  phone: z.string().min(7, "Phone number is required"),        
+  email: z.union([z.literal(""), z.email("Invalid email")]).optional(),
+})
+
+export type createCustomerInput = z.infer<typeof createCustomerSchema>
+

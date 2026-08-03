@@ -21,6 +21,7 @@ export const approveCompany = async (companyId: string) => {
         prisma.company.update({
             where: { id: companyId },
             data: { status: "APPROVED" },
+            include: { staff: { where: { role: "SUPER_ADMIN" }, select: { email: true, fullName: true } } },
         }),
         prisma.staff.updateMany({
             where: { companyId, role: "SUPER_ADMIN" },
@@ -28,9 +29,10 @@ export const approveCompany = async (companyId: string) => {
         }),
     ])
 
+    const owner = company.staff[0]
     after(async () => {
         try {
-            await sendCompanyApprovalEmail(company.ownerEmail, company.companyName, company.ownerFullname, company.companyCode)
+            if (owner) await sendCompanyApprovalEmail(owner.email, company.companyName, owner.fullName, company.companyCode)
         } catch (error) {
             console.error("Company Approval Email failed", error)
         }
@@ -45,11 +47,13 @@ export const rejectCompany = async (companyId: string) => {
     const company = await prisma.company.update({
         where: { id: companyId },
         data: { status: "REJECTED" },
+        include: { staff: { where: { role: "SUPER_ADMIN" }, select: { email: true, fullName: true } } },
     })
 
+    const owner = company.staff[0]
     after(async () => {
         try {
-            await sendCompanyRejectedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+            if (owner) await sendCompanyRejectedEmail(owner.email, company.companyName, owner.fullName)
         } catch (error) {
             console.error("Company Rejection Email failed", error)
         }
@@ -63,13 +67,14 @@ export const suspendCompany = async (companyId: string) => {
     await isAuthAdmin()
     const company = await prisma.company.update({
         where: { id: companyId },
-        data: { status: "SUSPENDED" }
+        data: { status: "SUSPENDED" },
+        include: { staff: { where: { role: "SUPER_ADMIN" }, select: { email: true, fullName: true } } },
     })
 
-
+    const owner = company.staff[0]
     after(async () => {
         try {
-            await sendCompanySuspendedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+            if (owner) await sendCompanySuspendedEmail(owner.email, company.companyName, owner.fullName)
         } catch (error) {
             console.error("Company Suspension Email failed", error)
         }
@@ -82,12 +87,14 @@ export const reactivateCompany = async (companyId: string) => {
     await isAuthAdmin()
   const company =  await prisma.company.update({
         where: { id: companyId },
-        data: { status: "APPROVED" }
+        data: { status: "APPROVED" },
+        include: { staff: { where: { role: "SUPER_ADMIN" }, select: { email: true, fullName: true } } },
     })
 
+    const owner = company.staff[0]
     after(async () => {
         try {
-            await sendCompanyReactivatedEmail(company.ownerEmail, company.companyName, company.ownerFullname)
+            if (owner) await sendCompanyReactivatedEmail(owner.email, company.companyName, owner.fullName)
         } catch (error) {
             console.error("Company Reactivation Email failed", error)
         }

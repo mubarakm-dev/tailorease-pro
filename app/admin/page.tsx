@@ -28,7 +28,10 @@ export default async function AdminDashboardPage() {
             prisma.company.findMany({
                 where: { status: "PENDING" },
                 orderBy: { createdAt: "desc" },
-                select: { id: true, companyName: true, ownerEmail: true, ownerFullname: true, createdAt: true },
+                select: {
+                    id: true, companyName: true, createdAt: true,
+                    staff: { where: { role: "SUPER_ADMIN" }, select: { email: true, fullName: true } },
+                },
             }),
 
 
@@ -37,10 +40,9 @@ export default async function AdminDashboardPage() {
                 select: {
                     id: true,
                     companyName: true,
-                    ownerFullname: true,
-                    ownerEmail: true,
                     status: true,
                     createdAt: true,
+                    staff: { where: { role: "SUPER_ADMIN" }, select: { email: true, fullName: true } },
                     _count: {
                         select: {
                             staff: true,
@@ -107,8 +109,8 @@ export default async function AdminDashboardPage() {
                                 <div key={company.id} className="flex items-center justify-between p-4">
                                     <div>
                                         <p className="font-medium">{company.companyName}</p>
-                                        <p className="text-sm text-gray-500">{company.ownerEmail}</p>
-                                        <p className="text-sm text-gray-500">{company.ownerFullname}</p>
+                                        <p className="text-sm text-gray-500">{company.staff[0]?.email}</p>
+                                        <p className="text-sm text-gray-500">{company.staff[0]?.fullName}</p>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <form action={approveCompany.bind(null, company.id)}>
@@ -142,8 +144,8 @@ export default async function AdminDashboardPage() {
                                 <div key={company.id} className="flex items-center justify-between p-4">
                                     <div>
                                         <p className="font-medium">{company.companyName}</p>
-                                        <p className="text-sm text-gray-500">{company.ownerEmail}</p>
-                                        <p className="text-sm text-gray-500">{company.ownerFullname}</p>
+                                        <p className="text-sm text-gray-500">{company.staff[0]?.email}</p>
+                                        <p className="text-sm text-gray-500">{company.staff[0]?.fullName}</p>
                                         <p className="text-sm text-gray-500">Staff:{company._count.staff}</p>
                                         <p className="text-sm text-gray-500">Customer: {company._count.customers}</p>
                                         <p className="text-sm text-gray-500">Orders: {company._count.orders}</p>

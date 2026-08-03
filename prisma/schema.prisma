@@ -15,9 +15,6 @@ model Company {
   passwordHash  String
   companyImage  String?
   status        CompanyStatus         @default(UNVERIFIED)
-  ownerFullname String
-  ownerEmail    String
-  ownerPhone    String
   createdAt     DateTime              @default(now())
   updatedAt     DateTime              @default(now()) @updatedAt
   staff         Staff[]
@@ -31,7 +28,7 @@ model Staff {
   id               String          @id @default(uuid())
   companyId        String
   fullName         String
-  email            String          @unique
+  email            String         @unique
   phone            String?
   passwordHash     String
   role             Role            @default(STAFF)
@@ -53,8 +50,8 @@ model Customer {
   id             String        @id @default(uuid())
   companyId      String
   fullName       String
-  email          String
-  phone          String?
+  email          String?
+  phone          String
   createdBy      String
   createdAt      DateTime      @default(now())
   company        Company       @relation(fields: [companyId], references: [id])

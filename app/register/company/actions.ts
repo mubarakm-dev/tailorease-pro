@@ -92,25 +92,23 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
         const companyCode = await generateCompanyCode()
 
         const result = await prisma.$transaction(async (tx) => {
-
             const company = await tx.company.create({
+                
                 data: {
                     companyCode,
                     companyName,
                     email,
                     passwordHash: hashedPassword,
                     status: "UNVERIFIED",
-                    ownerFullname,
-                    ownerEmail,
-                    ownerPhone,
                 }
             })
 
             const staff = await tx.staff.create({
                 data: {
                     companyId: company.id,
-                    fullName: ownerFullname,
+                    fullName: ownerFullname,   
                     email: ownerEmail,
+                    phone: ownerPhone,
                     passwordHash: hashedPassword,
                     role: "SUPER_ADMIN",
                     status: "UNVERIFIED",
