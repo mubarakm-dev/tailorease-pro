@@ -16,7 +16,7 @@ export const createOrder = async (prevState: OrderCreateState, formData: FormDat
         title: formData.get("title"),
         amount: formData.get("amount"),
         notes: formData.get("notes"),
-      
+   
 
     })
 
@@ -59,19 +59,13 @@ export const createOrder = async (prevState: OrderCreateState, formData: FormDat
                 }
             })
         })
-
-        return {
-            error: null,
-            success: true,
-            message: "Order Created Successfully"
-        }
     }
-   catch{
-      return { success: false, error: "Something went wrong" }
-   }
+    catch {
+        return { success: false, error: "Something went wrong" }
+    }
 
-
-   revalidatePath(`/dashboard/customers/${customerId}`)
+    revalidatePath(`/dashboard/customers/${customerId}`)
+    return { success: true, error: null, message: "Order Created Successfully" }
 
 }
 

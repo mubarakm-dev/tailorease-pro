@@ -165,3 +165,8 @@ export async function sendCompanyReactivatedEmail(to: string, companyName: strin
 
 }
 
+export async function sendOrderReadyEmail(to: string, customerName: string, orderTitle: string): Promise<void> {
+  const subject = "Your order is ready for pickup"
+  const html = `<div><h2>Ready for pickup</h2><p>Dear ${customerName}, your order "<b>${orderTitle}</b>" is ready. Please stop by to collect it.</p></div>`
+  await sendEmail(to, subject, html)
+}

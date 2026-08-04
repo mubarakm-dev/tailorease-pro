@@ -3,6 +3,8 @@ import { isAuth } from "@/app/libs/session"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import AddMeasurement from "./AddMeasurement"
+import NewOrder from "./NewOrder"
+import OrderStatusBadge from "../../components/OrderStatusBadge"
 
 export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -27,6 +29,10 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                         values: true,
                         template: { select: { name: true } },
                     },
+                },
+                orders: {
+                    orderBy: { createdAt: "desc" },
+                    select: { id: true, title: true, status: true, amount: true, createdAt: true },
                 },
             },
         }),
@@ -87,6 +93,28 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                 )}
 
                 <AddMeasurement customerId={customer.id} templates={templates} />
+            </section>
+
+            <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-200">
+                    <h2 className="font-semibold text-sm">Orders</h2>
+                </div>
+                {customer.orders.length === 0 ? (
+                    <p className="text-sm text-gray-400 px-5 py-6 text-center">No orders yet.</p>
+                ) : (
+                    customer.orders.map((o) => (
+                        <div key={o.id} className="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-b-0">
+                            <div className="min-w-0">
+                                <p className="text-sm font-semibold truncate">{o.title}</p>
+                                <p className="text-xs text-gray-400">
+                                    {o.createdAt.toLocaleDateString()}{o.amount != null ? ` · ₦${o.amount.toLocaleString()}` : ""}
+                                </p>
+                            </div>
+                            <OrderStatusBadge status={o.status} />
+                        </div>
+                    ))
+                )}
+                <NewOrder customerId={customer.id} />
             </section>
         </div>
     )
