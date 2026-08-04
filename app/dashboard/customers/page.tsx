@@ -1,6 +1,7 @@
 import { isAuth } from "@/app/libs/session"
 import { prisma } from "@/app/libs/prisma"
 import CustomerForm from "./CustomerForm"
+import Link from "next/link"
 
 export default async function CustomersPage() {
     const session = await isAuth()
@@ -28,7 +29,7 @@ export default async function CustomersPage() {
                     <p className="text-sm text-gray-400 px-5 py-8 text-center">No customers yet.</p>
                 ) : (
                     customers.map((c) => (
-                        <div key={c.id} className="flex items-center gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0">
+                       <Link key={c.id} href={`/dashboard/customers/${c.id}`} className="flex items-center gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
                             <span className="w-9 h-9 rounded-full grid place-items-center bg-slate-600 text-white text-sm font-semibold shrink-0">
                                 {c.fullName.charAt(0).toUpperCase()}
                             </span>
@@ -38,8 +39,11 @@ export default async function CustomersPage() {
                                     {c.phone}{c.email ? ` · ${c.email}` : ""}
                                 </p>
                             </div>
-                            <span className="text-xs text-gray-400 whitespace-nowrap">{c.createdAt.toLocaleDateString()}</span>
-                        </div>
+                            <span className="text-xs text-gray-400 whitespace-nowrap">{c.createdAt.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</span>
+                        </Link>
+
+                        
+
                     ))
                 )}
             </section>

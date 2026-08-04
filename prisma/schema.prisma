@@ -105,6 +105,7 @@ model Order {
   staffId       String
   parentOrderId String?
   title         String
+  amount        Int?
   type          OrderType       @default(NEW)
   status        OrderStatus     @default(RECEIVED)
   notes         Json

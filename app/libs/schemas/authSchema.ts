@@ -64,3 +64,9 @@ export const createCustomerSchema = z.object({
 
 export type createCustomerInput = z.infer<typeof createCustomerSchema>
 
+
+export const createTemplateSchema = z.object({
+  name: z.string().min(2, "Template name is required"),
+  fields: z.string().min(1, "Add at least one field"),   // raw textarea; we parse it in the action
+})
+export type CreateTemplateInput = z.infer<typeof createTemplateSchema>
