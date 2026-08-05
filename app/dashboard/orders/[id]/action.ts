@@ -2,19 +2,9 @@
 import { requireActiveStaff } from "@/app/libs/auth"
 import { sendOrderReadyEmail } from "@/app/libs/email"
 import { prisma } from "@/app/libs/prisma"
-import { OrderStatus } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 import { after } from "next/server"
-
-
-const FLOW: OrderStatus[] = ["RECEIVED", "CUT_IN_PROGRESS", "SEWING_IN_PROGRESS", "FINISHING", "COMPLETED"]
-
-
-
-function nextStatus(current: OrderStatus): OrderStatus | null {
-    const i = FLOW.indexOf(current)
-    return i >= 0 && i < FLOW.length - 1 ? FLOW[i + 1] : null
-}
+import { nextStatus, prevStatus } from "./flow"
 
 
 export const advanceOrderStatus = async (orderId: string) => {
@@ -59,6 +49,37 @@ export const advanceOrderStatus = async (orderId: string) => {
     }
 
 
+    revalidatePath(`/dashboard/orders/${orderId}`)
+
+
+}
+
+export const prevOrderStatus = async (orderId: string) => {
+    const session = await requireActiveStaff()
+
+    const order = await prisma.order.findFirst({
+        where: { id: orderId, companyId: session.companyId },
+        select: {
+            id: true,
+            status: true,
+        }
+    })
+
+    if (!order) {
+        return
+    }
+    const prev = prevStatus(order.status)
+    if (!prev) return
+
+    if (order.status === "COMPLETED" && session.role !== "SUPER_ADMIN") return
+    await prisma.$transaction([
+        prisma.order.update({ where: { id: orderId }, data: { status: prev } }),
+        prisma.statusHistory.create({
+            data: { orderId, updatedById: session.staffId, status: prev, note: `Moved to ${prev}` },
+        })
+    ])
+
+    
     revalidatePath(`/dashboard/orders/${orderId}`)
 
 

@@ -1,5 +1,144 @@
-import ComingSoon from "../components/ComingSoon"
+import { isAuth } from "@/app/libs/session"
+import { prisma } from "@/app/libs/prisma"
+import Link from "next/link"
+import OrderStatusBadge from "../components/OrderStatusBadge"
+import OrderSearch from "./OrderSearch"
+import { FLOW, STATUS_LABELS } from "./[id]/flow"
+import type { OrderStatus } from "@prisma/client"
 
-export default function OrdersPage() {
-    return <ComingSoon title="Orders" description="Track orders through the workflow here — coming soon." />
+const PER_PAGE = 20
+
+export default async function OrdersPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ q?: string; status?: string; customer?: string; page?: string }>
+}) {
+    const session = await isAuth()
+    const sp = await searchParams
+
+    const q = sp.q?.trim() || ""
+    const status = FLOW.includes(sp.status as OrderStatus) ? (sp.status as OrderStatus) : undefined
+    const customerId = sp.customer || undefined
+    const page = Math.max(1, Number(sp.page) || 1)
+
+    // company-scoped, plus optional status / customer / text filters
+    const where = {
+        companyId: session.companyId,
+        ...(status ? { status } : {}),
+        ...(customerId ? { customerId } : {}),
+        ...(q
+            ? {
+                  OR: [
+                      { title: { contains: q, mode: "insensitive" as const } },
+                      { customer: { fullName: { contains: q, mode: "insensitive" as const } } },
+                  ],
+              }
+            : {}),
+    }
+
+    const [orders, total] = await Promise.all([
+        prisma.order.findMany({
+            where,
+            orderBy: { createdAt: "desc" },
+            skip: (page - 1) * PER_PAGE,
+            take: PER_PAGE,
+            select: {
+                id: true,
+                title: true,
+                status: true,
+                amount: true,
+                createdAt: true,
+                customer: { select: { fullName: true } },
+            },
+        }),
+        prisma.order.count({ where }),
+    ])
+
+    const totalPages = Math.max(1, Math.ceil(total / PER_PAGE))
+
+
+    const link = (over: Record<string, string | number | undefined>) => {
+        const p = new URLSearchParams()
+        if (q) p.set("q", q)
+        if (status) p.set("status", status)
+        if (customerId) p.set("customer", customerId)
+        for (const [k, v] of Object.entries(over)) {
+            if (v) p.set(k, String(v))
+            else p.delete(k)
+        }
+        const s = p.toString()
+        return `/dashboard/orders${s ? `?${s}` : ""}`
+    }
+
+    return (
+        <div className="p-6 max-w-5xl mx-auto flex flex-col gap-5">
+            <div>
+                <h1 className="text-2xl font-semibold">Orders</h1>
+                <p className="text-gray-500 text-sm mt-1">{total} total</p>
+            </div>
+
+            <OrderSearch />
+
+      
+            <div className="flex flex-wrap gap-2 text-xs">
+                <Link
+                    href={link({ status: undefined, page: undefined })}
+                    className={`px-3 py-1.5 rounded-full border ${!status ? "bg-[#1b2233] text-white border-[#1b2233]" : "border-gray-300 text-gray-600 hover:bg-gray-50"}`}
+                >
+                    All
+                </Link>
+                {FLOW.map((s) => (
+                    <Link
+                        key={s}
+                        href={link({ status: s, page: undefined })}
+                        className={`px-3 py-1.5 rounded-full border ${status === s ? "bg-[#1b2233] text-white border-[#1b2233]" : "border-gray-300 text-gray-600 hover:bg-gray-50"}`}
+                    >
+                        {STATUS_LABELS[s]}
+                    </Link>
+                ))}
+            </div>
+
+            <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                {orders.length === 0 ? (
+                    <p className="text-sm text-gray-400 px-5 py-10 text-center">No orders found.</p>
+                ) : (
+                    orders.map((o) => (
+                        <Link
+                            key={o.id}
+                            href={`/dashboard/orders/${o.id}`}
+                            className="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
+                        >
+                            <div className="min-w-0">
+                                <p className="text-sm font-semibold truncate">{o.title}</p>
+                                <p className="text-xs text-gray-400 truncate">
+                                    {o.customer.fullName} · {o.createdAt.toLocaleDateString()}
+                                    {o.amount != null ? ` · ₦${o.amount.toLocaleString()}` : ""}
+                                </p>
+                            </div>
+                            <OrderStatusBadge status={o.status} />
+                        </Link>
+                    ))
+                )}
+            </section>
+
+        
+            {totalPages > 1 && (
+                <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-400">Page {page} of {totalPages}</span>
+                    <div className="flex gap-2">
+                        {page > 1 ? (
+                            <Link href={link({ page: page - 1 })} className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50">← Prev</Link>
+                        ) : (
+                            <span className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-300">← Prev</span>
+                        )}
+                        {page < totalPages ? (
+                            <Link href={link({ page: page + 1 })} className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50">Next →</Link>
+                        ) : (
+                            <span className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-300">Next →</span>
+                        )}
+                    </div>
+                </div>
+            )}
+        </div>
+    )
 }

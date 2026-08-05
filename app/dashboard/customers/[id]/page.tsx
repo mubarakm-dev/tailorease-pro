@@ -103,7 +103,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                     <p className="text-sm text-gray-400 px-5 py-6 text-center">No orders yet.</p>
                 ) : (
                     customer.orders.map((o) => (
-                        <div key={o.id} className="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-b-0">
+                        <Link key={o.id} href={`/dashboard/orders/${o.id}`} className="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
                             <div className="min-w-0">
                                 <p className="text-sm font-semibold truncate">{o.title}</p>
                                 <p className="text-xs text-gray-400">
@@ -111,7 +111,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                                 </p>
                             </div>
                             <OrderStatusBadge status={o.status} />
-                        </div>
+                        </Link>
                     ))
                 )}
                 <NewOrder customerId={customer.id} />
