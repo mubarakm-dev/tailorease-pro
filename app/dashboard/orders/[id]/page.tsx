@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import OrderStatusBadge from "../../components/OrderStatusBadge"
 import SubmitButton from "@/app/components/SubmitButton"
+import ConfirmButton from "@/app/components/ConfirmButton"
 import { advanceOrderStatus, prevOrderStatus } from "./action"
 import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
 
@@ -65,7 +66,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 </div>
             )}
 
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex items-center justify-between gap-4">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <p className="text-sm font-semibold">Current stage: {STATUS_LABELS[order.status]}</p>
                     <p className="text-xs text-gray-400 mt-0.5">
@@ -73,23 +74,41 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                     </p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                     
                     {prev &&
                         (order.status === "COMPLETED" && !isAdmin ? (
                             <p className="text-xs text-gray-400 text-right">Only an admin can move this back.</p>
                         ) : (
-                            <form action={prevOrderStatus.bind(null, order.id)}>
-                                <SubmitButton className="bg-gray-100 text-gray-800 px-4 py-2 rounded text-sm hover:bg-gray-200 whitespace-nowrap" pendingText="Updating…">
-                                    Move back to {STATUS_LABELS[prev]}
-                                </SubmitButton>
-                            </form>
+                            <ConfirmButton
+                                action={prevOrderStatus.bind(null, order.id)}
+                                className="bg-gray-100 text-gray-800 px-4 py-2 rounded text-sm hover:bg-gray-200 whitespace-nowrap"
+                                title={`Move back to ${STATUS_LABELS[prev]}?`}
+                                message={`This reverts the order from ${STATUS_LABELS[order.status]} to ${STATUS_LABELS[prev]}. The change is recorded in the status history.`}
+                                confirmText="Move back"
+                                pendingText="Updating…"
+                            >
+                                Move back to {STATUS_LABELS[prev]}
+                            </ConfirmButton>
                         ))}
 
-               
+
                     {next &&
                         (next === "COMPLETED" && !isAdmin ? (
                             <p className="text-xs text-gray-400 text-right">Only an admin can mark this complete.</p>
+                        ) : next === "COMPLETED" ? (
+                            <ConfirmButton
+                                action={advanceOrderStatus.bind(null, order.id)}
+                                className="bg-black text-white px-4 py-2 rounded text-sm hover:bg-gray-800 whitespace-nowrap"
+                                title="Mark this order complete?"
+                                message={order.customer.email
+                                    ? `${order.customer.fullName} will be emailed that their order is ready for pickup.`
+                                    : "This marks the order complete. (No email — this customer has no email on file.)"}
+                                confirmText="Mark complete"
+                                pendingText="Updating…"
+                            >
+                                Advance to {STATUS_LABELS[next]}
+                            </ConfirmButton>
                         ) : (
                             <form action={advanceOrderStatus.bind(null, order.id)}>
                                 <SubmitButton className="bg-black text-white px-4 py-2 rounded text-sm hover:bg-gray-800 whitespace-nowrap" pendingText="Updating…">

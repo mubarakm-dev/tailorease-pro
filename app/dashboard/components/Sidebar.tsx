@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -11,6 +11,8 @@ type SidebarProps = {
   companyImage: string | null
   staffName: string
   role: string
+  mobileOpen: boolean
+  onClose: () => void
 }
 
 type NavItem = { href: string; label: string; icon: ReactNode }
@@ -69,10 +71,15 @@ function NavLink({ item, active, admin }: { item: NavItem; active: boolean; admi
   )
 }
 
-export default function Sidebar({ companyName, companyImage, staffName, role }: SidebarProps) {
+export default function Sidebar({ companyName, companyImage, staffName, role, mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
 
+  // close the mobile drawer whenever the route changes
+  useEffect(() => {
+    onClose()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   const isActive = (href: string) =>
     href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(href)
@@ -80,7 +87,17 @@ export default function Sidebar({ companyName, companyImage, staffName, role }: 
   const isAdmin = role === "SUPER_ADMIN"
 
   return (
-    <aside className="w-64 shrink-0 h-screen sticky top-0 flex flex-col gap-1 bg-[#1c2439] border-r border-[#313b58] text-[#c7cbd8] p-4">
+    <>
+      {/* mobile backdrop */}
+      <div
+        onClick={onClose}
+        aria-hidden
+        className={`fixed inset-0 z-40 bg-black/40 md:hidden ${mobileOpen ? "" : "hidden"}`}
+      />
+
+    <aside
+      className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 h-screen flex flex-col gap-1 bg-[#1c2439] border-r border-[#313b58] text-[#c7cbd8] p-4 transition-transform duration-200 md:sticky md:top-0 md:z-auto md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+    >
       {/* Company brand */}
       <div className="flex items-center gap-3 rounded-xl bg-[#232c45] border border-[#313b58] p-2 mb-2">
         {companyImage ? (
@@ -158,5 +175,6 @@ export default function Sidebar({ companyName, companyImage, staffName, role }: 
         </button>
       </div>
     </aside>
+    </>
   )
 }

@@ -3,6 +3,7 @@
 import { requireActiveStaff } from "@/app/libs/auth";
 import { prisma } from "@/app/libs/prisma";
 import { createOrderSchema } from "@/app/libs/schemas/orderSchema";
+import { logActivity } from "@/app/libs/activity";
 import { revalidatePath } from "next/cache";
 
 
@@ -35,8 +36,9 @@ export const createOrder = async (prevState: OrderCreateState, formData: FormDat
 
     const { title, amount, notes } = validation.data
 
+    let orderId: string
     try {
-        await prisma.$transaction(async (tx) => {
+        orderId = await prisma.$transaction(async (tx) => {
             const order = await tx.order.create({
                 data: {
                     customerId,
@@ -58,11 +60,22 @@ export const createOrder = async (prevState: OrderCreateState, formData: FormDat
 
                 }
             })
+
+            return order.id
         })
     }
     catch {
         return { success: false, error: "Something went wrong" }
     }
+
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "order.create",
+        entityType: "Order",
+        entityId: orderId,
+        summary: `created order "${title}"`,
+    })
 
     revalidatePath(`/dashboard/customers/${customerId}`)
     return { success: true, error: null, message: "Order Created Successfully" }

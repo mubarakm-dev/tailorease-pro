@@ -3,18 +3,17 @@
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
 import { useRef, useTransition } from "react"
 
-export default function OrderSearch() {
+export default function SearchBox({ placeholder = "Search…" }: { placeholder?: string }) {
     const searchParams = useSearchParams()
     const pathname = usePathname()
     const { replace } = useRouter()
     const [isPending, startTransition] = useTransition()
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-    
     const onSearch = (term: string) => {
         if (timer.current) clearTimeout(timer.current)
         timer.current = setTimeout(() => {
-            const params = new URLSearchParams(searchParams.toString()) // keep status/customer
+            const params = new URLSearchParams(searchParams.toString()) // keep other filters
             if (term) params.set("q", term)
             else params.delete("q")
             params.delete("page") // any new search goes back to page 1
@@ -28,7 +27,7 @@ export default function OrderSearch() {
                 type="text"
                 defaultValue={searchParams.get("q") ?? ""}
                 onChange={(e) => onSearch(e.target.value)}
-                placeholder="Search by order title or customer…"
+                placeholder={placeholder}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm pr-9"
             />
             {isPending && (

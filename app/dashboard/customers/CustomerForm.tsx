@@ -3,6 +3,7 @@
 import { useActionState } from "react"
 import { createCustomer, CustomerCreateState } from "./action"
 import SubmitButton from "@/app/components/SubmitButton"
+import FormMessage from "@/app/components/FormMessage"
 
 const initialState: CustomerCreateState = {
     success: false,
@@ -16,12 +17,7 @@ export default function CustomerForm() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
             <h2 className="font-semibold text-sm mb-4">Add a customer</h2>
 
-            {state.error && (
-                <p className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">{state.error}</p>
-            )}
-            {state.success && (
-                <p className="bg-green-100 text-green-700 p-3 rounded mb-4 text-sm">{state.message}</p>
-            )}
+            <FormMessage state={state} />
 
             <form action={formAction} className="grid sm:grid-cols-3 gap-3">
                 <div>

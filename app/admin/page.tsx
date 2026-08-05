@@ -1,7 +1,7 @@
 import { isAuthAdmin } from "@/app/libs/adminSession"
 import { prisma } from "@/app/libs/prisma"
 import { adminLogout, approveCompany, reactivateCompany, rejectCompany, suspendCompany } from "./action"
-import SubmitButton from "@/app/components/SubmitButton"
+import ConfirmButton from "@/app/components/ConfirmButton"
 
 function StatCard({ label, value }: { label: string; value: number }) {
     return (
@@ -113,16 +113,27 @@ export default async function AdminDashboardPage() {
                                         <p className="text-sm text-gray-500">{company.staff[0]?.fullName}</p>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <form action={approveCompany.bind(null, company.id)}>
-                                            <SubmitButton className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" pendingText="Approving…">
-                                                Approve
-                                            </SubmitButton>
-                                        </form>
-                                        <form action={rejectCompany.bind(null, company.id)}>
-                                            <SubmitButton className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" pendingText="Rejecting…">
-                                                Reject
-                                            </SubmitButton>
-                                        </form>
+                                        <ConfirmButton
+                                            action={approveCompany.bind(null, company.id)}
+                                            className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                                            title="Approve this company?"
+                                            message={`${company.companyName} will be activated, its owner's account approved, and an approval email sent with the company code.`}
+                                            confirmText="Approve"
+                                            pendingText="Approving…"
+                                        >
+                                            Approve
+                                        </ConfirmButton>
+                                        <ConfirmButton
+                                            action={rejectCompany.bind(null, company.id)}
+                                            className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                                            title="Reject this company?"
+                                            message={`${company.companyName} will be rejected and its owner notified by email.`}
+                                            confirmText="Reject"
+                                            pendingText="Rejecting…"
+                                            danger
+                                        >
+                                            Reject
+                                        </ConfirmButton>
                                     </div>
                                 </div>
                             ))}
@@ -153,21 +164,30 @@ export default async function AdminDashboardPage() {
 
                                         <div>
                                             {company.status === "APPROVED" && (
-                                                <form action={suspendCompany.bind(null, company.id)}>
-                                                    <SubmitButton className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" pendingText="Suspending…">
-                                                        Suspend
-                                                    </SubmitButton>
-                                                </form>
+                                                <ConfirmButton
+                                                    action={suspendCompany.bind(null, company.id)}
+                                                    className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                                                    title="Suspend this company?"
+                                                    message={`${company.companyName} will be suspended — all its staff lose access on their next request, and the owner is notified by email.`}
+                                                    confirmText="Suspend"
+                                                    pendingText="Suspending…"
+                                                    danger
+                                                >
+                                                    Suspend
+                                                </ConfirmButton>
                                             )}
 
-
-
                                             {company.status === "SUSPENDED" && (
-                                                <form action={reactivateCompany.bind(null, company.id)}>
-                                                    <SubmitButton className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" pendingText="Reactivating…">
-                                                        Re-activate
-                                                    </SubmitButton>
-                                                </form>
+                                                <ConfirmButton
+                                                    action={reactivateCompany.bind(null, company.id)}
+                                                    className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                                                    title="Reactivate this company?"
+                                                    message={`${company.companyName} will be restored to active and the owner notified by email.`}
+                                                    confirmText="Reactivate"
+                                                    pendingText="Reactivating…"
+                                                >
+                                                    Re-activate
+                                                </ConfirmButton>
                                             )}
                                         </div>
 

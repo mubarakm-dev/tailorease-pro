@@ -2,6 +2,7 @@
 import { requireActiveStaff } from "@/app/libs/auth"
 import { prisma } from "@/app/libs/prisma"
 import { createCustomerSchema } from "@/app/libs/schemas/authSchema"
+import { logActivity } from "@/app/libs/activity"
 import { revalidatePath } from "next/cache"
 
 
@@ -29,19 +30,30 @@ export const createCustomer = async(prevState:CustomerCreateState, formData:Form
     }
 
     const {fullName, email, phone} = validation.data
+    let customerId: string
     try {
-        await prisma.customer.create({
+        const customer = await prisma.customer.create({
             data: {
-                companyId: session.companyId,   
-                createdBy: session.staffId,     
+                companyId: session.companyId,
+                createdBy: session.staffId,
                 fullName,
                 phone,
-                email: email || null,           
+                email: email || null,
             },
         })
+        customerId = customer.id
     } catch (error) {
         return { success: false, error: "Something went wrong" }
     }
+
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "customer.create",
+        entityType: "Customer",
+        entityId: customerId,
+        summary: `added customer "${fullName}"`,
+    })
 
     revalidatePath("/dashboard/customers")
     return { success: true, error: null, message: "Customer added" }

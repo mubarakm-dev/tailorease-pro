@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react"
 import { createMeasurement, MeasurementCreateState } from "./action"
 import SubmitButton from "@/app/components/SubmitButton"
+import FormMessage from "@/app/components/FormMessage"
 
 type Template = { id: string; name: string; fieldDefinitions: string[] }
 
@@ -27,8 +28,7 @@ export default function AddMeasurement({ customerId, templates }: { customerId: 
             <input type="hidden" name="customerId" value={customerId} />
             <h3 className="font-semibold text-sm">Add a measurement</h3>
 
-            {state.error && <p className="bg-red-100 text-red-700 p-3 rounded text-sm">{state.error}</p>}
-            {state.success && <p className="bg-green-100 text-green-700 p-3 rounded text-sm">{state.message}</p>}
+            <FormMessage state={state} />
 
             <div className="flex gap-3">
                 <div className="flex-1">

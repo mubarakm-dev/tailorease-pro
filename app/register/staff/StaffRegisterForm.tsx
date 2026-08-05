@@ -2,6 +2,7 @@
 
 import { useActionState } from "react"
 import { registerStaff, StaffRegistrationState } from "./action"
+import FormMessage from "@/app/components/FormMessage"
 
 
 const initialState: StaffRegistrationState = {
@@ -18,9 +19,7 @@ export default function StaffRegisterForm() {
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
                 <h1 className="text-2xl font-bold mb-6">Register as Staff</h1>
 
-                {state.error && (
-                    <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{state.error}</p>
-                )}
+                <FormMessage state={state} />
 
                 {!state.success && (
                     <form action={formAction} className="space-y-4">

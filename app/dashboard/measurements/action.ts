@@ -2,6 +2,7 @@
 import { requireActiveStaff } from "@/app/libs/auth"
 import { prisma } from "@/app/libs/prisma"
 import { createTemplateSchema } from "@/app/libs/schemas/authSchema"
+import { logActivity } from "@/app/libs/activity"
 import { revalidatePath } from "next/cache"
 
 export type MeasurementTemplateCreateState = {
@@ -34,17 +35,28 @@ export const createTemplate = async (prevState: MeasurementTemplateCreateState, 
         .filter(Boolean)
     if (fields.length === 0) return { error: "Add at least one field", success: false }
 
+    let templateId: string
     try {
-        await prisma.measurementTemplate.create({
+        const template = await prisma.measurementTemplate.create({
             data: {
                 companyId: session.companyId,
                 name: validation.data.name,
                 fieldDefinitions: fields
             },
         })
+        templateId = template.id
     } catch (error) {
         return { success: false, error: "Something went wrong" }
     }
+
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "template.create",
+        entityType: "Template",
+        entityId: templateId,
+        summary: `created measurement template "${validation.data.name}"`,
+    })
 
     revalidatePath("/dashboard/measurements")
     return { success: true, error: null, message: "Template created" }

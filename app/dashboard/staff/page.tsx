@@ -3,7 +3,7 @@ import { prisma } from "@/app/libs/prisma"
 import { redirect } from "next/navigation"
 import { approveStaff, rejectStaff, suspendStaff, reactivateStaff } from "../action"
 import CopyButton from "../components/CopyButton"
-import SubmitButton from "@/app/components/SubmitButton"
+import ConfirmButton from "@/app/components/ConfirmButton"
 
 function StatusBadge({ status }: { status: string }) {
     const styles: Record<string, string> = {
@@ -88,23 +88,53 @@ export default async function StaffManagementPage() {
                                     <div className="flex items-center gap-2">
                                         {s.status === "PENDING" && (
                                             <>
-                                                <form action={rejectStaff.bind(null, s.id)}>
-                                                    <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100" pendingText="Rejecting…">Reject</SubmitButton>
-                                                </form>
-                                                <form action={approveStaff.bind(null, s.id)}>
-                                                    <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100" pendingText="Approving…">Approve</SubmitButton>
-                                                </form>
+                                                <ConfirmButton
+                                                    action={rejectStaff.bind(null, s.id)}
+                                                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
+                                                    title="Reject this staff member?"
+                                                    message={`${s.fullName} will be rejected and notified by email. They won't be able to access the dashboard.`}
+                                                    confirmText="Reject"
+                                                    pendingText="Rejecting…"
+                                                    danger
+                                                >
+                                                    Reject
+                                                </ConfirmButton>
+                                                <ConfirmButton
+                                                    action={approveStaff.bind(null, s.id)}
+                                                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100"
+                                                    title="Approve this staff member?"
+                                                    message={`${s.fullName} will gain access to the dashboard and be notified by email.`}
+                                                    confirmText="Approve"
+                                                    pendingText="Approving…"
+                                                >
+                                                    Approve
+                                                </ConfirmButton>
                                             </>
                                         )}
                                         {s.status === "APPROVED" && (
-                                            <form action={suspendStaff.bind(null, s.id)}>
-                                                <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100" pendingText="Suspending…">Suspend</SubmitButton>
-                                            </form>
+                                            <ConfirmButton
+                                                action={suspendStaff.bind(null, s.id)}
+                                                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100"
+                                                title="Suspend this staff member?"
+                                                message={`${s.fullName} will immediately lose the ability to make changes and be notified by email. You can reactivate them later.`}
+                                                confirmText="Suspend"
+                                                pendingText="Suspending…"
+                                                danger
+                                            >
+                                                Suspend
+                                            </ConfirmButton>
                                         )}
                                         {s.status === "SUSPENDED" && (
-                                            <form action={reactivateStaff.bind(null, s.id)}>
-                                                <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100" pendingText="Reactivating…">Reactivate</SubmitButton>
-                                            </form>
+                                            <ConfirmButton
+                                                action={reactivateStaff.bind(null, s.id)}
+                                                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100"
+                                                title="Reactivate this staff member?"
+                                                message={`${s.fullName} will regain full access and be notified by email.`}
+                                                confirmText="Reactivate"
+                                                pendingText="Reactivating…"
+                                            >
+                                                Reactivate
+                                            </ConfirmButton>
                                         )}
                                     </div>
                                 )}

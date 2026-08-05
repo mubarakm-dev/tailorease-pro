@@ -5,6 +5,7 @@ import { requireActiveStaff } from "@/app/libs/auth"
 import { redirect } from "next/navigation"
 
 import { prisma } from "../libs/prisma"
+import { logActivity } from "../libs/activity"
 import { revalidatePath } from "next/cache"
 import { after } from "next/server"
 import { sendStaffApprovalEmail, sendStaffReactivateEmail, sendStaffRejectedEmail, sendStaffSuspendedEmail } from "../libs/email"
@@ -51,6 +52,15 @@ export const approveStaff = async (staffId: string) => {
         }
     })
 
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "staff.approve",
+        entityType: "Staff",
+        entityId: staffId,
+        summary: `approved staff "${staff.fullName}"`,
+    })
+
     revalidatePath("/dashboard")
     revalidatePath("/dashboard/staff")
 }
@@ -86,7 +96,14 @@ export const rejectStaff = async (staffId: string) => {
         }
     })
 
-   
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "staff.reject",
+        entityType: "Staff",
+        entityId: staffId,
+        summary: `rejected staff "${staff.fullName}"`,
+    })
 
     revalidatePath("/dashboard")
     revalidatePath("/dashboard/staff")
@@ -117,6 +134,15 @@ export const suspendStaff = async (staffId: string)=>{
         }
     })
 
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "staff.suspend",
+        entityType: "Staff",
+        entityId: staffId,
+        summary: `suspended staff "${staff.fullName}"`,
+    })
+
     revalidatePath("/dashboard/staff")
 }
 
@@ -145,6 +171,15 @@ export const reactivateStaff = async (staffId: string)=>{
         } catch (error) {
             console.error("Staff Reactivation Email failed", error)
         }
+    })
+
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "staff.reactivate",
+        entityType: "Staff",
+        entityId: staffId,
+        summary: `reactivated staff "${staff.fullName}"`,
     })
 
     revalidatePath("/dashboard/staff")

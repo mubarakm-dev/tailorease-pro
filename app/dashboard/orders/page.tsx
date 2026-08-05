@@ -2,7 +2,7 @@ import { isAuth } from "@/app/libs/session"
 import { prisma } from "@/app/libs/prisma"
 import Link from "next/link"
 import OrderStatusBadge from "../components/OrderStatusBadge"
-import OrderSearch from "./OrderSearch"
+import SearchBox from "../components/SearchBox"
 import { FLOW, STATUS_LABELS } from "./[id]/flow"
 import type { OrderStatus } from "@prisma/client"
 
@@ -21,7 +21,6 @@ export default async function OrdersPage({
     const customerId = sp.customer || undefined
     const page = Math.max(1, Number(sp.page) || 1)
 
-    // company-scoped, plus optional status / customer / text filters
     const where = {
         companyId: session.companyId,
         ...(status ? { status } : {}),
@@ -36,7 +35,7 @@ export default async function OrdersPage({
             : {}),
     }
 
-    const [orders, total] = await Promise.all([
+    const [orders, total, activeCustomer] = await Promise.all([
         prisma.order.findMany({
             where,
             orderBy: { createdAt: "desc" },
@@ -52,6 +51,13 @@ export default async function OrdersPage({
             },
         }),
         prisma.order.count({ where }),
+        // resolve the ?customer= filter to a name (tenant-scoped) so we can show + clear it
+        customerId
+            ? prisma.customer.findFirst({
+                  where: { id: customerId, companyId: session.companyId },
+                  select: { id: true, fullName: true },
+              })
+            : Promise.resolve(null),
     ])
 
     const totalPages = Math.max(1, Math.ceil(total / PER_PAGE))
@@ -77,9 +83,20 @@ export default async function OrdersPage({
                 <p className="text-gray-500 text-sm mt-1">{total} total</p>
             </div>
 
-            <OrderSearch />
+            {activeCustomer && (
+                <div className="flex items-center justify-between gap-3 rounded-lg border border-[#1b2233]/15 bg-[#1b2233]/5 px-4 py-2.5 text-sm">
+                    <span>
+                        Showing orders for <span className="font-semibold">{activeCustomer.fullName}</span>
+                    </span>
+                    <Link href={link({ customer: undefined })} className="text-[#b07c34] hover:underline whitespace-nowrap">
+                        Clear ×
+                    </Link>
+                </div>
+            )}
 
-      
+            <SearchBox placeholder="Search by order title or customer…" />
+
+
             <div className="flex flex-wrap gap-2 text-xs">
                 <Link
                     href={link({ status: undefined, page: undefined })}

@@ -1,10 +1,11 @@
 "use server"
 import { requireActiveStaff } from "@/app/libs/auth"
 import { sendOrderReadyEmail } from "@/app/libs/email"
+import { logActivity } from "@/app/libs/activity"
 import { prisma } from "@/app/libs/prisma"
 import { revalidatePath } from "next/cache"
 import { after } from "next/server"
-import { nextStatus, prevStatus } from "./flow"
+import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
 
 
 export const advanceOrderStatus = async (orderId: string) => {
@@ -48,6 +49,14 @@ export const advanceOrderStatus = async (orderId: string) => {
         after(() => sendOrderReadyEmail(email, order.customer.fullName, order.title))
     }
 
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "order.advance",
+        entityType: "Order",
+        entityId: orderId,
+        summary: `advanced "${order.title}" to ${STATUS_LABELS[next]}`,
+    })
 
     revalidatePath(`/dashboard/orders/${orderId}`)
 
@@ -61,6 +70,7 @@ export const prevOrderStatus = async (orderId: string) => {
         where: { id: orderId, companyId: session.companyId },
         select: {
             id: true,
+            title: true,
             status: true,
         }
     })
@@ -75,11 +85,19 @@ export const prevOrderStatus = async (orderId: string) => {
     await prisma.$transaction([
         prisma.order.update({ where: { id: orderId }, data: { status: prev } }),
         prisma.statusHistory.create({
-            data: { orderId, updatedById: session.staffId, status: prev, note: `Moved to ${prev}` },
+            data: { orderId, updatedById: session.staffId, status: prev, note: `Reverted to ${STATUS_LABELS[prev]}` },
         })
     ])
 
-    
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "order.revert",
+        entityType: "Order",
+        entityId: orderId,
+        summary: `moved "${order.title}" back to ${STATUS_LABELS[prev]}`,
+    })
+
     revalidatePath(`/dashboard/orders/${orderId}`)
 
 

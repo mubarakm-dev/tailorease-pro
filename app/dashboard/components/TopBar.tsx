@@ -13,15 +13,25 @@ const SECTIONS: Record<string, string> = {
     "/dashboard/profile": "My Profile",
 }
 
-export default function TopBar({ companyName }: { companyName: string }) {
+export default function TopBar({ companyName, onMenu }: { companyName: string; onMenu?: () => void }) {
     const pathname = usePathname()
     const section = SECTIONS[pathname] ?? "Overview"
 
     return (
-        <header className="sticky top-0 z-10 flex items-center gap-4 px-6 py-3 bg-white/80 backdrop-blur border-b border-gray-200">
-           
+        <header className="sticky top-0 z-30 flex items-center gap-3 sm:gap-4 px-4 md:px-6 py-3 bg-white/80 backdrop-blur border-b border-gray-200">
+            <button
+                type="button"
+                onClick={onMenu}
+                aria-label="Open menu"
+                className="md:hidden w-9 h-9 grid place-items-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 shrink-0"
+            >
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
             <div className="text-sm shrink-0 text-gray-400 whitespace-nowrap">
-                {companyName} <span className="opacity-50">›</span>{" "}
+                <span className="hidden sm:inline">{companyName} <span className="opacity-50">›</span> </span>
                 <span className="font-semibold text-gray-800">{section}</span>
             </div>
 
@@ -41,7 +51,7 @@ export default function TopBar({ companyName }: { companyName: string }) {
                     <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M12 5v14M5 12h14" />
                     </svg>
-                    New order
+                    <span className="hidden sm:inline">New order</span>
                 </button>
 
                 <button

@@ -3,6 +3,7 @@
 import { useActionState } from "react"
 import { updateCompanyDetails, CompanyUpdateState } from "./action"
 import SubmitButton from "@/app/components/SubmitButton"
+import FormMessage from "@/app/components/FormMessage"
 
 const initialState: CompanyUpdateState = { success: false, error: null }
 
@@ -21,8 +22,7 @@ export default function CompanyForm({
         <form action={formAction} className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">
             <h2 className="font-semibold text-sm">Edit details</h2>
 
-            {state.error && <p className="bg-red-100 text-red-700 p-3 rounded text-sm">{state.error}</p>}
-            {state.success && <p className="bg-green-100 text-green-700 p-3 rounded text-sm">{state.message}</p>}
+            <FormMessage state={state} />
 
             <div>
                 <label className="block text-sm font-medium mb-1">Company name</label>

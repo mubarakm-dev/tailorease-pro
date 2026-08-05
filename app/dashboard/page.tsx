@@ -2,7 +2,8 @@ import { isAuth } from "@/app/libs/session"
 import { prisma } from "@/app/libs/prisma"
 import { approveStaff, rejectStaff } from "./action"
 import type { OrderStatus } from "@prisma/client"
-import SubmitButton from "@/app/components/SubmitButton"
+import ConfirmButton from "@/app/components/ConfirmButton"
+import Link from "next/link"
 
 
 const STAGES: { key: OrderStatus; label: string; color: string }[] = [
@@ -23,14 +24,16 @@ function timeAgo(date: Date): string {
     return `${Math.floor(h / 24)}d`
 }
 
-function StatTile({ label, value, hint, attn }: { label: string; value: number; hint: string; attn?: boolean }) {
-    return (
-        <div className={`bg-white rounded-xl border p-4 shadow-sm ${attn ? "border-amber-400" : "border-gray-200"}`}>
+function StatTile({ label, value, hint, attn, href }: { label: string; value: number; hint: string; attn?: boolean; href?: string }) {
+    const cls = `block bg-white rounded-xl border p-4 shadow-sm ${attn ? "border-amber-400" : "border-gray-200"} ${href ? "hover:border-gray-300 hover:shadow-md transition" : ""}`
+    const inner = (
+        <>
             <p className="text-sm text-gray-500">{label}</p>
             <p className={`text-3xl font-semibold mt-2 tabular-nums ${attn ? "text-amber-600" : ""}`}>{value}</p>
             <p className="text-xs text-gray-400 mt-1">{hint}</p>
-        </div>
+        </>
     )
+    return href ? <Link href={href} className={cls}>{inner}</Link> : <div className={cls}>{inner}</div>
 }
 
 export default async function OverviewPage() {
@@ -80,11 +83,11 @@ export default async function OverviewPage() {
 
             {/* STAT TILES */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <StatTile label="Customers" value={customerCount} hint="total" />
-                <StatTile label="Active orders" value={activeOrderCount} hint="in progress" />
-                <StatTile label="Staff" value={staffCount} hint="approved" />
+                <StatTile label="Customers" value={customerCount} hint="total" href="/dashboard/customers" />
+                <StatTile label="Active orders" value={activeOrderCount} hint="in progress" href="/dashboard/orders" />
+                <StatTile label="Staff" value={staffCount} hint="approved" href="/dashboard/staff" />
                 {isAdmin && (
-                    <StatTile label="Pending approvals" value={pendingCount} hint="needs review" attn={pendingCount > 0} />
+                    <StatTile label="Pending approvals" value={pendingCount} hint="needs review" attn={pendingCount > 0} href="/dashboard/staff" />
                 )}
             </div>
 
@@ -95,11 +98,15 @@ export default async function OverviewPage() {
                 </div>
                 <div className="flex">
                     {STAGES.map((stage) => (
-                        <div key={stage.key} className="flex-1 text-center py-5 border-r border-gray-100 last:border-r-0">
+                        <Link
+                            key={stage.key}
+                            href={`/dashboard/orders?status=${stage.key}`}
+                            className="flex-1 text-center py-5 border-r border-gray-100 last:border-r-0 hover:bg-gray-50 transition"
+                        >
                             <div className="h-1 w-2/3 mx-auto rounded mb-3" style={{ background: stage.color }} />
                             <div className="text-2xl font-semibold tabular-nums">{pipeline.get(stage.key) ?? 0}</div>
                             <div className="text-[11px] uppercase tracking-wide text-gray-500 mt-1">{stage.label}</div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </section>
@@ -110,7 +117,7 @@ export default async function OverviewPage() {
                     <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
                             <h2 className="font-semibold text-sm">Pending staff</h2>
-                            <a href="/dashboard/staff" className="text-xs text-[#b07c34] font-medium">Staff Management →</a>
+                            <Link href="/dashboard/staff" className="text-xs text-[#b07c34] font-medium">Staff Management →</Link>
                         </div>
                         {pendingStaff.length === 0 ? (
                             <p className="text-sm text-gray-400 px-5 py-6 text-center">No staff awaiting approval.</p>
@@ -124,12 +131,27 @@ export default async function OverviewPage() {
                                         <p className="text-sm font-semibold truncate">{s.fullName}</p>
                                         <p className="text-xs text-gray-400 truncate">{s.email}</p>
                                     </div>
-                                    <form action={rejectStaff.bind(null, s.id)}>
-                                        <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100" pendingText="Rejecting…">Reject</SubmitButton>
-                                    </form>
-                                    <form action={approveStaff.bind(null, s.id)}>
-                                        <SubmitButton className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100" pendingText="Approving…">Approve</SubmitButton>
-                                    </form>
+                                    <ConfirmButton
+                                        action={rejectStaff.bind(null, s.id)}
+                                        className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
+                                        title="Reject this staff member?"
+                                        message={`${s.fullName} will be rejected and notified by email. They won't be able to access the dashboard.`}
+                                        confirmText="Reject"
+                                        pendingText="Rejecting…"
+                                        danger
+                                    >
+                                        Reject
+                                    </ConfirmButton>
+                                    <ConfirmButton
+                                        action={approveStaff.bind(null, s.id)}
+                                        className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-50 text-green-700 hover:bg-green-100"
+                                        title="Approve this staff member?"
+                                        message={`${s.fullName} will gain access to the dashboard and be notified by email.`}
+                                        confirmText="Approve"
+                                        pendingText="Approving…"
+                                    >
+                                        Approve
+                                    </ConfirmButton>
                                 </div>
                             ))
                         )}
@@ -140,7 +162,7 @@ export default async function OverviewPage() {
                 <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
                         <h2 className="font-semibold text-sm">Recent activity</h2>
-                        <a href="/dashboard/activity" className="text-xs text-[#b07c34] font-medium">View all →</a>
+                        <Link href="/dashboard/activity" className="text-xs text-[#b07c34] font-medium">View all →</Link>
                     </div>
                     {recentActivity.length === 0 ? (
                         <p className="text-sm text-gray-400 px-5 py-6 text-center">No activity yet.</p>
