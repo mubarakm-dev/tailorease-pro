@@ -24,16 +24,27 @@ function timeAgo(date: Date): string {
     return `${Math.floor(h / 24)}d`
 }
 
-function StatTile({ label, value, hint, attn, href }: { label: string; value: number; hint: string; attn?: boolean; href?: string }) {
-    const cls = `block bg-white rounded-xl border p-4 shadow-sm ${attn ? "border-amber-400" : "border-gray-200"} ${href ? "hover:border-gray-300 hover:shadow-md transition" : ""}`
+function StatTile({ label, value, hint, attn, href, index = 0 }: { label: string; value: number; hint: string; attn?: boolean; href?: string; index?: number }) {
+    const baseClass = "block bg-white rounded-xl border p-6 shadow-sm transition-all duration-300"
+    const hoverClass = href ? "hover:border-[#b07c34] hover:shadow-lg hover:-translate-y-1" : ""
+    const borderClass = attn ? "border-amber-400" : "border-gray-200"
+    const animationStyle = href ? {
+        animation: `fadeInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both`,
+        animationDelay: `${index * 75}ms`
+    } : {}
+
     const inner = (
         <>
-            <p className="text-sm text-gray-500">{label}</p>
-            <p className={`text-3xl font-semibold mt-2 tabular-nums ${attn ? "text-amber-600" : ""}`}>{value}</p>
-            <p className="text-xs text-gray-400 mt-1">{hint}</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
+            <p className={`text-4xl font-semibold mt-3 tabular-nums ${attn ? "text-amber-600" : "text-gray-900"}`}>{value}</p>
+            <p className="text-xs text-gray-400 mt-2">{hint}</p>
         </>
     )
-    return href ? <Link href={href} className={cls}>{inner}</Link> : <div className={cls}>{inner}</div>
+    return href ? (
+        <Link href={href} className={`${baseClass} ${borderClass} ${hoverClass}`} style={animationStyle}>{inner}</Link>
+    ) : (
+        <div className={`${baseClass} ${borderClass}`} style={animationStyle}>{inner}</div>
+    )
 }
 
 export default async function OverviewPage() {
@@ -75,49 +86,65 @@ export default async function OverviewPage() {
     const firstName = me?.fullName.split(" ")[0] ?? "there"
 
     return (
-        <div className="p-6 max-w-6xl mx-auto flex flex-col gap-6">
+        <div className="p-6 max-w-6xl mx-auto flex flex-col gap-8">
+            <style>{`
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `}</style>
+
             <div>
-                <h1 className="text-2xl font-semibold">{greeting}, {firstName}</h1>
-                <p className="text-gray-500 text-sm mt-1">Here&apos;s what&apos;s happening at your shop today.</p>
+                <h1 className="text-3xl font-semibold text-gray-900">{greeting}, {firstName}</h1>
+                <p className="text-gray-500 text-base mt-2">Here&apos;s what&apos;s happening at your shop today.</p>
             </div>
 
             {/* STAT TILES */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <StatTile label="Customers" value={customerCount} hint="total" href="/dashboard/customers" />
-                <StatTile label="Active orders" value={activeOrderCount} hint="in progress" href="/dashboard/orders" />
-                <StatTile label="Staff" value={staffCount} hint="approved" href="/dashboard/staff" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <StatTile label="Customers" value={customerCount} hint="total" href="/dashboard/customers" index={0} />
+                <StatTile label="Active orders" value={activeOrderCount} hint="in progress" href="/dashboard/orders" index={1} />
+                <StatTile label="Staff" value={staffCount} hint="approved" href="/dashboard/staff" index={2} />
                 {isAdmin && (
-                    <StatTile label="Pending approvals" value={pendingCount} hint="needs review" attn={pendingCount > 0} href="/dashboard/staff" />
+                    <StatTile label="Pending approvals" value={pendingCount} hint="needs review" attn={pendingCount > 0} href="/dashboard/staff" index={3} />
                 )}
             </div>
 
             {/* ORDERS PIPELINE */}
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <div className="px-5 py-4 border-b border-gray-200">
-                    <h2 className="font-semibold text-sm">Orders pipeline</h2>
+                <div className="px-6 py-5 border-b border-gray-200">
+                    <h2 className="font-semibold text-sm text-gray-900">Orders pipeline</h2>
                 </div>
-                <div className="flex">
-                    {STAGES.map((stage) => (
+                <div className="grid grid-cols-5 gap-3 p-6">
+                    {STAGES.map((stage, idx) => (
                         <Link
                             key={stage.key}
                             href={`/dashboard/orders?status=${stage.key}`}
-                            className="flex-1 text-center py-5 border-r border-gray-100 last:border-r-0 hover:bg-gray-50 transition"
+                            className="text-center p-4 rounded-lg border border-gray-200 hover:border-[#b07c34] hover:shadow-lg transition-all duration-300 hover:-translate-y-1 block"
+                            style={{
+                                animation: `fadeInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${idx * 75}ms both`
+                            }}
                         >
                             <div className="h-1 w-2/3 mx-auto rounded mb-3" style={{ background: stage.color }} />
-                            <div className="text-2xl font-semibold tabular-nums">{pipeline.get(stage.key) ?? 0}</div>
-                            <div className="text-[11px] uppercase tracking-wide text-gray-500 mt-1">{stage.label}</div>
+                            <div className="text-2xl font-semibold tabular-nums text-gray-900">{pipeline.get(stage.key) ?? 0}</div>
+                            <div className="text-[11px] uppercase tracking-wide text-gray-500 mt-2 font-medium">{stage.label}</div>
                         </Link>
                     ))}
                 </div>
             </section>
 
-            <div className="grid lg:grid-cols-2 gap-5">
-            
+            <div className="grid lg:grid-cols-2 gap-8">
+
                 {isAdmin && (
-                    <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
-                            <h2 className="font-semibold text-sm">Pending staff</h2>
-                            <Link href="/dashboard/staff" className="text-xs text-[#b07c34] font-medium">Staff Management →</Link>
+                    <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-lg hover:border-[#b07c34] transition-all duration-300">
+                        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+                            <h2 className="font-semibold text-sm text-gray-900">Pending staff</h2>
+                            <Link href="/dashboard/staff" className="text-xs text-[#b07c34] font-medium hover:underline transition">Staff Management →</Link>
                         </div>
                         {pendingStaff.length === 0 ? (
                             <p className="text-sm text-gray-400 px-5 py-6 text-center">No staff awaiting approval.</p>
@@ -159,10 +186,10 @@ export default async function OverviewPage() {
                 )}
 
                 {/* RECENT ACTIVITY */}
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
-                        <h2 className="font-semibold text-sm">Recent activity</h2>
-                        <Link href="/dashboard/activity" className="text-xs text-[#b07c34] font-medium">View all →</Link>
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-lg hover:border-[#b07c34] transition-all duration-300">
+                    <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+                        <h2 className="font-semibold text-sm text-gray-900">Recent activity</h2>
+                        <Link href="/dashboard/activity" className="text-xs text-[#b07c34] font-medium hover:underline transition">View all →</Link>
                     </div>
                     {recentActivity.length === 0 ? (
                         <p className="text-sm text-gray-400 px-5 py-6 text-center">No activity yet.</p>

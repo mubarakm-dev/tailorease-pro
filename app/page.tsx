@@ -3,17 +3,45 @@ import Link from "next/link"
 export default function LandingPage() {
     return (
         <div className="bg-[#F1EFE9]">
+            <style>{`
+                .nav-link {
+                    position: relative;
+                    color: #1B2233;
+                    text-decoration: none;
+                    transition: color 0.3s ease;
+                }
+                .nav-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -4px;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background: #b07c34;
+                    transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
+                .nav-link:hover {
+                    color: #b07c34;
+                }
+                .nav-link:hover::after {
+                    width: 100%;
+                }
+            `}</style>
+
             {/* Navbar */}
             <nav className="sticky top-0 z-100 flex items-center justify-between px-12 py-6 border-b border-black/8 bg-[#F1EFE9]">
-                <Link href="/" className="font-serif text-2xl font-semibold text-[#1B2233]">
-                    TailorEase
+                <Link href="/" className="flex items-center gap-1">
+                    <img src="/images/logo.png" alt="TailorEase" className="h-14 w-auto" />
+                    <span className="font-serif text-2xl font-semibold">
+                        <span className="text-[#1B2233]">Tailor</span><span className="text-[#B07C34]">Ease</span>
+                    </span>
                 </Link>
                 <ul className="hidden md:flex gap-10 list-none">
-                    <li><a href="#features" className="text-[#1B2233] hover:text-[#B07C34] transition">Features</a></li>
-                    <li><a href="#how" className="text-[#1B2233] hover:text-[#B07C34] transition">How it works</a></li>
-                    <li><a href="#team" className="text-[#1B2233] hover:text-[#B07C34] transition">For your team</a></li>
+                    <li><a href="#features" className="nav-link">Features</a></li>
+                    <li><a href="#how" className="nav-link">How it works</a></li>
+                    <li><a href="#team" className="nav-link">For your team</a></li>
                 </ul>
-                <Link href="/login" className="bg-white text-[#1B2233] px-6 py-2 rounded border border-black/20 font-medium hover:bg-[#1B2233] hover:text-white hover:border-[#1B2233] transition">
+                <Link href="/login" className="bg-white text-[#1B2233] px-6 py-2 rounded border border-black/20 font-medium transition-all duration-300 hover:bg-[#B07C34] hover:text-white hover:border-[#B07C34] hover:-translate-y-0.5 hover:shadow-[0_8px_16px_rgba(176,124,52,0.15)]">
                     Sign in
                 </Link>
             </nav>
@@ -24,9 +52,12 @@ export default function LandingPage() {
                     <div className="text-[#B07C34] text-xs font-semibold uppercase tracking-wider mb-4">
                         For tailoring houses & fashion studios
                     </div>
-                    <h1 className="font-serif text-4xl md:text-5xl leading-tight mb-6">
+                    <h1 className="font-serif text-4xl md:text-5xl leading-tight mb-4">
                         The measure of a <em className="italic text-[#B07C34]">well-run</em> workshop.
                     </h1>
+                    <p className="text-[#B07C34] text-sm font-semibold uppercase tracking-wider mb-8">
+                        Manage. Measure. Master.
+                    </p>
                     <p className="text-gray-600 text-lg mb-8 leading-relaxed">
                         TailorEase holds every customer, their measurements, and each order — from <em>received to ready for pickup</em> — in one calm place. So your hands stay on the cloth, not the paperwork.
                     </p>
@@ -240,8 +271,11 @@ export default function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className="bg-[#1B2233] text-white text-center py-8 px-6">
-                <p className="mb-2">&copy; 2026 TailorEase. Built for busy shops.</p>
+            <footer className="bg-[#1B2233] text-white text-center py-12 px-6 space-y-6">
+                <div>
+                    <p className="text-sm text-[#B07C34] font-semibold uppercase tracking-wider mb-2">Manage. Measure. Master.</p>
+                    <p className="mb-2">&copy; 2026 TailorEase. Built for busy shops.</p>
+                </div>
                 <p className="text-sm text-gray-400">
                     <a href="#" className="text-[#B07C34] hover:underline">Privacy</a>
                     {" "} · {" "}

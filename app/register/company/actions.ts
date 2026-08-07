@@ -2,6 +2,7 @@
 "use server"
 import { prisma } from "@/app/libs/prisma"
 import { registerCompanySchema } from "../../libs/schemas/authSchema"
+import { supabase } from "@/app/libs/supabase"
 import bcrypt from "bcryptjs"
 import { createOtp } from "@/app/libs/otp"
 import { sendOTPEmail } from "@/app/libs/email"
@@ -65,6 +66,38 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
     const { companyName, email, password, ownerFullname, ownerEmail, ownerPhone } = validation.data
 
     try {
+        // Handle optional image upload
+        let companyImageUrl: string | null = null
+        const imageFile = formData.get("companyImage") as File | null
+
+        if (imageFile && imageFile.size > 0) {
+            if (imageFile.size > 2 * 1024 * 1024) {
+                return { error: "Image must be under 2MB", success: false }
+            }
+            if (!imageFile.type.startsWith("image/")) {
+                return { error: "Must be an image file", success: false }
+            }
+
+            const fileName = `companies/${Date.now()}-${imageFile.name}`
+            const buffer = await imageFile.arrayBuffer()
+
+            try {
+                const { error: uploadError } = await supabase.storage
+                    .from("orders")
+                    .upload(fileName, buffer, { contentType: imageFile.type })
+
+                if (uploadError) throw uploadError
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from("orders")
+                    .getPublicUrl(fileName)
+                companyImageUrl = publicUrl
+            } catch (uploadErr) {
+                console.error("Image upload failed:", uploadErr)
+                return { error: "Failed to upload image", success: false }
+            }
+        }
+
         const existingCompany = await prisma.company.findUnique({
             where: { email }
         })
@@ -93,13 +126,14 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
 
         const result = await prisma.$transaction(async (tx) => {
             const company = await tx.company.create({
-                
+
                 data: {
                     companyCode,
                     companyName,
                     email,
                     passwordHash: hashedPassword,
                     status: "UNVERIFIED",
+                    companyImage: companyImageUrl,
                 }
             })
 

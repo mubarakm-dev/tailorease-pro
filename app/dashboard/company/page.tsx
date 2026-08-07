@@ -22,6 +22,7 @@ export default async function CompanyManagementPage() {
         select: {
             companyName: true,
             companyCode: true,
+            companyImage: true,
             email: true,
             status: true,
             createdAt: true,
@@ -61,6 +62,7 @@ export default async function CompanyManagementPage() {
                 companyName={company?.companyName ?? ""}
                 ownerFullname={owner?.fullName ?? ""}
                 ownerPhone={owner?.phone ?? ""}
+                companyImage={company?.companyImage ?? null}
             />
         </div>
     )
