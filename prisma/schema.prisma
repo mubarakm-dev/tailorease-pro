@@ -110,6 +110,7 @@ model Order {
   amount        Int?
   type          OrderType       @default(NEW)
   status        OrderStatus     @default(RECEIVED)
+  dueDate       DateTime?
   notes         Json
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now()) @updatedAt
@@ -127,6 +128,7 @@ model Order {
   @@index([staffId])
   @@index([measurementId])
   @@index([parentOrderId])
+  @@index([dueDate])
 }
 
 model OrderPhoto {

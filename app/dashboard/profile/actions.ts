@@ -174,23 +174,6 @@ export const verifyOTPAndChangePassword = async (prevState: ProfileState, formDa
 
 export const logoutStaff = async () => {
   try {
-    const session = await isAuth()
-    const companyId = session.companyId
-    const staffId = session.staffId
-
- 
-    await prisma.activityLog.create({
-      data: {
-        companyId,
-        staffId,
-        action: "LOGOUT",
-        entityType: "Staff",
-        entityId: staffId,
-        summary: "Logged out"
-      }
-    })
-
-  
     redirect("/login")
   } catch (error) {
     console.error("Logout error:", error)

@@ -14,7 +14,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
     const { id } = await params
     const session = await isAuth()
 
-    const [customer, templatesRaw] = await Promise.all([
+    const [customer, templatesRaw, allMeasurements] = await Promise.all([
         prisma.customer.findFirst({
             where: { id, companyId: session.companyId },
             select: {
@@ -48,6 +48,15 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
         prisma.measurementTemplate.findMany({
             where: { companyId: session.companyId },
             select: { id: true, name: true, fieldDefinitions: true },
+        }),
+        prisma.measurement.findMany({
+            where: { customerId: id },
+            orderBy: { createdAt: "desc" },
+            select: {
+                id: true,
+                createdAt: true,
+                template: { select: { name: true } },
+            },
         }),
     ])
 
@@ -150,7 +159,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                         View all {customer._count.orders} orders →
                     </Link>
                 )}
-                <NewOrder customerId={customer.id} />
+                <NewOrder customerId={customer.id} measurements={allMeasurements} />
             </section>
         </div>
     )

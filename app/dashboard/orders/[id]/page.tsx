@@ -9,6 +9,7 @@ import { advanceOrderStatus, prevOrderStatus } from "./action"
 import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
 import PhotoUpload from "./PhotoUpload"
 import PhotoGrid from "./PhotoGrid"
+import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -21,6 +22,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             title: true,
             amount: true,
             status: true,
+            dueDate: true,
             notes: true,
             createdAt: true,
             customer: { select: { id: true, fullName: true, phone: true, email: true } },
@@ -82,6 +84,16 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                     {` · by ${order.staff.fullName}`}
                 </p>
             </div>
+
+            {order.dueDate && (() => {
+                const urgency = getOrderUrgency(order.dueDate)
+                return (
+                    <div className={`rounded-xl border p-4 ${getUrgencyColor(urgency)}`}>
+                        <p className="text-sm font-semibold">Due: {new Date(order.dueDate).toLocaleString()}</p>
+                        <p className="text-xs mt-1">{getUrgencyLabel(urgency)}</p>
+                    </div>
+                )
+            })()}
 
             {notes.text && (
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 text-sm text-gray-700">

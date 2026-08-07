@@ -55,15 +55,16 @@ function NavLink({ item, active, admin }: { item: NavItem; active: boolean; admi
   return (
     <Link
       href={item.href}
-      className={`relative flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-        active ? "bg-[#232c45] text-white" : "text-[#c7cbd8] hover:bg-[#232c45]"
+      className={`relative flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm font-medium transition-all ${
+        active ? "bg-[#b07c34] text-white shadow-lg" : "text-[#c7cbd8] hover:bg-[#313b58]"
       }`}
     >
-      {active && <span className="absolute -left-4 top-2 bottom-2 w-[3px] rounded-r bg-[#b07c34]" />}
-      <span className="opacity-85">{item.icon}</span>
+      <span className="opacity-90">{item.icon}</span>
       <span>{item.label}</span>
       {admin && (
-        <span className="ml-auto text-[9px] uppercase tracking-wider text-[#b07c34] border border-[#b07c34]/40 rounded px-1.5 py-px">
+        <span className={`ml-auto text-[9px] uppercase tracking-wider rounded px-1.5 py-px ${
+          active ? "bg-white/20 text-white" : "text-[#b07c34] border border-[#b07c34]/40"
+        }`}>
           Admin
         </span>
       )}

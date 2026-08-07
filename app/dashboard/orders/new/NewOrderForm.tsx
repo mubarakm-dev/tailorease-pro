@@ -1,7 +1,8 @@
 "use client"
 
-import { useActionState, useState } from "react"
+import { useActionState, useState, useEffect } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { createOrder } from "./action"
 import FormMessage from "@/app/components/FormMessage"
 
@@ -16,9 +17,21 @@ type Props = {
   }>
 }
 
+const initialState = {
+  success: false,
+  error: null,
+}
+
 export default function NewOrderForm({ customers, measurements }: Props) {
-  const [state, formAction, isPending] = useActionState(createOrder, {})
+  const router = useRouter()
+  const [state, formAction, isPending] = useActionState(createOrder, initialState)
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>("")
+
+  useEffect(() => {
+    if (state.success && state.orderId) {
+      router.push(`/dashboard/orders/${state.orderId}`)
+    }
+  }, [state.success, state.orderId, router])
 
   const customerMeasurements = selectedCustomerId
     ? measurements.filter((m) => m.customerId === selectedCustomerId)
@@ -35,9 +48,7 @@ export default function NewOrderForm({ customers, measurements }: Props) {
       </div>
 
       <form action={formAction} className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-        {state.error && (
-          <FormMessage type="error" message={state.error} />
-        )}
+        <FormMessage state={state} />
 
         <div>
           <label htmlFor="customerId" className="block text-sm font-medium text-[#1b2233] mb-2">
@@ -118,6 +129,34 @@ export default function NewOrderForm({ customers, measurements }: Props) {
           <p className="text-xs text-gray-500 mt-1">Optional - leave blank if price not finalized</p>
         </div>
 
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="dueDate" className="block text-sm font-medium text-[#1b2233] mb-2">
+              Due date
+            </label>
+            <input
+              id="dueDate"
+              type="date"
+              name="dueDate"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#b07c34] focus:ring-1 focus:ring-[#b07c34]"
+            />
+            <p className="text-xs text-gray-500 mt-1">Optional - when order should be ready</p>
+          </div>
+
+          <div>
+            <label htmlFor="dueTime" className="block text-sm font-medium text-[#1b2233] mb-2">
+              Due time
+            </label>
+            <input
+              id="dueTime"
+              type="time"
+              name="dueTime"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#b07c34] focus:ring-1 focus:ring-[#b07c34]"
+            />
+            <p className="text-xs text-gray-500 mt-1">Optional - what time it's due</p>
+          </div>
+        </div>
+
         <div>
           <label htmlFor="notes" className="block text-sm font-medium text-[#1b2233] mb-2">
             Notes
@@ -129,6 +168,20 @@ export default function NewOrderForm({ customers, measurements }: Props) {
             rows={3}
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#b07c34] focus:ring-1 focus:ring-[#b07c34] resize-none"
           />
+        </div>
+
+        <div>
+          <label htmlFor="fabric" className="block text-sm font-medium text-[#1b2233] mb-2">
+            Fabric/Material photo
+          </label>
+          <input
+            id="fabric"
+            type="file"
+            name="fabric"
+            accept="image/*"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#b07c34] focus:ring-1 focus:ring-[#b07c34]"
+          />
+          <p className="text-xs text-gray-500 mt-1">Optional - upload a photo of the customer's fabric/materials</p>
         </div>
 
         <div className="flex gap-3 pt-2">

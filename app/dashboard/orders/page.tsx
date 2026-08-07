@@ -5,13 +5,14 @@ import OrderStatusBadge from "../components/OrderStatusBadge"
 import SearchBox from "../components/SearchBox"
 import { FLOW, STATUS_LABELS } from "./[id]/flow"
 import type { OrderStatus } from "@prisma/client"
+import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
 
 const PER_PAGE = 20
 
 export default async function OrdersPage({
     searchParams,
 }: {
-    searchParams: Promise<{ q?: string; status?: string; customer?: string; page?: string }>
+    searchParams: Promise<{ q?: string; status?: string; customer?: string; page?: string; sort?: string }>
 }) {
     const session = await isAuth()
     const sp = await searchParams
@@ -20,6 +21,7 @@ export default async function OrdersPage({
     const status = FLOW.includes(sp.status as OrderStatus) ? (sp.status as OrderStatus) : undefined
     const customerId = sp.customer || undefined
     const page = Math.max(1, Number(sp.page) || 1)
+    const sort = sp.sort === "due" ? "due" : "created"
 
     const where = {
         companyId: session.companyId,
@@ -38,7 +40,9 @@ export default async function OrdersPage({
     const [orders, total, activeCustomer] = await Promise.all([
         prisma.order.findMany({
             where,
-            orderBy: { createdAt: "desc" },
+            orderBy: sort === "due"
+              ? [{ dueDate: "asc" }, { createdAt: "desc" }]
+              : { createdAt: "desc" },
             skip: (page - 1) * PER_PAGE,
             take: PER_PAGE,
             select: {
@@ -46,6 +50,7 @@ export default async function OrdersPage({
                 title: true,
                 status: true,
                 amount: true,
+                dueDate: true,
                 createdAt: true,
                 customer: { select: { fullName: true } },
             },
@@ -68,6 +73,7 @@ export default async function OrdersPage({
         if (q) p.set("q", q)
         if (status) p.set("status", status)
         if (customerId) p.set("customer", customerId)
+        if (sort) p.set("sort", sort)
         for (const [k, v] of Object.entries(over)) {
             if (v) p.set(k, String(v))
             else p.delete(k)
@@ -115,26 +121,49 @@ export default async function OrdersPage({
                 ))}
             </div>
 
+            <div className="flex gap-2 text-xs">
+                <Link
+                    href={link({ sort: undefined, page: undefined })}
+                    className={`px-3 py-1.5 rounded-full border ${sort === "created" ? "bg-[#b07c34] text-white border-[#b07c34]" : "border-gray-300 text-gray-600 hover:bg-gray-50"}`}
+                >
+                    Created
+                </Link>
+                <Link
+                    href={link({ sort: "due", page: undefined })}
+                    className={`px-3 py-1.5 rounded-full border ${sort === "due" ? "bg-[#b07c34] text-white border-[#b07c34]" : "border-gray-300 text-gray-600 hover:bg-gray-50"}`}
+                >
+                    Due date
+                </Link>
+            </div>
+
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 {orders.length === 0 ? (
                     <p className="text-sm text-gray-400 px-5 py-10 text-center">No orders found.</p>
                 ) : (
-                    orders.map((o) => (
+                    orders.map((o) => {
+                        const urgency = getOrderUrgency(o.dueDate)
+                        return (
                         <Link
                             key={o.id}
                             href={`/dashboard/orders/${o.id}`}
-                            className="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
+                            className="flex items-center justify-between gap-4 px-5 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
                         >
-                            <div className="min-w-0">
+                            <div className="min-w-0 flex-1">
                                 <p className="text-sm font-semibold truncate">{o.title}</p>
                                 <p className="text-xs text-gray-400 truncate">
                                     {o.customer.fullName} · {o.createdAt.toLocaleDateString()}
                                     {o.amount != null ? ` · ₦${o.amount.toLocaleString()}` : ""}
                                 </p>
                             </div>
+                            {o.dueDate && (
+                                <div className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap border ${getUrgencyColor(urgency)}`}>
+                                    {new Date(o.dueDate).toLocaleDateString()} · {getUrgencyLabel(urgency)}
+                                </div>
+                            )}
                             <OrderStatusBadge status={o.status} />
                         </Link>
-                    ))
+                        )
+                    })
                 )}
             </section>
 
