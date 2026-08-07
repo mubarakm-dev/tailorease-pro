@@ -9,6 +9,7 @@ import { advanceOrderStatus, prevOrderStatus } from "./action"
 import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
 import PhotoUpload from "./PhotoUpload"
 import PhotoGrid from "./PhotoGrid"
+import { PaymentSection } from "./PaymentSection"
 import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -22,11 +23,22 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             title: true,
             amount: true,
             status: true,
+            paymentStatus: true,
             dueDate: true,
             notes: true,
             createdAt: true,
             customer: { select: { id: true, fullName: true, phone: true, email: true } },
             staff: { select: { fullName: true } },
+            payments: {
+                orderBy: { createdAt: "desc" },
+                select: {
+                    id: true,
+                    amount: true,
+                    paymentMethod: true,
+                    notes: true,
+                    createdAt: true
+                }
+            },
             measurement: {
                 select: {
                     id: true,
@@ -129,6 +141,9 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
+                    <Link href={`/dashboard/orders/${order.id}/invoice`} className="text-sm text-[#b07c34] hover:underline font-medium">
+                        View Invoice
+                    </Link>
                     
                     {prev &&
                         (order.status === "COMPLETED" && !isAdmin ? (
@@ -176,6 +191,12 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             <PhotoGrid photos={order.photos} orderId={order.id} />
 
             <PhotoUpload orderId={order.id} />
+
+            <PaymentSection
+                orderId={order.id}
+                orderAmount={order.amount}
+                payments={order.payments}
+            />
 
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-200">

@@ -100,28 +100,30 @@ model Measurement {
 }
 
 model Order {
-  id            String          @id @default(uuid())
-  customerId    String
-  companyId     String
-  staffId       String
-  measurementId String?
-  parentOrderId String?
-  title         String
-  amount        Int?
-  type          OrderType       @default(NEW)
-  status        OrderStatus     @default(RECEIVED)
-  dueDate       DateTime?
-  notes         Json
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @default(now()) @updatedAt
-  customer      Customer        @relation(fields: [customerId], references: [id])
-  company       Company         @relation(fields: [companyId], references: [id])
-  staff         Staff           @relation(fields: [staffId], references: [id])
-  measurement   Measurement?    @relation(fields: [measurementId], references: [id])
-  parentOrder   Order?          @relation("OrderAmendments", fields: [parentOrderId], references: [id])
-  amendments    Order[]         @relation("OrderAmendments")
-  photos        OrderPhoto[]
-  statusHistory StatusHistory[]
+  id              String          @id @default(uuid())
+  customerId      String
+  companyId       String
+  staffId         String
+  measurementId   String?
+  parentOrderId   String?
+  title           String
+  amount          Int?
+  type            OrderType       @default(NEW)
+  status          OrderStatus     @default(RECEIVED)
+  paymentStatus   PaymentStatus   @default(UNPAID)
+  dueDate         DateTime?
+  notes           Json
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now()) @updatedAt
+  customer        Customer        @relation(fields: [customerId], references: [id])
+  company         Company         @relation(fields: [companyId], references: [id])
+  staff           Staff           @relation(fields: [staffId], references: [id])
+  measurement     Measurement?    @relation(fields: [measurementId], references: [id])
+  parentOrder     Order?          @relation("OrderAmendments", fields: [parentOrderId], references: [id])
+  amendments      Order[]         @relation("OrderAmendments")
+  photos          OrderPhoto[]
+  payments        Payment[]
+  statusHistory   StatusHistory[]
 
   @@index([customerId])
   @@index([companyId])
@@ -129,6 +131,20 @@ model Order {
   @@index([measurementId])
   @@index([parentOrderId])
   @@index([dueDate])
+  @@index([paymentStatus])
+}
+
+model Payment {
+  id            String    @id @default(uuid())
+  orderId       String
+  amount        Int
+  paymentMethod String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([createdAt])
 }
 
 model OrderPhoto {
@@ -219,4 +235,10 @@ enum OrderStatus {
   SEWING_IN_PROGRESS
   FINISHING
   COMPLETED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
 }

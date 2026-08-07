@@ -4,6 +4,7 @@ import { approveStaff, rejectStaff } from "./action"
 import type { OrderStatus } from "@prisma/client"
 import ConfirmButton from "@/app/components/ConfirmButton"
 import Link from "next/link"
+import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
 
 
 const STAGES: { key: OrderStatus; label: string; color: string }[] = [
@@ -52,7 +53,10 @@ export default async function OverviewPage() {
     const companyId = session.companyId
     const isAdmin = session.role === "SUPER_ADMIN"
 
-    const [me, customerCount, activeOrderCount, staffCount, pendingCount, ordersByStatus, pendingStaff, recentActivity] =
+    const now = new Date()
+    const threeDaysFromNow = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000)
+
+    const [me, customerCount, activeOrderCount, staffCount, pendingCount, ordersByStatus, pendingStaff, recentActivity, dueSoonOrders] =
         await Promise.all([
             prisma.staff.findUnique({ where: { id: session.staffId }, select: { fullName: true } }),
             prisma.customer.count({ where: { companyId } }),
@@ -75,6 +79,22 @@ export default async function OverviewPage() {
                 orderBy: { createdAt: "desc" },
                 take: 6,
                 include: { staff: { select: { fullName: true } } },
+            }),
+            prisma.order.findMany({
+                where: {
+                    companyId,
+                    dueDate: { gte: now, lte: threeDaysFromNow },
+                    status: { not: "COMPLETED" }
+                },
+                orderBy: { dueDate: "asc" },
+                take: 5,
+                select: {
+                    id: true,
+                    title: true,
+                    dueDate: true,
+                    status: true,
+                    customer: { select: { fullName: true } }
+                }
             }),
         ])
 
@@ -137,6 +157,41 @@ export default async function OverviewPage() {
                     ))}
                 </div>
             </section>
+
+            {dueSoonOrders.length > 0 && (
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
+                        <h2 className="font-semibold text-sm text-gray-900">⏰ Due soon (next 3 days)</h2>
+                        <span className="text-xs text-gray-400">{dueSoonOrders.length} order{dueSoonOrders.length > 1 ? 's' : ''}</span>
+                    </div>
+                    <div>
+                        {dueSoonOrders.map((order) => {
+                            const urgency = getOrderUrgency(order.dueDate)
+                            return (
+                                <Link
+                                    key={order.id}
+                                    href={`/dashboard/orders/${order.id}`}
+                                    className="flex items-center justify-between px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition"
+                                >
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-sm font-semibold truncate">{order.title}</p>
+                                        <p className="text-xs text-gray-400">{order.customer.fullName}</p>
+                                    </div>
+                                    <div className="flex items-center gap-3 ml-4">
+                                        <div className="text-right">
+                                            <p className="text-xs font-medium">{new Date(order.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                            <p className="text-xs text-gray-400">{new Date(order.dueDate).toLocaleDateString()}</p>
+                                        </div>
+                                        <div className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap border ${getUrgencyColor(urgency)}`}>
+                                            {getUrgencyLabel(urgency)}
+                                        </div>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </section>
+            )}
 
             <div className="grid lg:grid-cols-2 gap-8">
 
