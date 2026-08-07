@@ -7,6 +7,8 @@ import SubmitButton from "@/app/components/SubmitButton"
 import ConfirmButton from "@/app/components/ConfirmButton"
 import { advanceOrderStatus, prevOrderStatus } from "./action"
 import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
+import PhotoUpload from "./PhotoUpload"
+import PhotoGrid from "./PhotoGrid"
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -23,6 +25,26 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             createdAt: true,
             customer: { select: { id: true, fullName: true, phone: true, email: true } },
             staff: { select: { fullName: true } },
+            measurement: {
+                select: {
+                    id: true,
+                    snapshot: true,
+                    values: true,
+                    unit: true,
+                    createdAt: true,
+                    template: { select: { name: true } }
+                }
+            },
+            photos: {
+                orderBy: { uploadedAt: "desc" },
+                select: {
+                    id: true,
+                    url: true,
+                    caption: true,
+                    uploadedAt: true,
+                    uploadedByStaff: { select: { fullName: true } },
+                },
+            },
             statusHistory: {
                 orderBy: { createdAt: "desc" },
                 select: {
@@ -42,6 +64,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
     const next = nextStatus(order.status)
     const prev = prevStatus(order.status)
     const notes = order.notes as { text?: string }
+    const measurement = order.measurement as any
 
     return (
         <div className="p-6 max-w-3xl mx-auto flex flex-col gap-6">
@@ -63,6 +86,25 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             {notes.text && (
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 text-sm text-gray-700">
                     {notes.text}
+                </div>
+            )}
+
+            {measurement && (
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                    <h2 className="font-semibold text-sm mb-4">Measurements</h2>
+                    <div className="flex flex-col gap-3">
+                        <div className="text-xs text-gray-500">
+                            <p>{measurement.template.name} — {new Date(measurement.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            {Object.entries(measurement.values as Record<string, any>).map(([key, value]) => (
+                                <div key={key} className="text-sm">
+                                    <p className="text-gray-500 capitalize">{key.replace(/_/g, " ")}</p>
+                                    <p className="font-semibold text-gray-800">{value} {measurement.unit}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -119,7 +161,10 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 </div>
             </div>
 
-         
+            <PhotoGrid photos={order.photos} orderId={order.id} />
+
+            <PhotoUpload orderId={order.id} />
+
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-200">
                     <h2 className="font-semibold text-sm">Status history</h2>

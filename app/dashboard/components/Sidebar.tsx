@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import type { ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { logout } from "../action"
 
 type SidebarProps = {
   companyName: string
@@ -13,6 +12,7 @@ type SidebarProps = {
   role: string
   mobileOpen: boolean
   onClose: () => void
+  onLogoutClick: () => void
 }
 
 type NavItem = { href: string; label: string; icon: ReactNode }
@@ -71,7 +71,7 @@ function NavLink({ item, active, admin }: { item: NavItem; active: boolean; admi
   )
 }
 
-export default function Sidebar({ companyName, companyImage, staffName, role, mobileOpen, onClose }: SidebarProps) {
+export default function Sidebar({ companyName, companyImage, staffName, role, mobileOpen, onClose, onLogoutClick }: SidebarProps) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -99,7 +99,10 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
       className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 h-screen flex flex-col gap-1 bg-[#1c2439] border-r border-[#313b58] text-[#c7cbd8] p-4 transition-transform duration-200 md:sticky md:top-0 md:z-auto md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
       {/* Company brand */}
-      <div className="flex items-center gap-3 rounded-xl bg-[#232c45] border border-[#313b58] p-2 mb-2">
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-3 rounded-xl bg-[#232c45] border border-[#313b58] p-2 mb-2 hover:bg-[#2a3555] transition-colors"
+      >
         {companyImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={companyImage} alt={companyName} className="w-9 h-9 rounded-lg object-cover" />
@@ -112,7 +115,7 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
           <p className="text-white font-semibold text-sm truncate">{companyName}</p>
           <p className="text-[10px] uppercase tracking-widest text-[#7e879f]">Company</p>
         </div>
-      </div>
+      </Link>
 
       {/* Workspace */}
       <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Workspace</p>
@@ -148,14 +151,16 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
               My profile
             </Link>
             <div className="h-px bg-gray-200 my-1" />
-            <form action={logout}>
-              <button
-                type="submit"
-                className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm text-red-600 hover:bg-gray-50 text-left"
-              >
-                Log out
-              </button>
-            </form>
+            <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false)
+                onLogoutClick()
+              }}
+              className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm text-red-600 hover:bg-gray-50 text-left"
+            >
+              Log out
+            </button>
           </div>
         )}
         <button
@@ -174,6 +179,7 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
           </svg>
         </button>
       </div>
+
     </aside>
     </>
   )

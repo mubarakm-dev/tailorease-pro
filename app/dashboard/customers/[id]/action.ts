@@ -204,7 +204,10 @@ export const updateMeasurement = async (prevState: MeasurementUpdateState, formD
     const values: Record<string, string> = {}
     for (const field of union) {
         const v = formData.get(`v_${field}`)?.toString().trim()
-        if (v) values[field] = v
+        if (!v) return { success: false, error: `${field} is required` }
+        const num = parseFloat(v)
+        if (isNaN(num) || num <= 0) return { success: false, error: `${field} must be a positive number` }
+        values[field] = v
     }
 
     try {
@@ -226,4 +229,30 @@ export const updateMeasurement = async (prevState: MeasurementUpdateState, formD
     return { success: true, error: null, message: "Measurement updated" }
 }
 
+export const deleteMeasurement = async (measurementId: string) => {
+    const session = await requireActiveStaff()
+
+    const measurement = await prisma.measurement.findFirst({
+        where: { id: measurementId, customer: { companyId: session.companyId } },
+        select: { id: true, customerId: true, customer: { select: { fullName: true } }, template: { select: { name: true } } },
+    })
+    if (!measurement) return
+
+    try {
+        await prisma.measurement.delete({ where: { id: measurementId } })
+    } catch {
+        return
+    }
+
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "measurement.delete",
+        entityType: "Measurement",
+        entityId: measurementId,
+        summary: `deleted ${measurement.customer.fullName}'s ${measurement.template.name} measurement`,
+    })
+
+    revalidatePath(`/dashboard/customers/${measurement.customerId}`)
+}
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState } from "react"
+import Link from "next/link"
 import { registerCompany, RegisterCompanyState } from "./actions"
 
 
@@ -9,81 +10,125 @@ const initialState: RegisterCompanyState = {
     error: null,
 }
 
-
-
-
 export default function RegisterCompanyForm() {
     const [state, formAction, isPending] = useActionState(registerCompany, initialState)
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
-                <h1 className="text-2xl font-bold mb-6">Register Your Company</h1>
+        <div className="min-h-screen bg-[#F1EFE9] flex flex-col">
+            {/* Header */}
+            <div className="border-b border-black/8 px-6 py-4">
+                <Link href="/" className="inline-block text-2xl font-semibold text-[#1B2233] font-serif">
+                    TailorEase
+                </Link>
+            </div>
 
-                {state.error && (
-                    <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{state.error}</p>
-                )}
-
-                {state.success && (
-                    <div className="bg-green-100 text-green-700 p-4 rounded">
-                        <p className="font-bold">{state.message}</p>
-                        <p className="mt-2">Your company code: <strong>{state.companyCode}</strong></p>
-                        <p className="text-sm mt-1">Share this code with your staff to register</p>
-                        <a href={`/verify?email=${encodeURIComponent(state.email ?? "")}`} className="inline-block mt-4 text-blue-600 underline">Go to verify</a>
+            {/* Main Content */}
+            <div className="flex-1 flex items-center justify-center px-4 py-8">
+                <div className="w-full max-w-md">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-serif font-bold text-[#1B2233] mb-2">Register your shop</h1>
+                        <p className="text-gray-600">Set up your account to start managing orders and measurements.</p>
                     </div>
-                )}
 
-                {!state.success && (
-                    <form action={formAction} className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Company Name</label>
-                            <input type="text" name="companyName" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
+                    {state.error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+                            {state.error}
                         </div>
+                    )}
 
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Company Email</label>
-                            <input type="email" name="email" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
+                    {state.success && (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
+                            <p className="text-green-900 font-semibold mb-4">{state.message}</p>
+                            <div className="bg-white border border-green-200 rounded p-4 mb-4">
+                                <p className="text-sm text-gray-600 mb-1">Your company code:</p>
+                                <p className="font-mono text-lg font-bold text-green-700">{state.companyCode}</p>
+                                <p className="text-xs text-gray-600 mt-2">Share this with your staff to register</p>
+                            </div>
+                            <a href={`/verify?email=${encodeURIComponent(state.email ?? "")}`} className="inline-block w-full text-center bg-[#B07C34] text-white py-2 rounded font-semibold hover:bg-[#9a6a2a] transition">
+                                Verify email
+                            </a>
                         </div>
+                    )}
 
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Password</label>
-                            <input type="password" name="password" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
-                        </div>
+                    {!state.success && (
+                        <form action={formAction} className="space-y-5 bg-white border border-black/8 rounded-lg p-8">
+                            {/* Company Section */}
+                            <div>
+                                <p className="text-xs uppercase tracking-widest text-[#B07C34] font-semibold mb-4">Company details</p>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-[#1B2233] mb-2">Company Name</label>
+                                        <input type="text" name="companyName" required
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            placeholder="Your tailoring business name" />
+                                    </div>
 
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Confirm Password</label>
-                            <input type="password" name="confirmPassword" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
-                        </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-[#1B2233] mb-2">Company Email</label>
+                                        <input type="email" name="email" required
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            placeholder="shop@example.com" />
+                                    </div>
 
+                                    <div>
+                                        <label className="block text-sm font-medium text-[#1B2233] mb-2">Password</label>
+                                        <input type="password" name="password" required
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            placeholder="••••••••" />
+                                    </div>
 
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Owner Full Name</label>
-                            <input type="text" name="ownerFullname" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
-                        </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-[#1B2233] mb-2">Confirm Password</label>
+                                        <input type="password" name="confirmPassword" required
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            placeholder="••••••••" />
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Owner Email</label>
-                            <input type="email" name="ownerEmail" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
-                        </div>
+                            {/* Owner Section */}
+                            <div className="pt-4 border-t border-gray-200">
+                                <p className="text-xs uppercase tracking-widest text-[#B07C34] font-semibold mb-4">Your details (owner)</p>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-[#1B2233] mb-2">Full Name</label>
+                                        <input type="text" name="ownerFullname" required
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            placeholder="Your full name" />
+                                    </div>
 
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Owner Phone</label>
-                            <input type="text" name="ownerPhone" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
-                        </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-[#1B2233] mb-2">Email</label>
+                                        <input type="email" name="ownerEmail" required
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            placeholder="your@email.com" />
+                                    </div>
 
-                        <button type="submit" disabled={isPending}
-                            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 disabled:bg-gray-400">
-                            {isPending ? "Registering..." : "Register Company"}
-                        </button>
-                    </form>
-                )}
+                                    <div>
+                                        <label className="block text-sm font-medium text-[#1B2233] mb-2">Phone</label>
+                                        <input type="text" name="ownerPhone" required
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            placeholder="+234 800 000 0000" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" disabled={isPending}
+                                className="w-full bg-[#B07C34] text-white py-2.5 rounded-lg font-semibold hover:bg-[#9a6a2a] disabled:opacity-60 transition mt-6">
+                                {isPending ? "Registering..." : "Create Account"}
+                            </button>
+
+                            <p className="text-center text-sm text-gray-600 mt-4">
+                                Already have an account? <Link href="/login" className="text-[#B07C34] font-semibold hover:underline">Sign in</Link>
+                            </p>
+                        </form>
+                    )}
+                </div>
+            </div>
+
+            {/* Footer */}
+            <div className="border-t border-black/8 px-6 py-4 text-center text-sm text-gray-600">
+                <p>Free to start · No card needed · Your shop is approved before it goes live.</p>
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 import { isAuth } from "@/app/libs/session"
 import { prisma } from "@/app/libs/prisma"
 import TemplateForm from "./TemplateForm"
+import EditTemplate from "./EditTemplate"
 
 export default async function MeasurementsPage() {
     const session = await isAuth()
@@ -41,19 +42,13 @@ export default async function MeasurementsPage() {
                     </p>
                 ) : (
                     templates.map((t) => (
-                        <div key={t.id} className="px-5 py-4 border-b border-gray-100 last:border-b-0">
-                            <div className="flex items-center justify-between">
-                                <p className="font-semibold text-sm">{t.name}</p>
-                                <span className="text-xs text-gray-400">{t._count.measurements} measurements</span>
-                            </div>
-                            <div className="flex flex-wrap gap-1.5 mt-2">
-                                {(t.fieldDefinitions as string[]).map((field, i) => (
-                                    <span key={i} className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5">
-                                        {field}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
+                        <EditTemplate
+                            key={t.id}
+                            id={t.id}
+                            name={t.name}
+                            fields={t.fieldDefinitions as string[]}
+                            measurementCount={t._count.measurements}
+                        />
                     ))
                 )}
             </section>

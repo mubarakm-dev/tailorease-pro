@@ -1,7 +1,8 @@
 "use client"
 
 import { useActionState } from "react"
-import { login, LoginState, } from "./actions"
+import Link from "next/link"
+import { login, LoginState } from "./actions"
 
 const initialState: LoginState = {
     success: false,
@@ -12,46 +13,76 @@ export default function LoginForm() {
     const [state, formAction, isPending] = useActionState(login, initialState)
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
-                <h1 className="text-2xl font-bold mb-6">Login</h1>
+        <div className="min-h-screen bg-[#F1EFE9] flex flex-col">
+            {/* Header */}
+            <div className="border-b border-black/8 px-6 py-4">
+                <Link href="/" className="inline-block text-2xl font-semibold text-[#1B2233] font-serif">
+                    TailorEase
+                </Link>
+            </div>
 
-                {state.error && (
-                    <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{state.error}</p>
-                )}
+            {/* Main Content */}
+            <div className="flex-1 flex items-center justify-center px-4 py-8">
+                <div className="w-full max-w-md">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-serif font-bold text-[#1B2233] mb-2">Sign in to your workshop</h1>
+                        <p className="text-gray-600">Access your dashboard and manage orders.</p>
+                    </div>
 
-                {state.needsVerification && (
-                    <a
-                        href={`/verify?email=${encodeURIComponent(state.email ?? "")}&fresh=1`}
-                        className="inline-block mb-4 text-blue-600 underline"
-                    >
-                        Verify your account
-                    </a>
-                )}
-
-                {!state.success && (
-                    <form action={formAction} className="space-y-4">
-
-
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Email</label>
-                            <input type="email" name="email" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
+                    {state.error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+                            {state.error}
                         </div>
+                    )}
 
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Password</label>
-                            <input type="password" name="password" required
-                                className="w-full border border-gray-300 rounded px-3 py-2" />
+                    {state.needsVerification && (
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                            <p className="text-amber-900 text-sm mb-3">Your email needs verification.</p>
+                            <a
+                                href={`/verify?email=${encodeURIComponent(state.email ?? "")}&fresh=1`}
+                                className="inline-block w-full text-center bg-[#B07C34] text-white py-2 rounded font-semibold hover:bg-[#9a6a2a] transition"
+                            >
+                                Verify your account
+                            </a>
                         </div>
+                    )}
 
+                    {!state.success && (
+                        <form action={formAction} className="space-y-5 bg-white border border-black/8 rounded-lg p-8">
+                            <div>
+                                <label className="block text-sm font-medium text-[#1B2233] mb-2">Email</label>
+                                <input type="email" name="email" required
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                    placeholder="you@example.com"
+                                    autoComplete="email"
+                                />
+                            </div>
 
-                        <button type="submit" disabled={isPending}
-                            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 disabled:bg-gray-400">
-                            {isPending ? "Login in...." : "Login"}
-                        </button>
-                    </form>
-                )}
+                            <div>
+                                <label className="block text-sm font-medium text-[#1B2233] mb-2">Password</label>
+                                <input type="password" name="password" required
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                    placeholder="••••••••"
+                                    autoComplete="current-password"
+                                />
+                            </div>
+
+                            <button type="submit" disabled={isPending}
+                                className="w-full bg-[#B07C34] text-white py-2.5 rounded-lg font-semibold hover:bg-[#9a6a2a] disabled:opacity-60 transition mt-6">
+                                {isPending ? "Signing in..." : "Sign in"}
+                            </button>
+
+                            <p className="text-center text-sm text-gray-600 mt-4">
+                                Don't have an account? <Link href="/register/staff" className="text-[#B07C34] font-semibold hover:underline">Register as staff</Link>
+                            </p>
+                        </form>
+                    )}
+                </div>
+            </div>
+
+            {/* Footer */}
+            <div className="border-t border-black/8 px-6 py-4 text-center text-sm text-gray-600">
+                <p><Link href="/admin/login" className="text-[#B07C34] hover:underline">Admin login</Link></p>
             </div>
         </div>
     )

@@ -80,8 +80,8 @@ model Measurement {
   customerId String
   templateId String
   unit       String              @default("cm")
-  createdBy  String 
-  updatedBy  String?              
+  createdBy  String
+  updatedBy  String?
   values     Json
   snapshot   Json
   notes      Json?
@@ -91,6 +91,7 @@ model Measurement {
   template   MeasurementTemplate @relation(fields: [templateId], references: [id])
   createdByStaff Staff           @relation(fields: [createdBy], references: [id])
   updatedByStaff Staff?              @relation("MeasurementUpdatedBy", fields: [updatedBy], references: [id])
+  orders     Order[]
 
   @@index([customerId])
   @@index([templateId])
@@ -103,6 +104,7 @@ model Order {
   customerId    String
   companyId     String
   staffId       String
+  measurementId String?
   parentOrderId String?
   title         String
   amount        Int?
@@ -114,6 +116,7 @@ model Order {
   customer      Customer        @relation(fields: [customerId], references: [id])
   company       Company         @relation(fields: [companyId], references: [id])
   staff         Staff           @relation(fields: [staffId], references: [id])
+  measurement   Measurement?    @relation(fields: [measurementId], references: [id])
   parentOrder   Order?          @relation("OrderAmendments", fields: [parentOrderId], references: [id])
   amendments    Order[]         @relation("OrderAmendments")
   photos        OrderPhoto[]
@@ -122,6 +125,7 @@ model Order {
   @@index([customerId])
   @@index([companyId])
   @@index([staffId])
+  @@index([measurementId])
   @@index([parentOrderId])
 }
 

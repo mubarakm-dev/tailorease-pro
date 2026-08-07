@@ -3,6 +3,7 @@ import { requireActiveStaff } from "@/app/libs/auth"
 import { sendOrderReadyEmail } from "@/app/libs/email"
 import { logActivity } from "@/app/libs/activity"
 import { prisma } from "@/app/libs/prisma"
+import { supabase } from "@/app/libs/supabase"
 import { revalidatePath } from "next/cache"
 import { after } from "next/server"
 import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
@@ -101,4 +102,93 @@ export const prevOrderStatus = async (orderId: string) => {
     revalidatePath(`/dashboard/orders/${orderId}`)
 
 
+}
+
+export const uploadPhoto = async (orderId: string, formData: FormData) => {
+    const session = await requireActiveStaff()
+
+    const order = await prisma.order.findFirst({
+        where: { id: orderId, companyId: session.companyId },
+        select: { id: true, title: true }
+    })
+    if (!order) return { error: "Order not found", success: false }
+
+    const file = formData.get("file") as File
+    const caption = formData.get("caption")?.toString() ?? ""
+
+    if (!file || file.size === 0) return { error: "No file selected", success: false }
+    if (file.size > 5 * 1024 * 1024) return { error: "File must be under 5MB", success: false }
+    if (!file.type.startsWith("image/")) return { error: "Must be an image", success: false }
+
+    const fileName = `${orderId}/${Date.now()}-${file.name}`
+    const buffer = await file.arrayBuffer()
+
+    try {
+        const { error } = await supabase.storage
+            .from("orders")
+            .upload(fileName, buffer, { contentType: file.type })
+
+        if (error) {
+            console.error("Supabase upload error:", error)
+            throw error
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+            .from("orders")
+            .getPublicUrl(fileName)
+
+        await prisma.orderPhoto.create({
+            data: {
+                orderId,
+                uploadedBy: session.staffId,
+                url: publicUrl,
+                caption: caption || null
+            }
+        })
+
+        logActivity({
+            companyId: session.companyId,
+            staffId: session.staffId,
+            action: "order.photo",
+            entityType: "Order",
+            entityId: orderId,
+            summary: `uploaded photo for "${order.title}"`
+        })
+
+        revalidatePath(`/dashboard/orders/${orderId}`)
+        return { success: true, error: null, message: "Photo uploaded" }
+    } catch (err) {
+        console.error("Photo upload error:", err)
+        return { success: false, error: "Upload failed" }
+    }
+}
+
+export const deletePhoto = async (photoId: string, orderId: string) => {
+    const session = await requireActiveStaff()
+
+    const photo = await prisma.orderPhoto.findFirst({
+        where: { id: photoId, order: { companyId: session.companyId } },
+        select: { url: true }
+    })
+    if (!photo) return
+
+    const fileName = photo.url.split("/").slice(-2).join("/")
+
+    try {
+        await supabase.storage.from("orders").remove([fileName])
+        await prisma.orderPhoto.delete({ where: { id: photoId } })
+    } catch {
+        return
+    }
+
+    logActivity({
+        companyId: session.companyId,
+        staffId: session.staffId,
+        action: "order.photo.delete",
+        entityType: "OrderPhoto",
+        entityId: photoId,
+        summary: `removed photo from order`
+    })
+
+    revalidatePath(`/dashboard/orders/${orderId}`)
 }

@@ -1,9 +1,10 @@
 "use client"
 
 import { useActionState, useEffect, useState } from "react"
-import { updateMeasurement, MeasurementUpdateState } from "./action"
+import { updateMeasurement, MeasurementUpdateState, deleteMeasurement } from "./action"
 import SubmitButton from "@/app/components/SubmitButton"
 import FormMessage from "@/app/components/FormMessage"
+import ConfirmButton from "@/app/components/ConfirmButton"
 
 const initialState: MeasurementUpdateState = { success: false, error: null }
 
@@ -43,6 +44,17 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
                         <button type="button" onClick={() => setEditing(true)} className="text-xs text-[#b07c34] hover:underline">
                             Edit
                         </button>
+                        <ConfirmButton
+                            action={deleteMeasurement.bind(null, id)}
+                            className="text-xs text-red-600 hover:underline"
+                            title="Delete this measurement?"
+                            message="This removes the measurement permanently. You can record a new one anytime."
+                            confirmText="Delete"
+                            pendingText="Deleting…"
+                            danger
+                        >
+                            Delete
+                        </ConfirmButton>
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-600">
