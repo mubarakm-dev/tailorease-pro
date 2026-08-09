@@ -11,6 +11,7 @@ import PhotoUpload from "./PhotoUpload"
 import PhotoGrid from "./PhotoGrid"
 import { PaymentSection } from "./PaymentSection"
 import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
+import { createAmendment } from "./amendmentAction"
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -23,12 +24,19 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             title: true,
             amount: true,
             status: true,
+            type: true,
             paymentStatus: true,
             dueDate: true,
             notes: true,
             createdAt: true,
+            parentOrderId: true,
             customer: { select: { id: true, fullName: true, phone: true, email: true } },
             staff: { select: { fullName: true } },
+            parentOrder: { select: { id: true, title: true } },
+            amendments: {
+                select: { id: true, title: true, createdAt: true },
+                orderBy: { createdAt: "asc" }
+            },
             payments: {
                 orderBy: { createdAt: "desc" },
                 select: {
@@ -89,12 +97,27 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 <div className="flex items-center gap-3 mt-2">
                     <h1 className="text-2xl font-semibold">{order.title}</h1>
                     <OrderStatusBadge status={order.status} />
+                    {order.type === "AMENDMENT" && (
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">
+                            Amendment
+                        </span>
+                    )}
                 </div>
                 <p className="text-gray-500 text-sm mt-1">
                     {order.customer.phone}
                     {order.amount != null ? ` · ₦${order.amount.toLocaleString()}` : ""}
                     {` · by ${order.staff.fullName}`}
                 </p>
+
+                {/* Show original order link if this is an amendment */}
+                {order.parentOrderId && order.parentOrder && (
+                    <Link
+                        href={`/dashboard/orders/${order.parentOrder.id}`}
+                        className="text-sm text-[#b07c34] hover:underline mt-2 inline-block"
+                    >
+                        View original: {order.parentOrder.title} →
+                    </Link>
+                )}
             </div>
 
             {order.dueDate && (() => {
@@ -197,6 +220,50 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 orderAmount={order.amount}
                 payments={order.payments}
             />
+
+            {/* Amendment Section */}
+            <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h2 className="font-semibold text-sm">Amendment History</h2>
+                    {order.type !== "AMENDMENT" && order.status === "COMPLETED" && (
+                        <ConfirmButton
+                            action={createAmendment.bind(null, order.id)}
+                            className="text-xs font-medium px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                            title="Create amendment?"
+                            message={`A new amendment of "${order.title}" will be created as a linked copy. You can edit the amendment independently while keeping the original intact.`}
+                            confirmText="Create Amendment"
+                            pendingText="Creating…"
+                        >
+                            Create Amendment
+                        </ConfirmButton>
+                    )}
+                </div>
+                {order.amendments.length === 0 ? (
+                    <div className="px-5 py-4 text-sm text-gray-500 text-center">
+                        {order.type === "AMENDMENT" ? "This is an amendment." : "No amendments yet."}
+                    </div>
+                ) : (
+                    <div className="divide-y divide-gray-100">
+                        {order.amendments.map((amendment) => (
+                            <Link
+                                key={amendment.id}
+                                href={`/dashboard/orders/${amendment.id}`}
+                                className="px-5 py-3 hover:bg-gray-50 transition flex items-center justify-between group"
+                            >
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-sm font-medium text-gray-900 group-hover:text-[#b07c34]">
+                                        {amendment.title}
+                                    </p>
+                                    <p className="text-xs text-gray-500 mt-0.5">
+                                        Created {new Date(amendment.createdAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
+                                    </p>
+                                </div>
+                                <span className="text-gray-400 group-hover:text-[#b07c34] text-xs ml-2">→</span>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </section>
 
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-200">
