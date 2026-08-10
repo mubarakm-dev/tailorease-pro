@@ -65,7 +65,6 @@ export async function createOrder(
     }
   }
 
-  // Validate photo BEFORE creating order
   if (fabricFile && fabricFile.size > 0) {
     if (fabricFile.size > 10 * 1024 * 1024) {
       return { success: false, error: "Photo must be under 10MB" }
@@ -91,7 +90,7 @@ export async function createOrder(
       }
     })
 
-    // Upload fabric photo if provided (validation already done before order creation)
+
     if (fabricFile && fabricFile.size > 0) {
       try {
         const fileName = `orders/${order.id}/${Date.now()}-${fabricFile.name}`

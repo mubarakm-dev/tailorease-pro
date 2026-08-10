@@ -9,7 +9,7 @@ import { after } from "next/server"
 import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
 
 
-export const advanceOrderStatus = async (orderId: string) => {
+export const advanceOrderStatus = async (orderId: string, formData?: FormData) => {
     const session = await requireActiveStaff()
 
     const order = await prisma.order.findFirst({
@@ -30,23 +30,31 @@ export const advanceOrderStatus = async (orderId: string) => {
     })
 
     if (!order) {
-        return
+        return { success: false, error: "Order not found" }
     }
 
-    const next = nextStatus(order.status)
-    if (!next) return
+    // If targetStatus is provided in formData, use that. Otherwise, use next status.
+    let targetStatus = nextStatus(order.status)
+    if (formData) {
+        const target = formData.get("targetStatus")?.toString()
+        if (target) targetStatus = target as any
+    }
 
-    if (next === "COMPLETED" && session.role !== "SUPER_ADMIN") return
+    if (!targetStatus) return { success: false, error: "Cannot advance order" }
+
+    if (targetStatus === "COMPLETED" && session.role !== "SUPER_ADMIN") {
+        return { success: false, error: "Only admins can mark orders as complete" }
+    }
 
     await prisma.$transaction([
-        prisma.order.update({ where: { id: orderId }, data: { status: next } }),
+        prisma.order.update({ where: { id: orderId }, data: { status: targetStatus } }),
         prisma.statusHistory.create({
-            data: { orderId, updatedById: session.staffId, status: next, note: `Moved to ${next}` },
+            data: { orderId, updatedById: session.staffId, status: targetStatus, note: `Moved to ${targetStatus}` },
         }),
     ])
 
     const email = order.customer.email
-    if (next === "COMPLETED" && email) {
+    if (targetStatus === "COMPLETED" && email) {
         after(() => sendOrderReadyEmail(email, order.customer.fullName, order.title))
     }
 
@@ -56,12 +64,12 @@ export const advanceOrderStatus = async (orderId: string) => {
         action: "order.advance",
         entityType: "Order",
         entityId: orderId,
-        summary: `advanced "${order.title}" to ${STATUS_LABELS[next]}`,
+        summary: `moved "${order.title}" to ${STATUS_LABELS[targetStatus]}`,
     })
 
     revalidatePath(`/dashboard/orders/${orderId}`)
 
-
+    return { success: true, error: null }
 }
 
 export const prevOrderStatus = async (orderId: string) => {
