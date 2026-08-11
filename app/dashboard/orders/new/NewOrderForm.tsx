@@ -63,7 +63,7 @@ export default function NewOrderForm({ customers, measurements }: Props) {
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#b07c34] focus:ring-1 focus:ring-[#b07c34]"
           >
             <option value="">Select a customer...</option>
-            {customers.map((c) => (
+            {customers.map((c: any) => (
               <option key={c.id} value={c.id}>
                 {c.fullName}
               </option>
@@ -82,7 +82,7 @@ export default function NewOrderForm({ customers, measurements }: Props) {
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#b07c34] focus:ring-1 focus:ring-[#b07c34]"
             >
               <option value="">No specific measurement</option>
-              {customerMeasurements.map((m) => (
+              {customerMeasurements.map((m: any) => (
                 <option key={m.id} value={m.id}>
                   {m.template.name} — {new Date(m.createdAt).toLocaleDateString()}
                 </option>

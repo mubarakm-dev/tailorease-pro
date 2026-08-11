@@ -41,7 +41,7 @@ export default async function MeasurementsPage() {
                         No templates yet{isAdmin ? " — create one to start recording measurements." : "."}
                     </p>
                 ) : (
-                    templates.map((t) => (
+                    templates.map((t: any) => (
                         <EditTemplate
                             key={t.id}
                             id={t.id}

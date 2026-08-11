@@ -111,7 +111,7 @@ export default async function OrdersPage({
                 >
                     All
                 </Link>
-                {FLOW.map((s) => (
+                {FLOW.map((s: any) => (
                     <Link
                         key={s}
                         href={link({ status: s, page: undefined })}
@@ -141,7 +141,7 @@ export default async function OrdersPage({
                 {orders.length === 0 ? (
                     <p className="text-sm text-gray-400 px-5 py-10 text-center">No orders found.</p>
                 ) : (
-                    orders.map((o) => {
+                    orders.map((o: any) => {
                         const urgency = getOrderUrgency(o.dueDate)
                         return (
                         <Link

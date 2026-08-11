@@ -74,7 +74,7 @@ export default async function CustomersPage({
                         {q ? "No customers match your search." : "No customers yet."}
                     </p>
                 ) : (
-                    customers.map((c) => (
+                    customers.map((c: any) => (
                         <Link key={c.id} href={`/dashboard/customers/${c.id}`} className="flex items-center gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
                             <span className="w-9 h-9 rounded-full grid place-items-center bg-slate-600 text-white text-sm font-semibold shrink-0">
                                 {c.fullName.charAt(0).toUpperCase()}

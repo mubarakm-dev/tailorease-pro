@@ -58,7 +58,7 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-600">
-                    {Object.entries(values).map(([field, value]) => (
+                    {Object.entries(values).map(([field, value]: any) => (
                         <span key={field}>
                             <span className="text-gray-400">{field}:</span> {value}
                         </span>
@@ -84,7 +84,7 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
             <FormMessage state={state} />
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {union.map((field) => {
+                {union.map((field: any) => {
                     const isNew = !snapshotFields.includes(field) 
                     return (
                         <div key={field}>

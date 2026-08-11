@@ -51,7 +51,7 @@ export default function EditTemplate({ id, name, fields, measurementCount }: Pro
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 mt-2">
-                    {fields.map((field, i) => (
+                    {fields.map((field: any, i: number) => (
                         <span key={i} className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5">
                             {field}
                         </span>

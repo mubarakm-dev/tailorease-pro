@@ -47,7 +47,7 @@ const administration: NavItem[] = [
 
 function initialsFrom(name: string): string {
   const words = name.trim().split(/\s+/).filter((w) => /[a-z0-9]/i.test(w[0] ?? ""))
-  const picked = words.slice(0, 2).map((w) => w[0]).join("")
+  const picked = words.slice(0, 2).map((w: string) => w[0]).join("")
   return (picked || name.slice(0, 2)).toUpperCase()
 }
 
@@ -121,7 +121,7 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
       {/* Workspace */}
       <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Workspace</p>
       <nav className="flex flex-col gap-0.5">
-        {workspace.map((item) => (
+        {workspace.map((item: any) => (
           <NavLink key={item.href} item={item} active={isActive(item.href)} />
         ))}
       </nav>
@@ -131,7 +131,7 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
         <>
           <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Administration</p>
           <nav className="flex flex-col gap-0.5">
-            {administration.map((item) => (
+            {administration.map((item: any) => (
               <NavLink key={item.href} item={item} active={isActive(item.href)} admin />
             ))}
           </nav>

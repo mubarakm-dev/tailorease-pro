@@ -54,7 +54,7 @@ export default function NewOrder({
                     <select name="measurementId"
                         className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white">
                         <option value="">No specific measurement</option>
-                        {measurements.map((m) => (
+                        {measurements.map((m: any) => (
                             <option key={m.id} value={m.id}>
                                 {m.template.name} — {new Date(m.createdAt).toLocaleDateString()}
                             </option>

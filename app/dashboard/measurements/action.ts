@@ -31,7 +31,7 @@ export const createTemplate = async (prevState: MeasurementTemplateCreateState, 
 
     const fields = validation.data.fields
         .split(/[\n,]/)
-        .map((f) => f.trim())
+        .map((f: string) => f.trim())
         .filter(Boolean)
     if (fields.length === 0) return { error: "Add at least one field", success: false }
 
@@ -88,7 +88,7 @@ export const updateTemplate = async (prevState: MeasurementTemplateUpdateState, 
 
     const fields = validation.data.fields
         .split(/[\n,]/)
-        .map((f) => f.trim())
+        .map((f: string) => f.trim())
         .filter(Boolean)
     if (fields.length === 0) return { error: "Add at least one field", success: false }
 

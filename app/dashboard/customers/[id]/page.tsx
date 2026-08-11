@@ -114,7 +114,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                 {customer.measurements.length === 0 ? (
                     <p className="text-sm text-gray-400 px-5 py-6 text-center">No measurements yet.</p>
                 ) : (
-                    customer.measurements.map((m) => (
+                    customer.measurements.map((m: any) => (
                         <EditMeasurement
                             key={m.id}
                             id={m.id}
@@ -139,7 +139,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                 {customer.orders.length === 0 ? (
                     <p className="text-sm text-gray-400 px-5 py-6 text-center">No orders yet.</p>
                 ) : (
-                    customer.orders.map((o) => (
+                    customer.orders.map((o: any) => (
                         <Link key={o.id} href={`/dashboard/orders/${o.id}`} className="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
                             <div className="min-w-0">
                                 <p className="text-sm font-semibold truncate">{o.title}</p>

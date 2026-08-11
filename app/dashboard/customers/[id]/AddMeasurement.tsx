@@ -41,7 +41,7 @@ export default function AddMeasurement({ customerId, templates }: { customerId: 
                         className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white"
                     >
                         <option value="">Choose a template…</option>
-                        {templates.map((t) => (
+                        {templates.map((t: any) => (
                             <option key={t.id} value={t.id}>{t.name}</option>
                         ))}
                     </select>
@@ -59,7 +59,7 @@ export default function AddMeasurement({ customerId, templates }: { customerId: 
             {selected && (
                 <>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {selected.fieldDefinitions.map((field) => (
+                        {selected.fieldDefinitions.map((field: any) => (
                             <div key={field}>
                                 <label className="block text-xs font-medium mb-1 text-gray-500">{field}</label>
                                 <input

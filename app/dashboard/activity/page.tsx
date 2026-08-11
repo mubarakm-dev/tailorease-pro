@@ -59,7 +59,7 @@ export default async function ActivityPage({
                     <p className="text-sm text-gray-400 px-5 py-10 text-center">No activity yet.</p>
                 </section>
             ) : (
-                groups.map((group) => (
+                groups.map((group: any) => (
                     <section key={group.label} className="flex flex-col gap-2">
                         <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400 px-1">{group.label}</h2>
                         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
