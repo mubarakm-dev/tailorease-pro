@@ -111,7 +111,7 @@ export default async function OrdersPage({
                 >
                     All
                 </Link>
-                {FLOW.map((s: any) => (
+                {FLOW.map((s: OrderStatus) => (
                     <Link
                         key={s}
                         href={link({ status: s, page: undefined })}

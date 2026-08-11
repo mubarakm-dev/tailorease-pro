@@ -212,7 +212,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                     </div>
                 ) : (
                     <div className="divide-y divide-gray-100">
-                        {order.amendments.map((amendment) => (
+                        {order.amendments.map((amendment: any) => (
                             <Link
                                 key={amendment.id}
                                 href={`/dashboard/orders/${amendment.id}`}
