@@ -63,7 +63,7 @@ export default async function ActivityPage({
                     <section key={group.label} className="flex flex-col gap-2">
                         <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400 px-1">{group.label}</h2>
                         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                            {group.items.map((log) => {
+                            {group.items.map((log: any) => {
                                 const name = log.staff?.fullName ?? "System"
                                 return (
                                     <div key={log.id} className="flex items-start gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0">
