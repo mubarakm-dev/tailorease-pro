@@ -279,7 +279,7 @@ export default async function AdminDashboardPage() {
                             <h2 className="font-semibold text-gray-900">Unverified ({unverifiedCount})</h2>
                         </div>
                         <div className="divide-y divide-gray-200">
-                            {unverifiedCompanies.map((company) => (
+                            {unverifiedCompanies.map((company: any) => (
                                 <div key={company.id} className="p-6 hover:bg-gray-50 transition">
                                     <h3 className="font-semibold text-gray-900">{company.companyName}</h3>
                                     <div className="mt-2 space-y-1 text-sm text-gray-600">
@@ -300,7 +300,7 @@ export default async function AdminDashboardPage() {
                             <h2 className="font-semibold text-gray-900">Pending Approval ({pendingCount})</h2>
                         </div>
                         <div className="divide-y divide-gray-200">
-                            {pendingCompanies.map((company) => (
+                            {pendingCompanies.map((company: any) => (
                                 <div key={company.id} className="p-6 hover:bg-gray-50 transition">
                                     <div className="flex justify-between items-start gap-4">
                                         <div className="flex-1">
@@ -348,7 +348,7 @@ export default async function AdminDashboardPage() {
                             <h2 className="font-semibold text-gray-900">Approved ({approvedCount})</h2>
                         </div>
                         <div className="divide-y divide-gray-200">
-                            {approvedCompanies.map((company) => (
+                            {approvedCompanies.map((company: any) => (
                                 <div key={company.id} className="p-6 hover:bg-gray-50 transition">
                                     <div className="flex justify-between items-start gap-4">
                                         <div className="flex-1">
@@ -397,7 +397,7 @@ export default async function AdminDashboardPage() {
                             <h2 className="font-semibold text-gray-900">Suspended ({suspendedCount})</h2>
                         </div>
                         <div className="divide-y divide-gray-200">
-                            {suspendedCompanies.map((company) => (
+                            {suspendedCompanies.map((company: any) => (
                                 <div key={company.id} className="p-6 hover:bg-gray-50 transition">
                                     <div className="flex justify-between items-start gap-4">
                                         <div className="flex-1">
