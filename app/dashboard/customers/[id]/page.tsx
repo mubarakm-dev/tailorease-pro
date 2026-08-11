@@ -123,7 +123,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                             createdAt={m.createdAt}
                             values={m.values as Record<string, string>}
                             snapshotFields={m.snapshot as string[]}
-                            templateFields={templates.find((t) => t.id === m.templateId)?.fieldDefinitions ?? []}
+                            templateFields={templates.find((t: any) => t.id === m.templateId)?.fieldDefinitions ?? []}
                         />
                     ))
                 )}
