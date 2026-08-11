@@ -21,7 +21,7 @@ export default async function ProfilePage() {
     day: "numeric"
   })
 
-  const statusColors = {
+  const statusColors: Record<string, string> = {
     APPROVED: "bg-green-100 text-green-700",
     PENDING: "bg-yellow-100 text-yellow-700",
     UNVERIFIED: "bg-gray-100 text-gray-700",
