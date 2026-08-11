@@ -60,7 +60,7 @@ export default function MeasurementEditForm({
 
       <form action={formAction} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {Object.entries(values).map(([key, value]) => (
+          {Object.entries(values).map(([key, value]: any) => (
             <div key={key}>
               <label className="block text-sm font-medium text-gray-900 mb-1 capitalize">
                 {key.replace(/_/g, " ")} ({unit})

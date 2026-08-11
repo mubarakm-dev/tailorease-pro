@@ -81,7 +81,7 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
             <p className="text-xs text-gray-500 mb-6">Click any stage above or use buttons below to change status</p>
 
             <div className="flex items-center gap-3 mb-8">
-                {STAGES.map((stage, idx) => {
+                {STAGES.map((stage: any, idx: number) => {
                     const isCompleted = idx < currentIdx
                     const isCurrent = idx === currentIdx
                     const isClickable = stage.key !== currentStatus
@@ -129,7 +129,7 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
 
          
             <div className="flex items-center gap-3 mb-8">
-                {STAGES.map((stage, idx) => (
+                {STAGES.map((stage: any, idx: number) => (
                     <div key={stage.key} className="flex-1 text-center">
                         <p className={`text-xs font-medium ${
                             idx === currentIdx

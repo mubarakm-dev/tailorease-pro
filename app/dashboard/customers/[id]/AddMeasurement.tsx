@@ -13,7 +13,7 @@ export default function AddMeasurement({ customerId, templates }: { customerId: 
     const [state, formAction] = useActionState(createMeasurement, initialState)
     const [selectedId, setSelectedId] = useState("")
 
-    const selected = templates.find((t) => t.id === selectedId)
+    const selected = templates.find((t: any) => t.id === selectedId)
 
     if (templates.length === 0) {
         return (

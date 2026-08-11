@@ -34,7 +34,7 @@ export default async function StaffManagementPage() {
         }),
     ])
 
-    const pendingCount = staff.filter((s) => s.status === "PENDING").length
+    const pendingCount = staff.filter((s: any) => s.status === "PENDING").length
 
     return (
         <div className="p-6 max-w-5xl mx-auto flex flex-col gap-6">
@@ -67,7 +67,7 @@ export default async function StaffManagementPage() {
                 {staff.length === 0 ? (
                     <p className="text-sm text-gray-400 px-5 py-8 text-center">No staff yet.</p>
                 ) : (
-                    staff.map((s) => {
+                    staff.map((s: any) => {
                         const canManage = s.role !== "SUPER_ADMIN"
                         return (
                             <div key={s.id} className="flex items-center gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0">

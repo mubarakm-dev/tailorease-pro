@@ -99,7 +99,7 @@ export default async function OverviewPage() {
         ])
 
 
-    const pipeline = new Map(ordersByStatus.map((o) => [o.status, o._count._all]))
+    const pipeline = new Map(ordersByStatus.map((o: any) => [o.status, o._count._all]))
 
     const hour = new Date().getHours()
     const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"
@@ -141,7 +141,7 @@ export default async function OverviewPage() {
                     <h2 className="font-semibold text-sm text-gray-900">Orders pipeline</h2>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 p-6">
-                    {STAGES.map((stage, idx) => (
+                    {STAGES.map((stage: any, idx: number) => (
                         <Link
                             key={stage.key}
                             href={`/dashboard/orders?status=${stage.key}`}
@@ -170,7 +170,7 @@ export default async function OverviewPage() {
                         <span className="text-xs text-gray-400">{dueSoonOrders.length} order{dueSoonOrders.length > 1 ? 's' : ''}</span>
                     </div>
                     <div>
-                        {dueSoonOrders.map((order) => {
+                        {dueSoonOrders.map((order: any) => {
                             const urgency = getOrderUrgency(order.dueDate)
                             return (
                                 <Link
@@ -211,7 +211,7 @@ export default async function OverviewPage() {
                         {pendingStaff.length === 0 ? (
                             <p className="text-sm text-gray-400 px-5 py-6 text-center">No staff awaiting approval.</p>
                         ) : (
-                            pendingStaff.map((s) => (
+                            pendingStaff.map((s: any) => (
                                 <div key={s.id} className="flex items-center gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0">
                                     <span className="w-9 h-9 rounded-full grid place-items-center bg-slate-600 text-white text-sm font-semibold shrink-0">
                                         {s.fullName.charAt(0).toUpperCase()}
@@ -256,7 +256,7 @@ export default async function OverviewPage() {
                     {recentActivity.length === 0 ? (
                         <p className="text-sm text-gray-400 px-5 py-6 text-center">No activity yet.</p>
                     ) : (
-                        recentActivity.map((log) => {
+                        recentActivity.map((log: any) => {
                             const name = log.staff?.fullName ?? "System"
                             return (
                                 <div key={log.id} className="flex items-start gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0">

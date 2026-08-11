@@ -33,7 +33,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
 
   if (!order) notFound()
 
-  const totalPaid = order.payments.reduce((sum, p) => sum + p.amount, 0)
+  const totalPaid = order.payments.reduce((sum: number, p: any) => sum + p.amount, 0)
   const remaining = (order.amount ?? 0) - totalPaid
 
   return (
@@ -140,7 +140,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
                   </tr>
                 </thead>
                 <tbody>
-                  {order.payments.map((payment) => (
+                  {order.payments.map((payment: any) => (
                     <tr key={payment.id} className="border border-gray-300">
                       <td className="px-1 py-1 text-gray-700 text-xs">
                         {new Date(payment.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "2-digit" })}

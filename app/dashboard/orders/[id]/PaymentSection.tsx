@@ -26,7 +26,7 @@ export function PaymentSection({
     )
   }
 
-  const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0)
+  const totalPaid = payments.reduce((sum: number, p: any) => sum + p.amount, 0)
   const remaining = orderAmount - totalPaid
   const paidPercentage = (totalPaid / orderAmount) * 100
 
@@ -143,7 +143,7 @@ export function PaymentSection({
         <div className="border-t pt-6">
           <h3 className="font-semibold text-sm mb-4">Payment History</h3>
           <div className="space-y-2">
-            {payments.map((payment) => (
+            {payments.map((payment: any) => (
               <div key={payment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-gray-900">

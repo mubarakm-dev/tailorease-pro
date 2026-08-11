@@ -186,7 +186,7 @@ export default function LandingPage() {
                                 { stage: "03", title: "Sewing", desc: "The garment takes shape on the machine." },
                                 { stage: "04", title: "Finishing", desc: "Buttons, hems, and the final press." },
                                 { stage: "05", title: "Completed", desc: "Only an owner can mark it done — then the client is told." }
-                            ].map((step, idx) => (
+                            ].map((step: any, idx: number) => (
                                 <div key={idx} className="text-center">
                                     <div className="flex justify-center mb-4">
                                         <div className="w-6 h-6 border-4 border-[#B07C34] rounded-full bg-[#1B2233]"></div>

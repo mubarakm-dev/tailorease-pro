@@ -31,7 +31,7 @@ export default function PhotoGrid({ photos, orderId }: Props) {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-5">
-                {photos.map((photo) => (
+                {photos.map((photo: any) => (
                     <div key={photo.id} className="group relative rounded-lg overflow-hidden bg-gray-100">
                         <div className="aspect-square relative w-full cursor-pointer" onClick={() => setSelectedPhoto(photo)}>
                             <img

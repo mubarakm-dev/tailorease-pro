@@ -51,7 +51,7 @@ export const recordPayment = async (
       return { success: false, error: "Order has no amount set" }
     }
 
-    const currentPaid = order.payments.reduce((sum, p) => sum + p.amount, 0)
+    const currentPaid = order.payments.reduce((sum: number, p: any) => sum + p.amount, 0)
     const remainingAmount = order.amount - currentPaid
 
     if (paymentAmount > remainingAmount) {

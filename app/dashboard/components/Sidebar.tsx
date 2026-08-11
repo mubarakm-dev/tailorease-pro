@@ -46,7 +46,7 @@ const administration: NavItem[] = [
 
 
 function initialsFrom(name: string): string {
-  const words = name.trim().split(/\s+/).filter((w) => /[a-z0-9]/i.test(w[0] ?? ""))
+  const words = name.trim().split(/\s+/).filter((w: string) => /[a-z0-9]/i.test(w[0] ?? ""))
   const picked = words.slice(0, 2).map((w: string) => w[0]).join("")
   return (picked || name.slice(0, 2)).toUpperCase()
 }

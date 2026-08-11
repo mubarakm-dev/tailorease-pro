@@ -34,7 +34,7 @@ export default function NewOrderForm({ customers, measurements }: Props) {
   }, [state.success, state.orderId, router])
 
   const customerMeasurements = selectedCustomerId
-    ? measurements.filter((m) => m.customerId === selectedCustomerId)
+    ? measurements.filter((m: any) => m.customerId === selectedCustomerId)
     : []
 
   return (

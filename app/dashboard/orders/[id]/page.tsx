@@ -237,7 +237,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 <div className="px-5 py-4 border-b border-gray-200">
                     <h2 className="font-semibold text-sm">Status history</h2>
                 </div>
-                {order.statusHistory.map((h) => (
+                {order.statusHistory.map((h: any) => (
                     <div key={h.id} className="flex items-center gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0">
                         <OrderStatusBadge status={h.status} />
                         <div className="min-w-0 flex-1">
