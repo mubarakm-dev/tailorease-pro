@@ -170,3 +170,22 @@ export async function sendOrderReadyEmail(to: string, customerName: string, orde
   const html = `<div><h2>Ready for pickup</h2><p>Dear ${customerName}, your order "<b>${orderTitle}</b>" is ready. Please stop by to collect it.</p></div>`
   await sendEmail(to, subject, html)
 }
+
+export async function sendPasswordResetEmail(to: string, resetLink: string, staffName: string): Promise<void> {
+  const subject = "Reset your TailorEase password"
+  const html = `
+    <div style="font-family: sans-serif; max-width: 400px; margin: 0 auto; padding: 20px;">
+      <h2>Password Reset Request</h2>
+      <p>Dear ${staffName},</p>
+      <p>We received a request to reset your password. Click the link below to set a new password:</p>
+      <div style="text-align: center; margin: 24px 0;">
+        <a href="${resetLink}" style="display: inline-block; background: #b07c34; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600;">Reset Password</a>
+      </div>
+      <p>This link expires in 1 hour.</p>
+      <p>If you didn't request this, ignore this email and your password will remain unchanged.</p>
+      <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+      <p style="color: #6b7280; font-size: 12px;">This is an automated message. Please do not reply to this email.</p>
+    </div>
+  `
+  await sendEmail(to, subject, html)
+}

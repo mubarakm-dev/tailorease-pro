@@ -41,7 +41,7 @@ export default async function CompanyManagementPage() {
             </div>
 
             {/* DETAILS */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 grid grid-cols-2 gap-5 text-sm">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm">
                 <Detail label="Company code">
                     <span className="inline-flex items-center gap-2">
                         <code className="font-mono font-semibold tracking-wider">{company?.companyCode}</code>

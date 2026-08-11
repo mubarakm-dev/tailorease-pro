@@ -9,7 +9,10 @@ import PhotoGrid from "./PhotoGrid"
 import { PaymentSection } from "./PaymentSection"
 import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
 import { createAmendment } from "./amendmentAction"
+import { duplicateOrder } from "./duplicateAction"
 import { OrderStatusFlow } from "./OrderStatusFlow"
+import OrderEditForm from "./OrderEditForm"
+import MeasurementEditForm from "./MeasurementEditForm"
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -114,6 +117,22 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                         View original: {order.parentOrder.title} →
                     </Link>
                 )}
+
+                {/* Duplicate Order button */}
+                {order.type !== "AMENDMENT" && (
+                    <div className="mt-4">
+                        <ConfirmButton
+                            action={duplicateOrder.bind(null, order.id)}
+                            className="text-sm font-medium px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition"
+                            title="Create a duplicate of this order?"
+                            message={`A copy of "${order.title}" will be created with the same measurements, price, and notes. You can edit it before saving.`}
+                            confirmText="Duplicate Order"
+                            pendingText="Creating…"
+                        >
+                            Duplicate Order
+                        </ConfirmButton>
+                    </div>
+                )}
             </div>
 
             {order.dueDate && (() => {
@@ -132,23 +151,24 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 </div>
             )}
 
+            <OrderEditForm
+                orderId={order.id}
+                title={order.title}
+                amount={order.amount}
+                dueDate={order.dueDate}
+                notes={notes}
+                isNew={order.status === "RECEIVED"}
+            />
+
             {measurement && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-                    <h2 className="font-semibold text-sm mb-4">Measurements</h2>
-                    <div className="flex flex-col gap-3">
-                        <div className="text-xs text-gray-500">
-                            <p>{measurement.template.name} — {new Date(measurement.createdAt).toLocaleDateString()}</p>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            {Object.entries(measurement.values as Record<string, any>).map(([key, value]) => (
-                                <div key={key} className="text-sm">
-                                    <p className="text-gray-500 capitalize">{key.replace(/_/g, " ")}</p>
-                                    <p className="font-semibold text-gray-800">{value} {measurement.unit}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                <MeasurementEditForm
+                    orderId={order.id}
+                    measurementId={measurement.id}
+                    templateName={measurement.template.name}
+                    unit={measurement.unit}
+                    values={measurement.values as Record<string, any>}
+                    isNew={order.status === "RECEIVED"}
+                />
             )}
 
             <OrderStatusFlow currentStatus={order.status} orderId={order.id} />

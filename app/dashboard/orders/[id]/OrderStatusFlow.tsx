@@ -21,7 +21,7 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
 
     const currentIdx = stageIndex(currentStatus)
 
-    // Auto-dismiss success message after 3 seconds
+
     useEffect(() => {
         if (message?.type === "success") {
             const timer = setTimeout(() => setMessage(null), 3000)
@@ -63,7 +63,7 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
 
     return (
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-            {/* Message at top */}
+      
             {message && (
                 <div className={`mb-6 p-4 rounded-lg border transition-all duration-300 ${
                     message.type === "success"
@@ -76,38 +76,44 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
                 </div>
             )}
 
-            <h2 className="font-semibold text-sm mb-8 text-gray-900">Order Progress</h2>
+            <h2 className="font-semibold text-sm mb-2 text-gray-900">Order Progress</h2>
+            <p className="text-xs text-gray-500 mb-6">Click any stage above or use buttons below to change status</p>
 
-            {/* Timeline - Clean and minimal */}
             <div className="flex items-center gap-3 mb-8">
                 {STAGES.map((stage, idx) => {
                     const isCompleted = idx < currentIdx
                     const isCurrent = idx === currentIdx
-                    const isUpcoming = idx > currentIdx
+                    const isClickable = stage.key !== currentStatus
 
                     return (
                         <div key={stage.key} className="flex items-center flex-1">
-                            {/* Stage Circle */}
+                          
                             <button
                                 onClick={() => handleStageClick(stage.key)}
-                                disabled={loading}
+                                disabled={loading || !isClickable}
+
                                 className={`
                                     w-10 h-10 rounded-full flex items-center justify-center font-semibold text-xs
-                                    transition-all duration-300 shrink-0
+                                    transition-all duration-300 cursor-pointer shrink-0
                                     ${isCurrent
                                         ? "bg-[#b07c34] text-white shadow-md ring-2 ring-[#b07c34] ring-offset-2"
                                         : isCompleted
-                                            ? "bg-green-500 text-white"
-                                            : "bg-gray-200 text-gray-600"
+                                            ? "bg-green-500 text-white hover:bg-green-600 hover:shadow-md cursor-pointer"
+                                            : "bg-gray-200 text-gray-600 hover:bg-gray-300 hover:shadow-md cursor-pointer"
                                     }
-                                    ${isUpcoming && !isCurrent ? "cursor-pointer hover:bg-gray-300" : ""}
-                                    disabled:opacity-50 disabled:cursor-not-allowed
+                                    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-inherit disabled:hover:shadow-none
                                 `}
+                                title={isClickable ? `Go to ${stage.label}` : "Current stage"}
                             >
-                                {isCompleted ? "✓" : idx + 1}
+                                {isCompleted ? (
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                ) : (
+                                    idx + 1
+                                )}
                             </button>
 
-                            {/* Connector */}
                             {idx < STAGES.length - 1 && (
                                 <div
                                     className={`flex-1 h-0.5 mx-2 transition-colors ${
@@ -120,7 +126,7 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
                 })}
             </div>
 
-            {/* Labels */}
+         
             <div className="flex items-center gap-3 mb-8">
                 {STAGES.map((stage, idx) => (
                     <div key={stage.key} className="flex-1 text-center">
@@ -137,13 +143,47 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
                 ))}
             </div>
 
-            {/* Current Status Card */}
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+          
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 mb-6">
                 <p className="text-xs text-gray-600 uppercase tracking-wide font-semibold">Current Status</p>
                 <p className="text-sm font-semibold text-gray-900 mt-1">{STAGES[currentIdx]?.label}</p>
             </div>
 
-            {/* Confirmation Modal */}
+            <div className="flex gap-3">
+                {currentIdx > 0 && (
+                    <button
+                        onClick={() => handleStageClick(STAGES[currentIdx - 1].key)}
+                        disabled={loading}
+                        className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-200 transition disabled:opacity-50"
+                    >
+                        ← Move to {STAGES[currentIdx - 1].label}
+                    </button>
+                )}
+
+                {currentIdx < STAGES.length - 1 && (
+                    <button
+                        onClick={() => handleStageClick(STAGES[currentIdx + 1].key)}
+                        disabled={loading}
+                        className="flex-1 px-4 py-2.5 bg-[#b07c34] text-white rounded-lg text-sm font-medium hover:bg-[#9a6a2a] transition disabled:opacity-50"
+                    >
+                        Advance to {STAGES[currentIdx + 1].label} →
+                    </button>
+                )}
+
+                {currentIdx === STAGES.length - 1 && (
+                    <div className="flex-1 px-4 py-2.5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg text-center border border-green-200 shadow-sm">
+                        <div className="flex items-center justify-center gap-2">
+                            <svg className="w-4 h-4 text-green-700" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            <p className="text-sm font-semibold text-green-700">Order Complete</p>
+                        </div>
+                        <p className="text-xs text-green-600 mt-0.5">Ready for delivery</p>
+                    </div>
+                )}
+            </div>
+
+      
             {showConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full">

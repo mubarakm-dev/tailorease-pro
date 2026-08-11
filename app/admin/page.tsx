@@ -357,7 +357,7 @@ export default async function AdminDashboardPage() {
                                                 <p><strong>Owner:</strong> {company.staff[0]?.fullName}</p>
                                                 <p><strong>Email:</strong> {company.staff[0]?.email}</p>
                                             </div>
-                                            <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-200">
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-200">
                                                 <div>
                                                     <div className="text-lg font-bold text-gray-900 font-variant-numeric">{company._count.staff}</div>
                                                     <div className="text-xs text-gray-600 mt-1">Staff</div>
@@ -406,7 +406,7 @@ export default async function AdminDashboardPage() {
                                                 <p><strong>Owner:</strong> {company.staff[0]?.fullName}</p>
                                                 <p><strong>Email:</strong> {company.staff[0]?.email}</p>
                                             </div>
-                                            <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-200">
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-200">
                                                 <div>
                                                     <div className="text-lg font-bold text-gray-900 font-variant-numeric">{company._count.staff}</div>
                                                     <div className="text-xs text-gray-600 mt-1">Staff</div>

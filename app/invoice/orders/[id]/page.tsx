@@ -62,7 +62,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* Dates */}
-          <div className="grid grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
               <p className="text-gray-600 font-medium text-xs">Invoice Date</p>
               <p className="text-gray-900 text-xs">{new Date(order.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
@@ -74,7 +74,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
           </div>
 
 
-          <div className="grid grid-cols-2 gap-4 py-3 border-y border-gray-300">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-3 border-y border-gray-300">
             <div className="text-xs">
               <p className="text-gray-600 font-medium mb-1">Bill To</p>
               <p className="font-semibold text-gray-900 text-xs">{order.customer.fullName}</p>
@@ -88,25 +88,26 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-gray-900">
-                <th className="text-left py-1 text-gray-900 font-semibold">Description</th>
-                <th className="text-right py-1 text-gray-900 font-semibold">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-gray-300">
-                <td className="py-1 text-gray-900 text-xs">{order.title}</td>
-                <td className="text-right py-1 text-gray-900 font-medium text-xs">₦{(order.amount ?? 0).toLocaleString()}</td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="py-1 text-gray-900 font-semibold text-right pr-2 text-xs">Total Due:</td>
-                <td className="text-right py-1 text-gray-900 font-bold text-xs">₦{(order.amount ?? 0).toLocaleString()}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-gray-900">
+                  <th className="text-left py-1 text-gray-900 font-semibold">Description</th>
+                  <th className="text-right py-1 text-gray-900 font-semibold">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-gray-300">
+                  <td className="py-1 text-gray-900 text-xs">{order.title}</td>
+                  <td className="text-right py-1 text-gray-900 font-medium text-xs">₦{(order.amount ?? 0).toLocaleString()}</td>
+                </tr>
+                <tr className="bg-gray-50">
+                  <td className="py-1 text-gray-900 font-semibold text-right pr-2 text-xs">Total Due:</td>
+                  <td className="text-right py-1 text-gray-900 font-bold text-xs">₦{(order.amount ?? 0).toLocaleString()}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <div className="space-y-1 bg-gray-50 p-2 rounded text-xs">
             <div className="flex justify-between">
@@ -129,7 +130,8 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
           {order.payments.length > 0 && (
             <div className="space-y-1">
               <p className="text-xs font-semibold text-gray-900">Payment History</p>
-              <table className="w-full text-xs border-collapse">
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs border-collapse">
                 <thead>
                   <tr className="bg-gray-100 border border-gray-300">
                     <th className="px-1 py-1 text-left text-gray-900 text-xs">Date</th>
@@ -149,6 +151,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           )}
 

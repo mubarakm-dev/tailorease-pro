@@ -140,7 +140,7 @@ export default async function OverviewPage() {
                 <div className="px-6 py-5 border-b border-gray-200">
                     <h2 className="font-semibold text-sm text-gray-900">Orders pipeline</h2>
                 </div>
-                <div className="grid grid-cols-5 gap-3 p-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 p-6">
                     {STAGES.map((stage, idx) => (
                         <Link
                             key={stage.key}
@@ -161,7 +161,12 @@ export default async function OverviewPage() {
             {dueSoonOrders.length > 0 && (
                 <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
-                        <h2 className="font-semibold text-sm text-gray-900">⏰ Due soon (next 3 days)</h2>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
+                            </svg>
+                            <h2 className="font-semibold text-sm text-gray-900">Due soon (next 3 days)</h2>
+                        </div>
                         <span className="text-xs text-gray-400">{dueSoonOrders.length} order{dueSoonOrders.length > 1 ? 's' : ''}</span>
                     </div>
                     <div>

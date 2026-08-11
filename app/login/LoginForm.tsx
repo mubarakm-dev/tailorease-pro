@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useEffect, useState } from "react"
 import Link from "next/link"
 import { login, LoginState } from "./actions"
 
@@ -9,8 +9,22 @@ const initialState: LoginState = {
     error: null,
 }
 
-export default function LoginForm() {
+export default function LoginForm({ resetSuccess }: { resetSuccess?: boolean }) {
+    const [showResetMessage, setShowResetMessage] = useState(resetSuccess)
     const [state, formAction, isPending] = useActionState(login, initialState)
+
+    useEffect(() => {
+        if (showResetMessage) {
+            const timer = setTimeout(() => setShowResetMessage(false), 3000)
+            return () => clearTimeout(timer)
+        }
+    }, [showResetMessage])
+
+    useEffect(() => {
+        if (state.error) {
+            setShowResetMessage(false)
+        }
+    }, [state.error])
 
     return (
         <div className="min-h-screen bg-[#F1EFE9] flex flex-col">
@@ -31,6 +45,20 @@ export default function LoginForm() {
                         <h1 className="text-3xl font-serif font-bold text-[#1B2233] mb-2">Sign in to your workshop</h1>
                         <p className="text-gray-600">Access your dashboard and manage orders.</p>
                     </div>
+
+                    {showResetMessage && (
+                        <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 shadow-sm animate-in fade-in duration-300">
+                            <div className="flex items-start gap-3">
+                                <svg className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <div>
+                                    <p className="text-sm font-semibold text-emerald-900">Password reset successfully</p>
+                                    <p className="text-xs text-emerald-700 mt-1">Sign in with your new password.</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {state.error && (
                         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
@@ -75,9 +103,11 @@ export default function LoginForm() {
                                 {isPending ? "Signing in..." : "Sign in"}
                             </button>
 
-                            <p className="text-center text-sm text-gray-600 mt-4">
-                                Don't have an account? <Link href="/register/staff" className="text-[#B07C34] font-semibold hover:underline">Register as staff</Link>
-                            </p>
+                            <div className="flex items-center justify-between text-sm mt-4">
+                                <Link href="/forgot-password" className="text-[#B07C34] hover:underline">Forgot password?</Link>
+                                <span className="text-gray-400">·</span>
+                                <Link href="/register/staff" className="text-[#B07C34] hover:underline">Register as staff</Link>
+                            </div>
                         </form>
                     )}
                 </div>

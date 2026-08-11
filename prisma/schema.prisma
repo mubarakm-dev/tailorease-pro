@@ -42,6 +42,7 @@ model Staff {
   orders           Order[]
   statusHistory    StatusHistory[]
   activityLogs     ActivityLog[]
+  passwordResetToken PasswordResetToken?
 
   @@index([companyId])
 }
@@ -200,6 +201,17 @@ model ActivityLog {
   staff      Staff?   @relation(fields: [staffId], references: [id])
 
   @@index([companyId, createdAt])
+  @@index([staffId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  staffId   String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  staff     Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
   @@index([staffId])
 }
 
