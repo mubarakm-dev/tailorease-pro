@@ -73,7 +73,7 @@ export const createOrder = async (prevState: OrderCreateState, formData: FormDat
 
     let orderId: string
     try {
-        orderId = await prisma.$transaction(async (tx) => {
+        orderId = await prisma.$transaction(async (tx: any) => {
             const order = await tx.order.create({
                 data: {
                     customerId,

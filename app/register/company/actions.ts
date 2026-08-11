@@ -124,7 +124,7 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
         const hashedPassword = await bcrypt.hash(password, 10)
         const companyCode = await generateCompanyCode()
 
-        const result = await prisma.$transaction(async (tx) => {
+        const result = await prisma.$transaction(async (tx: any) => {
             const company = await tx.company.create({
 
                 data: {
