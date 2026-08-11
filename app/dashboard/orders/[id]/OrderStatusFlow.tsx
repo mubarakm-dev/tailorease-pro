@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { advanceOrderStatus } from "./action"
-import type { OrderStatus } from "@prisma/client"
+
+type OrderStatus = "RECEIVED" | "CUT_IN_PROGRESS" | "SEWING_IN_PROGRESS" | "FINISHING" | "COMPLETED"
 
 const STAGES: { key: OrderStatus; label: string }[] = [
     { key: "RECEIVED", label: "Received" },

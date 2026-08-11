@@ -1,11 +1,11 @@
 import { isAuth } from "@/app/libs/session"
 import { prisma } from "@/app/libs/prisma"
 import { approveStaff, rejectStaff } from "./action"
-import type { OrderStatus } from "@prisma/client"
 import ConfirmButton from "@/app/components/ConfirmButton"
 import Link from "next/link"
 import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
 
+type OrderStatus = "RECEIVED" | "CUT_IN_PROGRESS" | "SEWING_IN_PROGRESS" | "FINISHING" | "COMPLETED"
 
 const STAGES: { key: OrderStatus; label: string; color: string }[] = [
     { key: "RECEIVED", label: "Received", color: "#3f6ea8" },

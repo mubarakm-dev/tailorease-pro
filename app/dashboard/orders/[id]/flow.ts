@@ -1,5 +1,4 @@
-import type { OrderStatus } from "@prisma/client"
-
+type OrderStatus = "RECEIVED" | "CUT_IN_PROGRESS" | "SEWING_IN_PROGRESS" | "FINISHING" | "COMPLETED"
 
 export const FLOW: OrderStatus[] = ["RECEIVED", "CUT_IN_PROGRESS", "SEWING_IN_PROGRESS", "FINISHING", "COMPLETED"]
 

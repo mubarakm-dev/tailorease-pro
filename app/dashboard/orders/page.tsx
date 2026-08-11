@@ -4,8 +4,9 @@ import Link from "next/link"
 import OrderStatusBadge from "../components/OrderStatusBadge"
 import SearchBox from "../components/SearchBox"
 import { FLOW, STATUS_LABELS } from "./[id]/flow"
-import type { OrderStatus } from "@prisma/client"
 import { getOrderUrgency, getUrgencyLabel, getUrgencyColor } from "@/app/libs/orderUrgency"
+
+type OrderStatus = "RECEIVED" | "CUT_IN_PROGRESS" | "SEWING_IN_PROGRESS" | "FINISHING" | "COMPLETED"
 
 const PER_PAGE = 20
 

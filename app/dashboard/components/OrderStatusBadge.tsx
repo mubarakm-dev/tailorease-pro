@@ -1,4 +1,4 @@
-import type { OrderStatus } from "@prisma/client"
+type OrderStatus = "RECEIVED" | "CUT_IN_PROGRESS" | "SEWING_IN_PROGRESS" | "FINISHING" | "COMPLETED"
 
 const STATUS_META: Record<OrderStatus, { label: string; className: string }> = {
     RECEIVED: { label: "Received", className: "bg-blue-50 text-blue-700" },
