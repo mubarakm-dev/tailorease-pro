@@ -28,7 +28,7 @@ export default async function NewOrderPage() {
     })
   ])
 
-  return <NewOrderForm customers={customers} measurements={measurements.map(m => ({
+  return <NewOrderForm customers={customers} measurements={measurements.map((m: any) => ({
     ...m,
     snapshot: m.snapshot as Record<string, any>
   }))} />
