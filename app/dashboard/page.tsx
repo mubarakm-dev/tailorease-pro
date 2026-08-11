@@ -99,7 +99,7 @@ export default async function OverviewPage() {
         ])
 
 
-    const pipeline = new Map(ordersByStatus.map((o: any) => [o.status, o._count._all]))
+    const pipeline = new Map<string, number>(ordersByStatus.map((o: any) => [o.status, o._count._all]))
 
     const hour = new Date().getHours()
     const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"
