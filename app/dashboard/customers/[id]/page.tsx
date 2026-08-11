@@ -63,7 +63,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
     if (!customer) notFound()
 
     const isAdmin = session.role === "SUPER_ADMIN"
-    const templates = templatesRaw.map((t) => ({ ...t, fieldDefinitions: t.fieldDefinitions as string[] }))
+    const templates = templatesRaw.map((t: any) => ({ ...t, fieldDefinitions: t.fieldDefinitions as string[] }))
 
     return (
         <div className="p-6 max-w-3xl mx-auto flex flex-col gap-6">
