@@ -248,7 +248,7 @@ export default async function AdminDashboardPage() {
                                         No recent activity
                                     </div>
                                 ) : (
-                                    recentActivity.map((activity) => (
+                                    recentActivity.map((activity: { id: string; summary: string; createdAt: Date }) => (
                                         <div key={activity.id} className="px-6 py-4 flex gap-3">
                                             <div className="shrink-0 w-2 h-2 rounded-full bg-[#b07c34] mt-2"></div>
                                             <div className="flex-1 min-w-0">
