@@ -41,7 +41,7 @@ export const updateStaffProfile = async (prevState: ProfileState, formData: Form
     const phoneChanged = staff.phone !== phone.trim()
 
     if (!nameChanged && !phoneChanged) {
-      return { success: true, message: "No changes made" }
+      return { success: true, error: null, message: "No changes made" }
     }
 
     
@@ -68,7 +68,7 @@ export const updateStaffProfile = async (prevState: ProfileState, formData: Form
       }
     })
 
-    return { success: true, message: "Profile updated successfully" }
+    return { success: true, error: null, message: "Profile updated successfully" }
   } catch (error) {
     console.error("Profile update error:", error)
     return { success: false, error: "Failed to update profile" }
@@ -93,7 +93,7 @@ export const requestPasswordChangeOTP = async (prevState: ProfileState, formData
     await sendOTPEmail(staff.email, code)
 
 
-    return { success: true, message: "OTP sent to your email" }
+    return { success: true, error: null, message: "OTP sent to your email" }
   } catch (error) {
     console.error("OTP request error:", error)
     return { success: false, error: "Failed to send OTP" }
@@ -165,7 +165,7 @@ export const verifyOTPAndChangePassword = async (prevState: ProfileState, formDa
       where: { id: otpRecord.id }
     })
 
-    return { success: true, message: "Password changed successfully. Please sign in with your new password" }
+    return { success: true, error: null, message: "Password changed successfully. Please sign in with your new password" }
   } catch (error) {
     console.error("Password change error:", error)
     return { success: false, error: "Failed to change password" }

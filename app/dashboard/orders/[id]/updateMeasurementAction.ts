@@ -32,7 +32,7 @@ export const updateMeasurement = async (orderId: string, measurementId: string, 
       return { success: false, error: "Measurement not found" }
     }
 
-    const values = { ...measurement.values }
+    const values = { ...(measurement.values as Record<string, any>) }
 
     for (const [key, _] of Object.entries(values)) {
       const value = formData.get(key)?.toString()

@@ -182,15 +182,17 @@ export default async function OverviewPage() {
                                         <p className="text-sm font-semibold truncate">{order.title}</p>
                                         <p className="text-xs text-gray-400">{order.customer.fullName}</p>
                                     </div>
-                                    <div className="flex items-center gap-3 ml-4">
-                                        <div className="text-right">
-                                            <p className="text-xs font-medium">{new Date(order.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                            <p className="text-xs text-gray-400">{new Date(order.dueDate).toLocaleDateString()}</p>
+                                    {order.dueDate && (
+                                        <div className="flex items-center gap-3 ml-4">
+                                            <div className="text-right">
+                                                <p className="text-xs font-medium">{new Date(order.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                <p className="text-xs text-gray-400">{new Date(order.dueDate).toLocaleDateString()}</p>
+                                            </div>
+                                            <div className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap border ${getUrgencyColor(urgency)}`}>
+                                                {getUrgencyLabel(urgency)}
+                                            </div>
                                         </div>
-                                        <div className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap border ${getUrgencyColor(urgency)}`}>
-                                            {getUrgencyLabel(urgency)}
-                                        </div>
-                                    </div>
+                                    )}
                                 </Link>
                             )
                         })}
