@@ -59,7 +59,7 @@ export default function LandingPage() {
                         Manage. Measure. Master.
                     </p>
                     <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                        TailorEase holds every customer, their measurements, and each order — from <em>received to ready for pickup</em> — in one calm place. So your hands stay on the cloth, not the paperwork.
+                        TailorEase keeps every customer, measurement, and order in one place—from <em>received to ready for pickup</em>. So your hands stay on the cloth, not the paperwork.
                     </p>
                     <div className="flex flex-col md:flex-row gap-4 mb-8">
                         <Link href="/register/company" className="bg-[#B07C34] text-white px-8 py-3 rounded font-semibold hover:bg-[#9a6a2a] transition text-center">
@@ -71,7 +71,7 @@ export default function LandingPage() {
                     </div>
                     <p className="text-sm text-gray-600">
                         <span className="text-[#B07C34] mr-2">✱</span>
-                        Built for busy shops — <strong>owners, tailors, and every order</strong>, in one workspace.
+                        Built for busy shops. <strong>Owners, tailors, and every order</strong> in one workspace.
                     </p>
                 </div>
                 <div className="bg-white border border-black/8 rounded-lg p-8 shadow-sm">
@@ -80,23 +80,23 @@ export default function LandingPage() {
                     <div className="space-y-4">
                         <div className="flex justify-between pb-4 border-b border-black/5">
                             <span className="text-gray-700">Customer</span>
-                            <span className="font-semibold">Bisi Lawal</span>
+                            <span className="font-semibold text-[#1B2233]">Bisi Lawal</span>
                         </div>
                         <div className="flex justify-between pb-4 border-b border-black/5">
                             <span className="text-gray-700">Chest</span>
-                            <span className="font-semibold">44 in</span>
+                            <span className="font-semibold text-[#1B2233]">44 in</span>
                         </div>
                         <div className="flex justify-between pb-4 border-b border-black/5">
                             <span className="text-gray-700">Length</span>
-                            <span className="font-semibold">58 in</span>
+                            <span className="font-semibold text-[#1B2233]">58 in</span>
                         </div>
                         <div className="flex justify-between pb-4 border-b border-black/5">
                             <span className="text-gray-700">Sleeve</span>
-                            <span className="font-semibold">25 in</span>
+                            <span className="font-semibold text-[#1B2233]">25 in</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-700">Price</span>
-                            <span className="font-semibold">₦85,000</span>
+                            <span className="font-semibold text-[#1B2233]">₦85,000</span>
                         </div>
                     </div>
                     <div className="mt-6 pt-6 border-t border-black/5 text-sm text-green-600">
@@ -136,7 +136,7 @@ export default function LandingPage() {
                                 </svg>
                             </div>
                             <h3 className="font-serif text-lg mb-2 text-[#1B2233]">Your templates, their numbers</h3>
-                            <p className="text-gray-600">Define what you measure once — Kaftan, Agbada, Suit — then record each client against it. Edit a template later and past measurements stay exactly as they were taken.</p>
+                            <p className="text-gray-600">Create templates for what you measure (Kaftan, Agbada, Suit), then record each client against it. Edit a template later and past measurements stay unchanged.</p>
                         </div>
 
                         <div className="bg-white border border-black/8 rounded-lg p-8">
@@ -146,7 +146,7 @@ export default function LandingPage() {
                                 </svg>
                             </div>
                             <h3 className="font-serif text-lg mb-2 text-[#1B2233]">From received to ready</h3>
-                            <p className="text-gray-600">Move each order through the workshop — Received, Cutting, Sewing, Finishing, Completed — with a full record of who did what and when.</p>
+                            <p className="text-gray-600">Move orders through five stages (Received, Cutting, Sewing, Finishing, Completed) with a full record of who did what and when.</p>
                         </div>
 
                         <div className="bg-white border border-black/8 rounded-lg p-8">
