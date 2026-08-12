@@ -47,9 +47,9 @@ export default function MeasurementEditForm({
       </div>
 
       {state.error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg mb-4 text-sm">
+        <p className="text-red-600 text-base mb-4">
           {state.error}
-        </div>
+        </p>
       )}
 
       {showSuccess && (

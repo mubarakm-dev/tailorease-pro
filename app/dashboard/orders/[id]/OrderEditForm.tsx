@@ -47,9 +47,9 @@ export default function OrderEditForm({
       <h2 className="font-semibold text-sm mb-4 text-gray-900">Edit Order Details</h2>
 
       {state.error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-4">
+        <p className="text-red-600 text-base mb-4">
           {state.error}
-        </div>
+        </p>
       )}
 
       {showSuccess && (

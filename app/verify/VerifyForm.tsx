@@ -61,15 +61,15 @@ export default function VerifyForm() {
           </div>
 
           {lastAction === "verify" && !isPending && state.error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+            <p className="text-red-600 text-base mb-6">
               {state.error}
-            </div>
+            </p>
           )}
 
           {lastAction === "resend" && !isResending && resendState.error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+            <p className="text-red-600 text-base mb-6">
               {resendState.error}
-            </div>
+            </p>
           )}
 
           {lastAction === "resend" && !isResending && resendState.message && (

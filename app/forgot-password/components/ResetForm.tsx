@@ -23,9 +23,9 @@ export default function ResetForm({ token }: { token: string }) {
       </div>
 
       {state.error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+        <p className="text-red-600 text-base mb-6">
           {state.error}
-        </div>
+        </p>
       )}
 
       <form action={formAction} className="space-y-5 bg-white border border-black/8 rounded-lg p-8">

@@ -22,9 +22,9 @@ export default function RequestForm() {
       )}
 
       {state.error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+        <p className="text-red-600 text-base mb-6">
           {state.error}
-        </div>
+        </p>
       )}
 
       {state.success && !state.error ? (
