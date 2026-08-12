@@ -74,7 +74,7 @@ export default async function ProfilePage() {
 
           <div>
             <p className="text-sm text-gray-500 mb-1">Account Status</p>
-            <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[staff.status]}`}>
+            <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[staff.status as keyof typeof statusColors]}`}>
               {staff.status}
             </span>
           </div>
