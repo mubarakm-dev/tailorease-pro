@@ -1,5 +1,9 @@
 import { loadEnvFile } from "process";
-loadEnvFile(".env.local");
+import { existsSync } from "fs";
+
+if (existsSync(".env.local")) {
+  loadEnvFile(".env.local");
+}
 
 import { defineConfig } from "prisma/config";
 
