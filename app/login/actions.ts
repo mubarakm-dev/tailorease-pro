@@ -114,7 +114,8 @@ export const login = async (prevState: LoginState, formData: FormData):Promise<L
 
 
     } catch (error) {
-        return { error: "Something went wrong", success: false }
+        console.error("Login error:", error)
+        return { error: `Error: ${error instanceof Error ? error.message : "Unknown error"}`, success: false }
     }
 
     redirect("/dashboard")
