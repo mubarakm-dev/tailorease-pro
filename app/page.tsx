@@ -52,7 +52,7 @@ export default function LandingPage() {
                     <div className="text-[#B07C34] text-xs font-semibold uppercase tracking-wider mb-4">
                         For tailoring houses & fashion studios
                     </div>
-                    <h1 className="font-serif text-4xl md:text-5xl leading-tight mb-4">
+                    <h1 className="font-serif text-4xl md:text-5xl leading-tight mb-4 text-[#1B2233]">
                         The measure of a <em className="italic text-[#B07C34]">well-run</em> workshop.
                     </h1>
                     <p className="text-[#B07C34] text-sm font-semibold uppercase tracking-wider mb-8">
@@ -76,7 +76,7 @@ export default function LandingPage() {
                 </div>
                 <div className="bg-white border border-black/8 rounded-lg p-8 shadow-sm">
                     <span className="inline-block bg-[#FBF0E6] text-[#B07C34] text-xs font-semibold px-3 py-1 rounded mb-4">Sewing</span>
-                    <h3 className="font-serif text-xl mb-6">Wedding Agbada</h3>
+                    <h3 className="font-serif text-xl mb-6 text-[#1B2233]">Wedding Agbada</h3>
                     <div className="space-y-4">
                         <div className="flex justify-between pb-4 border-b border-black/5">
                             <span className="text-gray-700">Customer</span>
@@ -111,7 +111,7 @@ export default function LandingPage() {
                     <div className="text-[#B07C34] text-xs font-semibold uppercase tracking-wider mb-4">
                         Everything the shop needs
                     </div>
-                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-4">
+                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-4 text-[#1B2233]">
                         The whole job, from first fitting to final pickup.
                     </h2>
                     <p className="text-gray-600 mb-12 max-w-2xl">
@@ -168,7 +168,7 @@ export default function LandingPage() {
                     <div className="text-[#B07C34] text-xs font-semibold uppercase tracking-wider mb-4">
                         The workshop, in motion
                     </div>
-                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-4">
+                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-4 text-white">
                         Watch an order move down the line.
                     </h2>
                     <p className="text-gray-300 mb-12 max-w-2xl">
@@ -192,7 +192,7 @@ export default function LandingPage() {
                                         <div className="w-6 h-6 border-4 border-[#B07C34] rounded-full bg-[#1B2233]"></div>
                                     </div>
                                     <div className="text-[#B07C34] text-xs font-semibold uppercase tracking-wider mb-2">Stage {step.stage}</div>
-                                    <h3 className="font-serif text-lg mb-2">{step.title}</h3>
+                                    <h3 className="font-serif text-lg mb-2 text-white">{step.title}</h3>
                                     <p className="text-sm text-gray-300">{step.desc}</p>
                                 </div>
                             ))}
@@ -211,7 +211,7 @@ export default function LandingPage() {
                     <div className="text-[#B07C34] text-xs font-semibold uppercase tracking-wider mb-4">
                         Built for the whole shop
                     </div>
-                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-4">
+                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-4 text-[#1B2233]">
                         Owners set the rules. Tailors do the work.
                     </h2>
                     <p className="text-gray-600 mb-12">
@@ -221,7 +221,7 @@ export default function LandingPage() {
                     <div className="grid md:grid-cols-2 gap-8">
                         <div className="bg-white border border-black/8 rounded-lg p-8">
                             <span className="inline-block bg-[#FBF0E6] text-[#B07C34] text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded mb-4">Owner · Super Admin</span>
-                            <h3 className="font-serif text-2xl mb-6">You hold the keys</h3>
+                            <h3 className="font-serif text-2xl mb-6 text-[#1B2233]">You hold the keys</h3>
                             <ul className="space-y-3 text-gray-600">
                                 <li className="flex items-start"><span className="text-[#B07C34] mr-3 font-bold">✓</span>Approve or suspend staff with a tap</li>
                                 <li className="flex items-start"><span className="text-[#B07C34] mr-3 font-bold">✓</span>Create the measurement templates the shop uses</li>
@@ -232,7 +232,7 @@ export default function LandingPage() {
 
                         <div className="bg-white border border-black/8 rounded-lg p-8">
                             <span className="inline-block bg-[#FBF0E6] text-[#B07C34] text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded mb-4">Tailors · Staff</span>
-                            <h3 className="font-serif text-2xl mb-6">The team gets to work</h3>
+                            <h3 className="font-serif text-2xl mb-6 text-[#1B2233]">The team gets to work</h3>
                             <ul className="space-y-3 text-gray-600">
                                 <li className="flex items-start"><span className="text-[#B07C34] mr-3 font-bold">✓</span>Add customers and record their measurements</li>
                                 <li className="flex items-start"><span className="text-[#B07C34] mr-3 font-bold">✓</span>Take new orders and move them through the workflow</li>
@@ -250,7 +250,7 @@ export default function LandingPage() {
                     <div className="text-[#B07C34] text-xs font-semibold uppercase tracking-wider mb-4">
                         Ready when you are
                     </div>
-                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-6">
+                    <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-6 text-[#1B2233]">
                         Give your workshop its measure.
                     </h2>
                     <p className="text-gray-600 text-lg mb-8 leading-relaxed">
