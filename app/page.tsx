@@ -28,7 +28,7 @@ export default function LandingPage() {
                 }
             `}</style>
 
-            {/* Navbar */}
+           
             <nav className="sticky top-0 z-100 flex items-center justify-between px-12 py-6 border-b border-black/8 bg-[#F1EFE9]">
                 <Link href="/" className="flex items-center gap-1">
                     <img src="/images/logo.png" alt="TailorEase" className="h-14 w-auto" />
@@ -83,19 +83,19 @@ export default function LandingPage() {
                             <span className="font-semibold">Bisi Lawal</span>
                         </div>
                         <div className="flex justify-between pb-4 border-b border-black/5">
-                            <span className="text-gray-500">Chest</span>
+                            <span className="text-gray-700">Chest</span>
                             <span className="font-semibold">44 in</span>
                         </div>
                         <div className="flex justify-between pb-4 border-b border-black/5">
-                            <span className="text-gray-500">Length</span>
+                            <span className="text-gray-700">Length</span>
                             <span className="font-semibold">58 in</span>
                         </div>
                         <div className="flex justify-between pb-4 border-b border-black/5">
-                            <span className="text-gray-500">Sleeve</span>
+                            <span className="text-gray-700">Sleeve</span>
                             <span className="font-semibold">25 in</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-500">Price</span>
+                            <span className="text-gray-700">Price</span>
                             <span className="font-semibold">₦85,000</span>
                         </div>
                     </div>
@@ -125,7 +125,7 @@ export default function LandingPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
-                            <h3 className="font-serif text-lg mb-2">Every client, one tap away</h3>
+                            <h3 className="font-serif text-lg mb-2 text-[#1B2233]">Every client, one tap away</h3>
                             <p className="text-gray-600">Keep names, phone numbers, and history in order. Open a customer to see their measurements and every order they've placed — at a glance.</p>
                         </div>
 
@@ -135,7 +135,7 @@ export default function LandingPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
-                            <h3 className="font-serif text-lg mb-2">Your templates, their numbers</h3>
+                            <h3 className="font-serif text-lg mb-2 text-[#1B2233]">Your templates, their numbers</h3>
                             <p className="text-gray-600">Define what you measure once — Kaftan, Agbada, Suit — then record each client against it. Edit a template later and past measurements stay exactly as they were taken.</p>
                         </div>
 
@@ -145,7 +145,7 @@ export default function LandingPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m0 0l8 4m-8-4v10l8 4m0-10l8-4m-8 4v10l8-4m0 0l-8 4m8-4l-8-4" />
                                 </svg>
                             </div>
-                            <h3 className="font-serif text-lg mb-2">From received to ready</h3>
+                            <h3 className="font-serif text-lg mb-2 text-[#1B2233]">From received to ready</h3>
                             <p className="text-gray-600">Move each order through the workshop — Received, Cutting, Sewing, Finishing, Completed — with a full record of who did what and when.</p>
                         </div>
 
@@ -155,7 +155,7 @@ export default function LandingPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                 </svg>
                             </div>
-                            <h3 className="font-serif text-lg mb-2">Tell them it's ready — automatically</h3>
+                            <h3 className="font-serif text-lg mb-2 text-[#1B2233]">Tell them it's ready — automatically</h3>
                             <p className="text-gray-600">The moment an order is marked complete, the customer hears their garment is ready for pickup. No follow-up calls, no forgetting to notify.</p>
                         </div>
                     </div>

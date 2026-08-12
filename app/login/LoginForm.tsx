@@ -83,7 +83,7 @@ export default function LoginForm({ resetSuccess }: { resetSuccess?: boolean }) 
                             <div>
                                 <label className="block text-sm font-medium text-[#1B2233] mb-2">Email</label>
                                 <input type="email" name="email" required
-                                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] placeholder:text-gray-500"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] placeholder:text-gray-500 text-gray-900"
                                     placeholder="you@example.com"
                                     autoComplete="email"
                                 />
@@ -92,7 +92,7 @@ export default function LoginForm({ resetSuccess }: { resetSuccess?: boolean }) 
                             <div>
                                 <label className="block text-sm font-medium text-[#1B2233] mb-2">Password</label>
                                 <input type="password" name="password" required
-                                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] placeholder:text-gray-500"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] placeholder:text-gray-500 text-gray-900"
                                     placeholder="••••••••"
                                     autoComplete="current-password"
                                 />
