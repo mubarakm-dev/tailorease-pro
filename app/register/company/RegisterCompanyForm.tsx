@@ -128,9 +128,10 @@ export default function RegisterCompanyForm() {
                                 {isPending ? "Registering..." : "Create Account"}
                             </button>
 
-                            <p className="text-center text-sm text-gray-600 mt-4">
-                                Already have an account? <Link href="/login" className="text-[#B07C34] font-semibold hover:underline">Sign in</Link>
-                            </p>
+                            <div className="space-y-2 text-center text-sm text-gray-600 mt-4">
+                                <p>Already have an account? <Link href="/login" className="text-[#B07C34] font-semibold hover:underline">Sign in</Link></p>
+                                <p>Joining an existing shop? <Link href="/register/staff" className="text-[#B07C34] font-semibold hover:underline">Register as staff</Link></p>
+                            </div>
                         </form>
                     )}
                 </div>

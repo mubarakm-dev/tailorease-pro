@@ -103,10 +103,13 @@ export default function LoginForm({ resetSuccess }: { resetSuccess?: boolean }) 
                                 {isPending ? "Signing in..." : "Sign in"}
                             </button>
 
-                            <div className="flex items-center justify-between text-sm mt-4">
-                                <Link href="/forgot-password" className="text-[#B07C34] hover:underline">Forgot password?</Link>
-                                <span className="text-gray-400">·</span>
-                                <Link href="/register/staff" className="text-[#B07C34] hover:underline">Register as staff</Link>
+                            <div className="space-y-2 text-sm mt-6">
+                                <div className="flex items-center justify-between">
+                                    <Link href="/forgot-password" className="text-[#B07C34] hover:underline">Forgot password?</Link>
+                                    <span className="text-gray-400">·</span>
+                                    <Link href="/register/staff" className="text-[#B07C34] hover:underline">Register as staff</Link>
+                                </div>
+                                <p className="text-center text-gray-500 mt-8 pt-4 border-t border-gray-200">New business? <Link href="/register/company" className="text-[#B07C34] hover:underline font-semibold">Register your shop</Link></p>
                             </div>
                         </form>
                     )}
