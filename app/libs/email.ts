@@ -6,7 +6,7 @@ const sendbyte = new SendByte(process.env.SENDBYTE_API_KEY!)
 export const sendOTPEmail = async (to: string, code: string): Promise<void> => {
   try {
     await sendbyte.emails.send({
-      from: "TailorEase <noreply@yourdomain.com>",
+      from: "TailorEase <mubarakaduragbemi@gmail.com>",
       to,
       subject: "Your TailorEase Verification Code",
       html: `
@@ -36,7 +36,7 @@ export const sendOTPEmail = async (to: string, code: string): Promise<void> => {
 export const sendEmail = async (to: string, subject: string, html: string) => {
   try {
     await sendbyte.emails.send({
-      from: "TailorEase <noreply@yourdomain.com>",
+      from: "TailorEase <mubarakaduragbemi@gmail.com>",
       to,
       subject,
       html,
