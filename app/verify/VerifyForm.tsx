@@ -79,12 +79,14 @@ export default function VerifyForm() {
           )}
 
           {state.success && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center">
-              <div className="text-4xl mb-4">✓</div>
-              <p className="text-green-900 font-semibold mb-2">{state.message}</p>
-              <p className="text-green-700 text-sm mb-6">Your account is verified and ready to use.</p>
-              <Link href="/login" className="inline-block w-full text-center bg-[#B07C34] text-white py-2.5 rounded-lg font-semibold hover:bg-[#9a6a2a] transition">
-                Sign in now
+            <div className="rounded-lg p-8 text-center bg-gradient-to-br from-green-500 to-green-600 text-white">
+              <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-2xl font-serif font-bold mb-2">{state.message}</p>
+              <p className="text-green-100 text-sm mb-6">Email verified. Your company is awaiting platform approval from our team before you can proceed.</p>
+              <Link href="/login" className="inline-block w-full text-center bg-white text-green-600 py-2.5 rounded-lg font-semibold hover:bg-green-50 transition">
+                Sign in
               </Link>
             </div>
           )}
