@@ -102,7 +102,7 @@ export default function VerifyForm() {
                     required
                     maxLength={6}
                     placeholder="000000"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-center text-2xl tracking-[0.5em] font-mono focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-center text-2xl tracking-[0.5em] font-mono text-gray-900 placeholder:text-gray-500 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
                   />
                 </div>
 
