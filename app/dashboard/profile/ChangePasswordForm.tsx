@@ -71,7 +71,7 @@ export function ChangePasswordForm({ email }: { email: string }) {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-center text-2xl tracking-[0.25em] font-mono focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
                 placeholder="000000"
               />
-              <p className="text-xs text-gray-500 mt-1">6-digit code sent to your email</p>
+              <p className="text-xs text-gray-700 mt-1">6-digit code sent to your email</p>
             </div>
 
             <div>
@@ -83,7 +83,7 @@ export function ChangePasswordForm({ email }: { email: string }) {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
                 placeholder="Enter new password"
               />
-              <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+              <p className="text-xs text-gray-700 mt-1">Minimum 8 characters</p>
             </div>
 
             <div>

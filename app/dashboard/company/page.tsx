@@ -7,7 +7,7 @@ import CopyButton from "../components/CopyButton"
 function Detail({ label, children }: { label: string; children: React.ReactNode }) {
     return (
         <div>
-            <p className="text-xs uppercase tracking-wide text-gray-400">{label}</p>
+            <p className="text-xs uppercase tracking-wide text-gray-700">{label}</p>
             <p className="mt-0.5 text-gray-800">{children}</p>
         </div>
     )
@@ -37,7 +37,7 @@ export default async function CompanyManagementPage() {
         <div className="p-6 max-w-3xl mx-auto flex flex-col gap-6">
             <div>
                 <h1 className="text-2xl font-semibold">Company Management</h1>
-                <p className="text-gray-500 text-sm mt-1">Your company details.</p>
+                <p className="text-gray-700 text-sm mt-1">Your company details.</p>
             </div>
 
             {/* DETAILS */}

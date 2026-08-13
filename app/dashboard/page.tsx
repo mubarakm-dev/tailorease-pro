@@ -36,9 +36,9 @@ function StatTile({ label, value, hint, attn, href, index = 0 }: { label: string
 
     const inner = (
         <>
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-600">{label}</p>
             <p className={`text-4xl font-semibold mt-3 tabular-nums ${attn ? "text-amber-600" : "text-gray-900"}`}>{value}</p>
-            <p className="text-xs text-gray-400 mt-2">{hint}</p>
+            <p className="text-xs text-gray-600 mt-2">{hint}</p>
         </>
     )
     return href ? (
@@ -122,7 +122,7 @@ export default async function OverviewPage() {
 
             <div>
                 <h1 className="text-3xl font-semibold text-gray-900">{greeting}, {firstName}</h1>
-                <p className="text-gray-500 text-base mt-2">Here&apos;s what&apos;s happening at your shop today.</p>
+                <p className="text-gray-600 text-base mt-2">Here&apos;s what&apos;s happening at your shop today.</p>
             </div>
 
             {/* STAT TILES */}
@@ -152,7 +152,7 @@ export default async function OverviewPage() {
                         >
                             <div className="h-1 w-2/3 mx-auto rounded mb-3" style={{ background: stage.color }} />
                             <div className="text-2xl font-semibold tabular-nums text-gray-900">{pipeline.get(stage.key) ?? 0}</div>
-                            <div className="text-[11px] uppercase tracking-wide text-gray-500 mt-2 font-medium">{stage.label}</div>
+                            <div className="text-[11px] uppercase tracking-wide text-gray-700 mt-2 font-medium">{stage.label}</div>
                         </Link>
                     ))}
                 </div>
@@ -167,7 +167,7 @@ export default async function OverviewPage() {
                             </svg>
                             <h2 className="font-semibold text-sm text-gray-900">Due soon (next 3 days)</h2>
                         </div>
-                        <span className="text-xs text-gray-400">{dueSoonOrders.length} order{dueSoonOrders.length > 1 ? 's' : ''}</span>
+                        <span className="text-xs text-gray-700">{dueSoonOrders.length} order{dueSoonOrders.length > 1 ? 's' : ''}</span>
                     </div>
                     <div>
                         {dueSoonOrders.map((order: any) => {
@@ -180,13 +180,13 @@ export default async function OverviewPage() {
                                 >
                                     <div className="min-w-0 flex-1">
                                         <p className="text-sm font-semibold truncate">{order.title}</p>
-                                        <p className="text-xs text-gray-400">{order.customer.fullName}</p>
+                                        <p className="text-xs text-gray-700">{order.customer.fullName}</p>
                                     </div>
                                     {order.dueDate && (
                                         <div className="flex items-center gap-3 ml-4">
                                             <div className="text-right">
                                                 <p className="text-xs font-medium">{new Date(order.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                                <p className="text-xs text-gray-400">{new Date(order.dueDate).toLocaleDateString()}</p>
+                                                <p className="text-xs text-gray-700">{new Date(order.dueDate).toLocaleDateString()}</p>
                                             </div>
                                             <div className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap border ${getUrgencyColor(urgency)}`}>
                                                 {getUrgencyLabel(urgency)}
@@ -209,7 +209,7 @@ export default async function OverviewPage() {
                             <Link href="/dashboard/staff" className="text-xs text-[#b07c34] font-medium hover:underline transition">Staff Management →</Link>
                         </div>
                         {pendingStaff.length === 0 ? (
-                            <p className="text-sm text-gray-400 px-5 py-6 text-center">No staff awaiting approval.</p>
+                            <p className="text-sm text-gray-700 px-5 py-6 text-center">No staff awaiting approval.</p>
                         ) : (
                             pendingStaff.map((s: any) => (
                                 <div key={s.id} className="flex items-center gap-3 px-5 py-3 border-b border-gray-100 last:border-b-0">
@@ -218,7 +218,7 @@ export default async function OverviewPage() {
                                     </span>
                                     <div className="min-w-0 flex-1">
                                         <p className="text-sm font-semibold truncate">{s.fullName}</p>
-                                        <p className="text-xs text-gray-400 truncate">{s.email}</p>
+                                        <p className="text-xs text-gray-700 truncate">{s.email}</p>
                                     </div>
                                     <ConfirmButton
                                         action={rejectStaff.bind(null, s.id)}
@@ -254,7 +254,7 @@ export default async function OverviewPage() {
                         <Link href="/dashboard/activity" className="text-xs text-[#b07c34] font-medium hover:underline transition">View all →</Link>
                     </div>
                     {recentActivity.length === 0 ? (
-                        <p className="text-sm text-gray-400 px-5 py-6 text-center">No activity yet.</p>
+                        <p className="text-sm text-gray-700 px-5 py-6 text-center">No activity yet.</p>
                     ) : (
                         recentActivity.map((log: any) => {
                             const name = log.staff?.fullName ?? "System"
@@ -266,7 +266,7 @@ export default async function OverviewPage() {
                                     <p className="text-sm flex-1">
                                         <span className="font-semibold">{name}</span> {log.summary}
                                     </p>
-                                    <span className="text-xs text-gray-400 whitespace-nowrap">{timeAgo(log.createdAt)}</span>
+                                    <span className="text-xs text-gray-700 whitespace-nowrap">{timeAgo(log.createdAt)}</span>
                                 </div>
                             )
                         })

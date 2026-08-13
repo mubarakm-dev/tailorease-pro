@@ -58,7 +58,7 @@ export default async function CustomersPage({
         <div className="p-6 max-w-5xl mx-auto flex flex-col gap-6">
             <div>
                 <h1 className="text-2xl font-semibold">Customers</h1>
-                <p className="text-gray-500 text-sm mt-1">{total} total</p>
+                <p className="text-gray-700 text-sm mt-1">{total} total</p>
             </div>
 
             <CustomerForm />
@@ -70,7 +70,7 @@ export default async function CustomersPage({
                     <h2 className="font-semibold text-sm">All customers</h2>
                 </div>
                 {customers.length === 0 ? (
-                    <p className="text-sm text-gray-400 px-5 py-8 text-center">
+                    <p className="text-sm text-gray-700 px-5 py-8 text-center">
                         {q ? "No customers match your search." : "No customers yet."}
                     </p>
                 ) : (
@@ -81,11 +81,11 @@ export default async function CustomersPage({
                             </span>
                             <div className="min-w-0 flex-1">
                                 <p className="text-sm font-semibold truncate">{c.fullName}</p>
-                                <p className="text-xs text-gray-400 truncate">
+                                <p className="text-xs text-gray-700 truncate">
                                     {c.phone}{c.email ? ` · ${c.email}` : ""}
                                 </p>
                             </div>
-                            <span className="text-xs text-gray-400 whitespace-nowrap">{c.createdAt.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</span>
+                            <span className="text-xs text-gray-700 whitespace-nowrap">{c.createdAt.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</span>
                         </Link>
                     ))
                 )}
@@ -93,7 +93,7 @@ export default async function CustomersPage({
 
             {totalPages > 1 && (
                 <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">Page {page} of {totalPages}</span>
+                    <span className="text-gray-700">Page {page} of {totalPages}</span>
                     <div className="flex gap-2">
                         {page > 1 ? (
                             <Link href={link({ page: page - 1 })} className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50">← Prev</Link>

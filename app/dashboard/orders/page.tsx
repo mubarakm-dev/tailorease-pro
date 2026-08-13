@@ -87,7 +87,7 @@ export default async function OrdersPage({
         <div className="p-6 max-w-5xl mx-auto flex flex-col gap-5">
             <div>
                 <h1 className="text-2xl font-semibold">Orders</h1>
-                <p className="text-gray-500 text-sm mt-1">{total} total</p>
+                <p className="text-gray-700 text-sm mt-1">{total} total</p>
             </div>
 
             {activeCustomer && (
@@ -139,7 +139,7 @@ export default async function OrdersPage({
 
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 {orders.length === 0 ? (
-                    <p className="text-sm text-gray-400 px-5 py-10 text-center">No orders found.</p>
+                    <p className="text-sm text-gray-700 px-5 py-10 text-center">No orders found.</p>
                 ) : (
                     orders.map((o: any) => {
                         const urgency = getOrderUrgency(o.dueDate)
@@ -151,7 +151,7 @@ export default async function OrdersPage({
                         >
                             <div className="min-w-0 flex-1">
                                 <p className="text-sm font-semibold truncate">{o.title}</p>
-                                <p className="text-xs text-gray-400 truncate">
+                                <p className="text-xs text-gray-700 truncate">
                                     {o.customer.fullName} · {o.createdAt.toLocaleDateString()}
                                     {o.amount != null ? ` · ₦${o.amount.toLocaleString()}` : ""}
                                 </p>
@@ -171,7 +171,7 @@ export default async function OrdersPage({
         
             {totalPages > 1 && (
                 <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">Page {page} of {totalPages}</span>
+                    <span className="text-gray-700">Page {page} of {totalPages}</span>
                     <div className="flex gap-2">
                         {page > 1 ? (
                             <Link href={link({ page: page - 1 })} className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50">← Prev</Link>

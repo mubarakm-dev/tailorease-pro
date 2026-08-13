@@ -55,7 +55,7 @@ export default function CompanyForm({
                 )}
                 <input type="file" name="companyImage" accept="image/*" onChange={handleImageChange}
                     className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
-                <p className="text-xs text-gray-500 mt-1">JPG, PNG, or WebP (max 2MB)</p>
+                <p className="text-xs text-gray-700 mt-1">JPG, PNG, or WebP (max 2MB)</p>
             </div>
 
             <div>

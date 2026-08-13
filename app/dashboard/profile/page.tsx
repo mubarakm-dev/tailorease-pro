@@ -34,7 +34,7 @@ export default async function ProfilePage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-900">My Profile</h1>
-        <p className="text-gray-500 mt-2">Manage your account settings and preferences</p>
+        <p className="text-gray-700 mt-2">Manage your account settings and preferences</p>
       </div>
 
       {/* Account Overview */}
@@ -43,37 +43,37 @@ export default async function ProfilePage() {
 
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <p className="text-sm text-gray-500 mb-1">Full Name</p>
+            <p className="text-sm text-gray-700 mb-1">Full Name</p>
             <p className="text-lg font-semibold text-gray-900">{staff.fullName}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-500 mb-1">Email Address</p>
+            <p className="text-sm text-gray-700 mb-1">Email Address</p>
             <p className="text-lg font-semibold text-gray-900">{staff.email}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-500 mb-1">Role</p>
+            <p className="text-sm text-gray-700 mb-1">Role</p>
             <p className="text-lg font-semibold text-gray-900">{staff.role === "SUPER_ADMIN" ? "Owner / Super Admin" : "Staff"}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-500 mb-1">Company</p>
+            <p className="text-sm text-gray-700 mb-1">Company</p>
             <p className="text-lg font-semibold text-gray-900">{staff.company.companyName}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-500 mb-1">Phone Number</p>
+            <p className="text-sm text-gray-700 mb-1">Phone Number</p>
             <p className="text-lg font-semibold text-gray-900">{staff.phone || "Not set"}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-500 mb-1">Joined</p>
+            <p className="text-sm text-gray-700 mb-1">Joined</p>
             <p className="text-lg font-semibold text-gray-900">{joinDate}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-500 mb-1">Account Status</p>
+            <p className="text-sm text-gray-700 mb-1">Account Status</p>
             <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[staff.status as keyof typeof statusColors]}`}>
               {staff.status}
             </span>

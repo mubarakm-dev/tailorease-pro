@@ -22,11 +22,11 @@ export default async function MeasurementsPage() {
         <div className="p-6 max-w-4xl mx-auto flex flex-col gap-6">
             <div>
                 <h1 className="text-2xl font-semibold">Measurement templates</h1>
-                <p className="text-gray-500 text-sm mt-1">Define the fields your team measures against.</p>
+                <p className="text-gray-700 text-sm mt-1">Define the fields your team measures against.</p>
             </div>
 
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 w-fit min-w-35">
-                <p className="text-sm text-gray-500">Templates</p>
+                <p className="text-sm text-gray-700">Templates</p>
                 <p className="text-3xl font-semibold mt-1 tabular-nums">{templates.length}</p>
             </div>
 
@@ -37,7 +37,7 @@ export default async function MeasurementsPage() {
                     <h2 className="font-semibold text-sm">Templates</h2>
                 </div>
                 {templates.length === 0 ? (
-                    <p className="text-sm text-gray-400 px-5 py-8 text-center">
+                    <p className="text-sm text-gray-700 px-5 py-8 text-center">
                         No templates yet{isAdmin ? " — create one to start recording measurements." : "."}
                     </p>
                 ) : (

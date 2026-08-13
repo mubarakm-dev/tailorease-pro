@@ -51,17 +51,17 @@ export default async function ActivityPage({
         <div className="p-6 max-w-3xl mx-auto flex flex-col gap-6">
             <div>
                 <h1 className="text-2xl font-semibold">Activity</h1>
-                <p className="text-gray-500 text-sm mt-1">{total} total</p>
+                <p className="text-gray-700 text-sm mt-1">{total} total</p>
             </div>
 
             {logs.length === 0 ? (
                 <section className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                    <p className="text-sm text-gray-400 px-5 py-10 text-center">No activity yet.</p>
+                    <p className="text-sm text-gray-700 px-5 py-10 text-center">No activity yet.</p>
                 </section>
             ) : (
                 groups.map((group: any) => (
                     <section key={group.label} className="flex flex-col gap-2">
-                        <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400 px-1">{group.label}</h2>
+                        <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-700 px-1">{group.label}</h2>
                         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                             {group.items.map((log: any) => {
                                 const name = log.staff?.fullName ?? "System"
@@ -73,7 +73,7 @@ export default async function ActivityPage({
                                         <p className="text-sm flex-1">
                                             <span className="font-semibold">{name}</span> {log.summary}
                                         </p>
-                                        <span className="text-xs text-gray-400 whitespace-nowrap">
+                                        <span className="text-xs text-gray-700 whitespace-nowrap">
                                             {log.createdAt.toLocaleTimeString(undefined, { timeStyle: "short" })}
                                         </span>
                                     </div>
@@ -86,7 +86,7 @@ export default async function ActivityPage({
 
             {totalPages > 1 && (
                 <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">Page {page} of {totalPages}</span>
+                    <span className="text-gray-700">Page {page} of {totalPages}</span>
                     <div className="flex gap-2">
                         {page > 1 ? (
                             <Link href={link(page - 1)} className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50">← Prev</Link>

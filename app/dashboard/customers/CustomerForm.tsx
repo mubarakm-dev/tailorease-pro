@@ -21,18 +21,18 @@ export default function CustomerForm() {
 
             <form action={formAction} className="grid sm:grid-cols-3 gap-3">
                 <div>
-                    <label className="block text-xs font-medium mb-1 text-gray-500">Full name</label>
+                    <label className="block text-xs font-medium mb-1 text-gray-700">Full name</label>
                     <input type="text" name="fullName" required
                         className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
                 </div>
                 <div>
-                    <label className="block text-xs font-medium mb-1 text-gray-500">Phone</label>
+                    <label className="block text-xs font-medium mb-1 text-gray-700">Phone</label>
                     <input type="tel" name="phone" required
                         className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
                 </div>
                 <div>
-                    <label className="block text-xs font-medium mb-1 text-gray-500">
-                        Email <span className="text-gray-400">(optional)</span>
+                    <label className="block text-xs font-medium mb-1 text-gray-700">
+                        Email <span className="text-gray-700">(optional)</span>
                     </label>
                     <input type="email" name="email"
                         className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />

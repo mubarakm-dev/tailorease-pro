@@ -29,7 +29,7 @@ export function EditProfileForm({ initialName, initialPhone }: { initialName: st
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
             placeholder="Your full name"
           />
-          <p className="text-xs text-gray-500 mt-1">Minimum 3 characters</p>
+          <p className="text-xs text-gray-700 mt-1">Minimum 3 characters</p>
         </div>
 
         <div>
@@ -43,7 +43,7 @@ export function EditProfileForm({ initialName, initialPhone }: { initialName: st
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
             placeholder="11-digit phone number"
           />
-          <p className="text-xs text-gray-500 mt-1">Exactly 11 characters (e.g., 08012345678)</p>
+          <p className="text-xs text-gray-700 mt-1">Exactly 11 characters (e.g., 08012345678)</p>
         </div>
 
         <button
