@@ -62,7 +62,7 @@ export default function RegisterCompanyForm() {
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Company Name</label>
                                         <input type="text" name="companyName" required
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="Your tailoring business name" />
                                     </div>
 
@@ -76,21 +76,21 @@ export default function RegisterCompanyForm() {
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Company Email</label>
                                         <input type="email" name="email" required
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="shop@example.com" />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Password</label>
                                         <input type="password" name="password" required
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="••••••••" />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Confirm Password</label>
                                         <input type="password" name="confirmPassword" required
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="••••••••" />
                                     </div>
                                 </div>
@@ -103,21 +103,21 @@ export default function RegisterCompanyForm() {
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Full Name</label>
                                         <input type="text" name="ownerFullname" required
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="Your full name" />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Email</label>
                                         <input type="email" name="ownerEmail" required
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="your@email.com" />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Phone</label>
                                         <input type="text" name="ownerPhone" required
-                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
+                                            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="+234 800 000 0000" />
                                     </div>
                                 </div>
