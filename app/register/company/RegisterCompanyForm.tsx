@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useState } from "react"
 import Link from "next/link"
 import { registerCompany, RegisterCompanyState } from "./actions"
 
@@ -12,6 +12,25 @@ const initialState: RegisterCompanyState = {
 
 export default function RegisterCompanyForm() {
     const [state, formAction, isPending] = useActionState(registerCompany, initialState)
+    const [fileError, setFileError] = useState<string | null>(null)
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            const maxSize = 2 * 1024 * 1024 // 2MB
+            if (file.size > maxSize) {
+                setFileError("Image must be smaller than 2MB")
+                e.target.value = ""
+            } else {
+                setFileError(null)
+            }
+        }
+    }
+
+    const handleSubmit = (formData: FormData) => {
+        if (fileError) return
+        formAction(formData)
+    }
 
     return (
         <div className="min-h-screen bg-[#F1EFE9] flex flex-col">
@@ -33,9 +52,9 @@ export default function RegisterCompanyForm() {
                         <p className="text-gray-600">Set up your account to start managing orders and measurements.</p>
                     </div>
 
-                    {state.error && (
+                    {(state.error || fileError) && (
                         <p className="text-red-600 text-base mb-6">
-                            {state.error}
+                            {state.error || fileError}
                         </p>
                     )}
 
@@ -54,7 +73,7 @@ export default function RegisterCompanyForm() {
                     )}
 
                     {!state.success && (
-                        <form action={formAction} className="space-y-5 bg-white border border-black/8 rounded-lg p-8">
+                        <form action={handleSubmit} className="space-y-5 bg-white border border-black/8 rounded-lg p-8">
                             {/* Company Section */}
                             <div>
                                 <p className="text-xs uppercase tracking-widest text-[#B07C34] font-semibold mb-4">Company details</p>
@@ -69,6 +88,7 @@ export default function RegisterCompanyForm() {
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Company Logo/Image (optional)</label>
                                         <input type="file" name="companyImage" accept="image/*"
+                                            onChange={handleFileChange}
                                             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]" />
                                         <p className="text-xs text-gray-500 mt-1">JPG, PNG, or WebP (max 2MB)</p>
                                     </div>
