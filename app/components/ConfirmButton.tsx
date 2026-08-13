@@ -5,13 +5,13 @@ import { useEffect, useState, useTransition } from "react"
 type Props = {
     
     action: () => Promise<unknown>
-    children: React.ReactNode // trigger button label
-    className?: string // trigger button styling
+    children: React.ReactNode 
+    className?: string 
     title: string
     message: string
     confirmText?: string
     pendingText?: string
-    danger?: boolean // red confirm button for destructive actions
+    danger?: boolean 
 }
 
 export default function ConfirmButton({
@@ -25,6 +25,7 @@ export default function ConfirmButton({
     danger = false,
 }: Props) {
     const [open, setOpen] = useState(false)
+    const [error, setError] = useState<string | null>(null)
     const [isPending, startTransition] = useTransition()
 
     
@@ -38,9 +39,15 @@ export default function ConfirmButton({
     }, [open, isPending])
 
     const onConfirm = () => {
+        setError(null)
         startTransition(async () => {
-            await action()
-            setOpen(false)
+            try {
+                await action()
+                setOpen(false)
+            } catch (err) {
+                const errorMessage = err instanceof Error ? err.message : "Something went wrong"
+                setError(errorMessage)
+            }
         })
     }
 
@@ -60,6 +67,11 @@ export default function ConfirmButton({
                     <div className="relative w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
                         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
                         <p className="mt-2 text-sm text-gray-500">{message}</p>
+                        {error && (
+                            <p className="text-red-600 text-sm mt-4">
+                                {error}
+                            </p>
+                        )}
                         <div className="mt-6 flex justify-end gap-2">
                             <button
                                 type="button"

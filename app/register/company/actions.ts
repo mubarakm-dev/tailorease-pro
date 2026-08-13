@@ -172,9 +172,7 @@ export const registerCompany = async (prevState: RegisterCompanyState, formData:
 
 
     } catch (error) {
-        if (error instanceof Error) {
-            return { error: error.message, success: false }
-        }
-        return { error: "Something went wrong", success: false }
+        console.error("Company registration error:", error)
+        return { error: "Failed to register company. Please try again.", success: false }
     }
 }

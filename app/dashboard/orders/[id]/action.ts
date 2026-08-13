@@ -10,106 +10,118 @@ import { nextStatus, prevStatus, STATUS_LABELS } from "./flow"
 
 
 export const advanceOrderStatus = async (orderId: string, formData?: FormData) => {
-    const session = await requireActiveStaff()
+    try {
+        const session = await requireActiveStaff()
 
-    const order = await prisma.order.findFirst({
-        where: { id: orderId, companyId: session.companyId },
-        select: {
-            id: true,
-            title: true,
-            amount: true,
-            status: true,
-            customer: {
-                select: {
-                    fullName: true,
-                    email: true
+        const order = await prisma.order.findFirst({
+            where: { id: orderId, companyId: session.companyId },
+            select: {
+                id: true,
+                title: true,
+                amount: true,
+                status: true,
+                customer: {
+                    select: {
+                        fullName: true,
+                        email: true
+                    }
                 }
+
             }
+        })
 
+        if (!order) {
+            return { success: false, error: "Order not found" }
         }
-    })
 
-    if (!order) {
-        return { success: false, error: "Order not found" }
+        // If targetStatus is provided in formData, use that. Otherwise, use next status.
+        let targetStatus = nextStatus(order.status)
+        if (formData) {
+            const target = formData.get("targetStatus")?.toString()
+            if (target) targetStatus = target as any
+        }
+
+        if (!targetStatus) return { success: false, error: "Cannot advance order" }
+
+        if (targetStatus === "COMPLETED" && session.role !== "SUPER_ADMIN") {
+            return { success: false, error: "Only admins can mark orders as complete" }
+        }
+
+        await prisma.$transaction([
+            prisma.order.update({ where: { id: orderId }, data: { status: targetStatus } }),
+            prisma.statusHistory.create({
+                data: { orderId, updatedById: session.staffId, status: targetStatus, note: `Moved to ${targetStatus}` },
+            }),
+        ])
+
+        const email = order.customer.email
+        if (targetStatus === "COMPLETED" && email) {
+            after(() => sendOrderReadyEmail(email, order.customer.fullName, order.title))
+        }
+
+        logActivity({
+            companyId: session.companyId,
+            staffId: session.staffId,
+            action: "order.advance",
+            entityType: "Order",
+            entityId: orderId,
+            summary: `moved "${order.title}" to ${STATUS_LABELS[targetStatus]}`,
+        })
+
+        revalidatePath(`/dashboard/orders/${orderId}`)
+
+        return { success: true, error: null }
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to update order status"
+        return { success: false, error: message }
     }
-
-    // If targetStatus is provided in formData, use that. Otherwise, use next status.
-    let targetStatus = nextStatus(order.status)
-    if (formData) {
-        const target = formData.get("targetStatus")?.toString()
-        if (target) targetStatus = target as any
-    }
-
-    if (!targetStatus) return { success: false, error: "Cannot advance order" }
-
-    if (targetStatus === "COMPLETED" && session.role !== "SUPER_ADMIN") {
-        return { success: false, error: "Only admins can mark orders as complete" }
-    }
-
-    await prisma.$transaction([
-        prisma.order.update({ where: { id: orderId }, data: { status: targetStatus } }),
-        prisma.statusHistory.create({
-            data: { orderId, updatedById: session.staffId, status: targetStatus, note: `Moved to ${targetStatus}` },
-        }),
-    ])
-
-    const email = order.customer.email
-    if (targetStatus === "COMPLETED" && email) {
-        after(() => sendOrderReadyEmail(email, order.customer.fullName, order.title))
-    }
-
-    logActivity({
-        companyId: session.companyId,
-        staffId: session.staffId,
-        action: "order.advance",
-        entityType: "Order",
-        entityId: orderId,
-        summary: `moved "${order.title}" to ${STATUS_LABELS[targetStatus]}`,
-    })
-
-    revalidatePath(`/dashboard/orders/${orderId}`)
-
-    return { success: true, error: null }
 }
 
 export const prevOrderStatus = async (orderId: string) => {
-    const session = await requireActiveStaff()
+    try {
+        const session = await requireActiveStaff()
 
-    const order = await prisma.order.findFirst({
-        where: { id: orderId, companyId: session.companyId },
-        select: {
-            id: true,
-            title: true,
-            status: true,
-        }
-    })
-
-    if (!order) {
-        return
-    }
-    const prev = prevStatus(order.status)
-    if (!prev) return
-
-    if (order.status === "COMPLETED" && session.role !== "SUPER_ADMIN") return
-    await prisma.$transaction([
-        prisma.order.update({ where: { id: orderId }, data: { status: prev } }),
-        prisma.statusHistory.create({
-            data: { orderId, updatedById: session.staffId, status: prev, note: `Reverted to ${STATUS_LABELS[prev]}` },
+        const order = await prisma.order.findFirst({
+            where: { id: orderId, companyId: session.companyId },
+            select: {
+                id: true,
+                title: true,
+                status: true,
+            }
         })
-    ])
 
-    logActivity({
-        companyId: session.companyId,
-        staffId: session.staffId,
-        action: "order.revert",
-        entityType: "Order",
-        entityId: orderId,
-        summary: `moved "${order.title}" back to ${STATUS_LABELS[prev]}`,
-    })
+        if (!order) {
+            return { success: false, error: "Order not found" }
+        }
+        const prev = prevStatus(order.status)
+        if (!prev) return { success: false, error: "Cannot revert this status" }
 
-    revalidatePath(`/dashboard/orders/${orderId}`)
+        if (order.status === "COMPLETED" && session.role !== "SUPER_ADMIN") {
+            return { success: false, error: "Only admins can revert completed orders" }
+        }
 
+        await prisma.$transaction([
+            prisma.order.update({ where: { id: orderId }, data: { status: prev } }),
+            prisma.statusHistory.create({
+                data: { orderId, updatedById: session.staffId, status: prev, note: `Reverted to ${STATUS_LABELS[prev]}` },
+            })
+        ])
 
+        logActivity({
+            companyId: session.companyId,
+            staffId: session.staffId,
+            action: "order.revert",
+            entityType: "Order",
+            entityId: orderId,
+            summary: `moved "${order.title}" back to ${STATUS_LABELS[prev]}`,
+        })
+
+        revalidatePath(`/dashboard/orders/${orderId}`)
+        return { success: true, error: null }
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to revert order status"
+        return { success: false, error: message }
+    }
 }
 
 export const uploadPhoto = async (orderId: string, formData: FormData) => {
@@ -172,31 +184,35 @@ export const uploadPhoto = async (orderId: string, formData: FormData) => {
 }
 
 export const deletePhoto = async (photoId: string, orderId: string) => {
-    const session = await requireActiveStaff()
-
-    const photo = await prisma.orderPhoto.findFirst({
-        where: { id: photoId, order: { companyId: session.companyId } },
-        select: { url: true }
-    })
-    if (!photo) return
-
-    const fileName = photo.url.split("/").slice(-2).join("/")
-
     try {
+        const session = await requireActiveStaff()
+
+        const photo = await prisma.orderPhoto.findFirst({
+            where: { id: photoId, order: { companyId: session.companyId } },
+            select: { url: true }
+        })
+        if (!photo) {
+            return { success: false, error: "Photo not found" }
+        }
+
+        const fileName = photo.url.split("/").slice(-2).join("/")
+
         await supabase.storage.from("orders").remove([fileName])
         await prisma.orderPhoto.delete({ where: { id: photoId } })
-    } catch {
-        return
+
+        logActivity({
+            companyId: session.companyId,
+            staffId: session.staffId,
+            action: "order.photo.delete",
+            entityType: "OrderPhoto",
+            entityId: photoId,
+            summary: `removed photo from order`
+        })
+
+        revalidatePath(`/dashboard/orders/${orderId}`)
+        return { success: true, error: null }
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to delete photo"
+        return { success: false, error: message }
     }
-
-    logActivity({
-        companyId: session.companyId,
-        staffId: session.staffId,
-        action: "order.photo.delete",
-        entityType: "OrderPhoto",
-        entityId: photoId,
-        summary: `removed photo from order`
-    })
-
-    revalidatePath(`/dashboard/orders/${orderId}`)
 }
