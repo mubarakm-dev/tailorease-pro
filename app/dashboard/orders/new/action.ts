@@ -74,6 +74,15 @@ export async function createOrder(
     }
   }
 
+  let parsedAmount: number | null = null
+  if (amount) {
+    const num = Number(amount)
+    if (!Number.isFinite(num) || !Number.isInteger(num) || num <= 0) {
+      return { success: false, error: "Amount must be a positive whole number" }
+    }
+    parsedAmount = num
+  }
+
   try {
     const order = await prisma.order.create({
       data: {
@@ -82,7 +91,7 @@ export async function createOrder(
         staffId: session.staffId,
         measurementId: measurementId || null,
         title,
-        amount: amount ? Math.max(0, parseInt(amount, 10)) : null,
+        amount: parsedAmount,
         type: "NEW",
         status: "RECEIVED",
         dueDate: dueDatetime,

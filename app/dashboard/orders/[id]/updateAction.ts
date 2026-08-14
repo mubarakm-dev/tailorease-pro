@@ -35,10 +35,11 @@ export const updateOrder = async (orderId: string, prevState: UpdateOrderState, 
     const updateData: any = { title }
 
     if (amount) {
-      updateData.amount = parseInt(amount, 10)
-      if (isNaN(updateData.amount) || updateData.amount < 0) {
-        return { success: false, error: "Amount must be a valid number" }
+      const num = Number(amount)
+      if (!Number.isFinite(num) || !Number.isInteger(num) || num <= 0) {
+        return { success: false, error: "Amount must be a positive whole number" }
       }
+      updateData.amount = num
     }
 
     if (dueDate) {

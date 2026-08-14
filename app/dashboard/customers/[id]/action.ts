@@ -37,7 +37,13 @@ export const createMeasurement = async (
     const values: Record<string, string> = {}
     for (const field of fields) {
         const v = formData.get(`v_${field}`)?.toString().trim()
-        if (v) values[field] = v
+        if (v) {
+            const num = Number(v)
+            if (!Number.isFinite(num) || num <= 0) {
+                return { success: false, error: `${field} must be a positive number` }
+            }
+            values[field] = v
+        }
     }
 
     let measurementId: string
@@ -205,8 +211,8 @@ export const updateMeasurement = async (prevState: MeasurementUpdateState, formD
     for (const field of union) {
         const v = formData.get(`v_${field}`)?.toString().trim()
         if (!v) return { success: false, error: `${field} is required` }
-        const num = parseFloat(v)
-        if (isNaN(num) || num <= 0) return { success: false, error: `${field} must be a positive number` }
+        const num = Number(v)
+        if (!Number.isFinite(num) || num <= 0) return { success: false, error: `${field} must be a positive number` }
         values[field] = v
     }
 

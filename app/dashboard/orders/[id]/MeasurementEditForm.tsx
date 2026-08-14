@@ -69,6 +69,7 @@ export default function MeasurementEditForm({
                 type="number"
                 name={key}
                 step="0.1"
+                min="0"
                 defaultValue={value}
                 disabled={isPending}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#b07c34] focus:ring-1 focus:ring-[#b07c34] disabled:bg-gray-50"

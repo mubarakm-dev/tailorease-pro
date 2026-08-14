@@ -37,7 +37,11 @@ export const updateMeasurement = async (orderId: string, measurementId: string, 
     for (const [key, _] of Object.entries(values)) {
       const value = formData.get(key)?.toString()
       if (value) {
-        values[key] = parseFloat(value)
+        const num = Number(value)
+        if (!Number.isFinite(num) || num <= 0) {
+          return { success: false, error: `${key} must be a positive number` }
+        }
+        values[key] = num
       }
     }
 

@@ -25,10 +25,11 @@ export const recordPayment = async (
     return { success: false, error: "Order ID and amount are required" }
   }
 
-  const paymentAmount = parseInt(amount, 10)
-  if (isNaN(paymentAmount) || paymentAmount <= 0) {
+  const num = Number(amount)
+  if (!Number.isFinite(num) || !Number.isInteger(num) || num <= 0) {
     return { success: false, error: "Amount must be a positive number" }
   }
+  const paymentAmount = num
 
   try {
    
