@@ -21,20 +21,20 @@ export default async function MeasurementsPage() {
     return (
         <div className="p-6 max-w-4xl mx-auto flex flex-col gap-6">
             <div>
-                <h1 className="text-2xl font-semibold">Measurement templates</h1>
+                <h1 className="text-2xl font-semibold text-gray-900">Measurement templates</h1>
                 <p className="text-gray-900 text-sm mt-1">Define the fields your team measures against.</p>
             </div>
 
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 w-fit min-w-35">
-                <p className="text-sm text-gray-900 placeholder:text-gray-500">Templates</p>
-                <p className="text-3xl font-semibold mt-1 tabular-nums">{templates.length}</p>
+                <p className="text-sm text-gray-900">Templates</p>
+                <p className="text-3xl font-semibold mt-1 tabular-nums text-gray-900">{templates.length}</p>
             </div>
 
             {isAdmin && <TemplateForm />}
 
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-200">
-                    <h2 className="font-semibold text-sm">Templates</h2>
+                    <h2 className="font-semibold text-sm text-gray-900">Templates</h2>
                 </div>
                 {templates.length === 0 ? (
                     <p className="text-sm text-gray-900 px-5 py-8 text-center">

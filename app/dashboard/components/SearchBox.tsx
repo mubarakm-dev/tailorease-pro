@@ -28,7 +28,7 @@ export default function SearchBox({ placeholder = "Search…" }: { placeholder?:
                 defaultValue={searchParams.get("q") ?? ""}
                 onChange={(e) => onSearch(e.target.value)}
                 placeholder={placeholder}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm pr-9"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm pr-9 text-gray-900 placeholder:text-gray-500"
             />
             {isPending && (
                 <span

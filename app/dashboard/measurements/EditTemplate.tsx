@@ -27,9 +27,9 @@ export default function EditTemplate({ id, name, fields, measurementCount }: Pro
         return (
             <div className="px-5 py-4 border-b border-gray-100 last:border-b-0">
                 <div className="flex items-center justify-between gap-2">
-                    <p className="font-semibold text-sm">{name}</p>
+                    <p className="font-semibold text-sm text-gray-900">{name}</p>
                     <div className="flex items-center gap-3 shrink-0">
-                        <span className="text-xs text-gray-900 placeholder:text-gray-500">{measurementCount} measurements</span>
+                        <span className="text-xs text-gray-900">{measurementCount} measurements</span>
                         <button type="button" onClick={() => setEditing(true)} className="text-xs text-[#b07c34] hover:underline">
                             Edit
                         </button>
@@ -46,13 +46,13 @@ export default function EditTemplate({ id, name, fields, measurementCount }: Pro
                                 Delete
                             </ConfirmButton>
                         ) : (
-                            <span className="text-xs text-gray-300 cursor-not-allowed">Delete</span>
+                            <span className="text-xs text-gray-500 cursor-not-allowed">Delete</span>
                         )}
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 mt-2">
                     {fields.map((field: any, i: number) => (
-                        <span key={i} className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5">
+                        <span key={i} className="text-xs bg-gray-100 text-gray-900 rounded-full px-2.5 py-0.5">
                             {field}
                         </span>
                     ))}

@@ -43,7 +43,7 @@ export default function DashboardShell({ companyName, companyImage, staffName, r
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
                     <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">
                         <h3 className="text-lg font-semibold text-[#1b2233] mb-2">Sign out?</h3>
-                        <p className="text-gray-600 text-sm mb-6">You'll be signed out and redirected to the login page.</p>
+                        <p className="text-gray-900 text-sm mb-6">You'll be signed out and redirected to the login page.</p>
                         <div className="flex gap-3">
                             <button
                                 type="button"

@@ -14,7 +14,7 @@ export default function CustomerForm() {
     const [state, formAction] = useActionState(createCustomer, initialState)
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-gray-200 text-gray-900 shadow-sm p-5">
             <h2 className="font-semibold text-sm mb-4">Add a customer</h2>
 
             <FormMessage state={state} />
