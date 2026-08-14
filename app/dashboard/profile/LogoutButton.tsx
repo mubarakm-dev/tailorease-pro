@@ -35,7 +35,7 @@ export function LogoutButton() {
                 type="button"
                 onClick={() => setShowModal(false)}
                 disabled={isLoggingOut}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 disabled:opacity-60 transition-all duration-300"
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 disabled:opacity-60 transition-all duration-300"
               >
                 Cancel
               </button>

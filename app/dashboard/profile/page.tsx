@@ -24,7 +24,7 @@ export default async function ProfilePage() {
   const statusColors: Record<string, string> = {
     APPROVED: "bg-green-100 text-green-700",
     PENDING: "bg-yellow-100 text-yellow-700",
-    UNVERIFIED: "bg-gray-100 text-gray-700",
+    UNVERIFIED: "bg-gray-100 text-gray-900 placeholder:text-gray-500",
     REJECTED: "bg-red-100 text-red-700",
     SUSPENDED: "bg-red-100 text-red-700"
   }
@@ -33,8 +33,8 @@ export default async function ProfilePage() {
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-gray-900">My Profile</h1>
-        <p className="text-gray-700 mt-2">Manage your account settings and preferences</p>
+        <h1 className="text-3xl font-semibold text-gray-900 placeholder:text-gray-500">My Profile</h1>
+        <p className="text-gray-900 mt-2">Manage your account settings and preferences</p>
       </div>
 
       {/* Account Overview */}
@@ -43,37 +43,37 @@ export default async function ProfilePage() {
 
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <p className="text-sm text-gray-700 mb-1">Full Name</p>
-            <p className="text-lg font-semibold text-gray-900">{staff.fullName}</p>
+            <p className="text-sm text-gray-900 mb-1">Full Name</p>
+            <p className="text-lg font-semibold text-gray-900 placeholder:text-gray-500">{staff.fullName}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-700 mb-1">Email Address</p>
-            <p className="text-lg font-semibold text-gray-900">{staff.email}</p>
+            <p className="text-sm text-gray-900 mb-1">Email Address</p>
+            <p className="text-lg font-semibold text-gray-900 placeholder:text-gray-500">{staff.email}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-700 mb-1">Role</p>
-            <p className="text-lg font-semibold text-gray-900">{staff.role === "SUPER_ADMIN" ? "Owner / Super Admin" : "Staff"}</p>
+            <p className="text-sm text-gray-900 mb-1">Role</p>
+            <p className="text-lg font-semibold text-gray-900 placeholder:text-gray-500">{staff.role === "SUPER_ADMIN" ? "Owner / Super Admin" : "Staff"}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-700 mb-1">Company</p>
-            <p className="text-lg font-semibold text-gray-900">{staff.company.companyName}</p>
+            <p className="text-sm text-gray-900 mb-1">Company</p>
+            <p className="text-lg font-semibold text-gray-900 placeholder:text-gray-500">{staff.company.companyName}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-700 mb-1">Phone Number</p>
-            <p className="text-lg font-semibold text-gray-900">{staff.phone || "Not set"}</p>
+            <p className="text-sm text-gray-900 mb-1">Phone Number</p>
+            <p className="text-lg font-semibold text-gray-900 placeholder:text-gray-500">{staff.phone || "Not set"}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-700 mb-1">Joined</p>
-            <p className="text-lg font-semibold text-gray-900">{joinDate}</p>
+            <p className="text-sm text-gray-900 mb-1">Joined</p>
+            <p className="text-lg font-semibold text-gray-900 placeholder:text-gray-500">{joinDate}</p>
           </div>
 
           <div>
-            <p className="text-sm text-gray-700 mb-1">Account Status</p>
+            <p className="text-sm text-gray-900 mb-1">Account Status</p>
             <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[staff.status as keyof typeof statusColors]}`}>
               {staff.status}
             </span>

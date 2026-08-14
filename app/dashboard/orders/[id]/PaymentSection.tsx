@@ -87,7 +87,7 @@ export function PaymentSection({
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">Amount</label>
+              <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-2">Amount</label>
               <input
                 type="number"
                 name="amount"
@@ -100,7 +100,7 @@ export function PaymentSection({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-2">
                 Method <span className="text-gray-400">(optional)</span>
               </label>
               <select
@@ -118,7 +118,7 @@ export function PaymentSection({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
+            <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-2">
               Notes <span className="text-gray-400">(optional)</span>
             </label>
             <textarea
@@ -146,7 +146,7 @@ export function PaymentSection({
             {payments.map((payment: any) => (
               <div key={payment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-gray-900 placeholder:text-gray-500">
                     ₦{payment.amount.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-500">

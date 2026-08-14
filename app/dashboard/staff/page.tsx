@@ -11,10 +11,10 @@ function StatusBadge({ status }: { status: string }) {
         PENDING: "bg-amber-50 text-amber-700",
         SUSPENDED: "bg-orange-50 text-orange-700",
         REJECTED: "bg-red-50 text-red-700",
-        UNVERIFIED: "bg-gray-100 text-gray-700",
+        UNVERIFIED: "bg-gray-100 text-gray-900 placeholder:text-gray-500",
     }
     return (
-        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${styles[status] ?? "bg-gray-100 text-gray-700"}`}>
+        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${styles[status] ?? "bg-gray-100 text-gray-900 placeholder:text-gray-500"}`}>
             {status.charAt(0) + status.slice(1).toLowerCase()}
         </span>
     )
@@ -40,7 +40,7 @@ export default async function StaffManagementPage() {
         <div className="p-6 max-w-5xl mx-auto flex flex-col gap-6">
             <div>
                 <h1 className="text-2xl font-semibold">Staff Management</h1>
-                <p className="text-gray-700 text-sm mt-1">
+                <p className="text-gray-900 text-sm mt-1">
                     {staff.length} {staff.length === 1 ? "member" : "members"}
                     {pendingCount > 0 && <span className="text-amber-600"> · {pendingCount} pending</span>}
                 </p>
@@ -50,7 +50,7 @@ export default async function StaffManagementPage() {
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex items-center gap-4 flex-wrap">
                 <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm">Invite your team</p>
-                    <p className="text-sm text-gray-700 mt-0.5">Share this code so staff can register and join {""}</p>
+                    <p className="text-sm text-gray-900 mt-0.5">Share this code so staff can register and join {""}</p>
                 </div>
                 <code className="text-base font-mono font-semibold tracking-wider bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
                     {company?.companyCode ?? "—"}
@@ -65,7 +65,7 @@ export default async function StaffManagementPage() {
                 </div>
 
                 {staff.length === 0 ? (
-                    <p className="text-sm text-gray-700 px-5 py-8 text-center">No staff yet.</p>
+                    <p className="text-sm text-gray-900 px-5 py-8 text-center">No staff yet.</p>
                 ) : (
                     staff.map((s: any) => {
                         const canManage = s.role !== "SUPER_ADMIN"
@@ -79,7 +79,7 @@ export default async function StaffManagementPage() {
                                         {s.fullName}
                                         {s.role === "SUPER_ADMIN" && <span className="ml-2 text-[10px] uppercase tracking-wide text-[#b07c34]">Owner</span>}
                                     </p>
-                                    <p className="text-xs text-gray-700 truncate">{s.email}</p>
+                                    <p className="text-xs text-gray-900 truncate">{s.email}</p>
                                 </div>
 
                                 <StatusBadge status={s.status} />

@@ -91,7 +91,7 @@ export default function PhotoUpload({ orderId }: Props) {
                         type="text"
                         name="caption"
                         placeholder="e.g. Front view, progress photo"
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500"
                     />
                 </div>
 

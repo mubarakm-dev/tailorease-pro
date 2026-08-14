@@ -21,16 +21,16 @@ export default function TemplateForm() {
 
             <form action={formAction} className="flex flex-col gap-3">
                 <div>
-                    <label className="block text-xs font-medium mb-1 text-gray-700">Template name</label>
+                    <label className="block text-xs font-medium mb-1 text-gray-900 placeholder:text-gray-500">Template name</label>
                     <input type="text" name="name" required placeholder="e.g. Kaftan"
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500" />
                 </div>
                 <div>
-                    <label className="block text-xs font-medium mb-1 text-gray-700">Fields</label>
+                    <label className="block text-xs font-medium mb-1 text-gray-900 placeholder:text-gray-500">Fields</label>
                     <textarea name="fields" required rows={4}
                         placeholder={"One field per line — e.g.\nChest\nWaist\nSleeve\nLength"}
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
-                    <p className="text-xs text-gray-700 mt-1">One field per line (or comma-separated).</p>
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500" />
+                    <p className="text-xs text-gray-900 mt-1">One field per line (or comma-separated).</p>
                 </div>
                 <div>
                     <SubmitButton className="bg-black text-white px-4 py-2 rounded text-sm hover:bg-gray-800" pendingText="Creating…">

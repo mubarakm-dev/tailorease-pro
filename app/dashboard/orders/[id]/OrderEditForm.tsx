@@ -44,7 +44,7 @@ export default function OrderEditForm({
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-      <h2 className="font-semibold text-sm mb-4 text-gray-900">Edit Order Details</h2>
+      <h2 className="font-semibold text-sm mb-4 text-gray-900 placeholder:text-gray-500">Edit Order Details</h2>
 
       {state.error && (
         <p className="text-red-600 text-base mb-4">
@@ -60,7 +60,7 @@ export default function OrderEditForm({
 
       <form action={formAction} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-1">Order Title</label>
+          <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-1">Order Title</label>
           <input
             type="text"
             name="title"
@@ -74,7 +74,7 @@ export default function OrderEditForm({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">Amount (₦)</label>
+            <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-1">Amount (₦)</label>
             <input
               type="number"
               name="amount"
@@ -87,7 +87,7 @@ export default function OrderEditForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">Due Date</label>
+            <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-1">Due Date</label>
             <input
               type="date"
               name="dueDate"
@@ -99,7 +99,7 @@ export default function OrderEditForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-1">Notes</label>
+          <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-1">Notes</label>
           <textarea
             name="notes"
             rows={3}

@@ -29,7 +29,7 @@ export default function EditTemplate({ id, name, fields, measurementCount }: Pro
                 <div className="flex items-center justify-between gap-2">
                     <p className="font-semibold text-sm">{name}</p>
                     <div className="flex items-center gap-3 shrink-0">
-                        <span className="text-xs text-gray-700">{measurementCount} measurements</span>
+                        <span className="text-xs text-gray-900 placeholder:text-gray-500">{measurementCount} measurements</span>
                         <button type="button" onClick={() => setEditing(true)} className="text-xs text-[#b07c34] hover:underline">
                             Edit
                         </button>
@@ -67,17 +67,17 @@ export default function EditTemplate({ id, name, fields, measurementCount }: Pro
             <input type="hidden" name="id" value={id} />
 
             <div>
-                <label className="block text-xs font-medium mb-1 text-gray-700">Template name</label>
+                <label className="block text-xs font-medium mb-1 text-gray-900 placeholder:text-gray-500">Template name</label>
                 <input type="text" name="name" required defaultValue={name}
                     className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white" />
             </div>
 
             <div>
-                <label className="block text-xs font-medium mb-1 text-gray-700">Fields</label>
+                <label className="block text-xs font-medium mb-1 text-gray-900 placeholder:text-gray-500">Fields</label>
                 <textarea name="fields" required rows={4} defaultValue={fields.join('\n')}
                     placeholder={"One field per line — e.g.\nChest\nWaist\nSleeve\nLength"}
                     className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white" />
-                <p className="text-xs text-gray-700 mt-1">One field per line (or comma-separated).</p>
+                <p className="text-xs text-gray-900 mt-1">One field per line (or comma-separated).</p>
             </div>
 
             <FormMessage state={state} />

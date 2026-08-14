@@ -194,7 +194,7 @@ export default function NewOrderForm({ customers, measurements }: Props) {
           </button>
           <Link
             href="/dashboard/orders"
-            className="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
+            className="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-900 font-medium hover:bg-gray-50 transition"
           >
             Cancel
           </Link>

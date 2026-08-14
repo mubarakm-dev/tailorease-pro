@@ -42,7 +42,7 @@ export default function MeasurementEditForm({
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
       <div className="mb-4">
-        <h2 className="font-semibold text-sm text-gray-900">Edit Measurements</h2>
+        <h2 className="font-semibold text-sm text-gray-900 placeholder:text-gray-500">Edit Measurements</h2>
         <p className="text-xs text-gray-500 mt-1">{templateName} ({unit})</p>
       </div>
 
@@ -62,7 +62,7 @@ export default function MeasurementEditForm({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {Object.entries(values).map(([key, value]: any) => (
             <div key={key}>
-              <label className="block text-sm font-medium text-gray-900 mb-1 capitalize">
+              <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-1 capitalize">
                 {key.replace(/_/g, " ")} ({unit})
               </label>
               <input

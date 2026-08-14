@@ -77,7 +77,7 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
                 </div>
             )}
 
-            <h2 className="font-semibold text-sm mb-2 text-gray-900">Order Progress</h2>
+            <h2 className="font-semibold text-sm mb-2 text-gray-900 placeholder:text-gray-500">Order Progress</h2>
             <p className="text-xs text-gray-500 mb-6">Click any stage above or use buttons below to change status</p>
 
             <div className="flex items-center gap-3 mb-8">
@@ -199,7 +199,7 @@ export function OrderStatusFlow({ currentStatus, orderId }: { currentStatus: Ord
                             <button
                                 onClick={() => setShowConfirm(null)}
                                 disabled={loading}
-                                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition disabled:opacity-50"
+                                className="px-4 py-2 text-sm font-medium text-gray-900 bg-gray-100 rounded-lg hover:bg-gray-200 transition disabled:opacity-50"
                             >
                                 Cancel
                             </button>

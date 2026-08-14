@@ -32,7 +32,7 @@ export default function DashboardShell({ companyName, companyImage, staffName, r
             <div className="flex-1 flex flex-col min-w-0">
                 <TopBar companyName={companyName} onMenu={() => setNavOpen(true)} />
                 <main className="flex-1">{children}</main>
-                <footer className="text-center text-xs text-gray-700 py-6 border-t border-gray-200 space-y-2">
+                <footer className="text-center text-xs text-gray-900 py-6 border-t border-gray-200 space-y-2">
                     <p className="text-[#b07c34] font-semibold uppercase tracking-wider">Manage. Measure. Master.</p>
                     <p>Powered by <span className="text-[#b07c34] font-semibold">TailorEase</span></p>
                 </footer>

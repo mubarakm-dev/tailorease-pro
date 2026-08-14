@@ -146,7 +146,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             })()}
 
             {notes.text && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 text-sm text-gray-700">
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 text-sm text-gray-900 placeholder:text-gray-500">
                     {notes.text}
                 </div>
             )}

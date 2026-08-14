@@ -43,19 +43,19 @@ export default function EditCustomer({ id, fullName, phone, email }: Props) {
             <div>
                 <label className="block text-xs font-medium mb-1 text-gray-500">Full name</label>
                 <input name="fullName" defaultValue={fullName} required
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500" />
             </div>
             <div>
                 <label className="block text-xs font-medium mb-1 text-gray-500">Phone</label>
                 <input name="phone" defaultValue={phone} required
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500" />
             </div>
             <div>
                 <label className="block text-xs font-medium mb-1 text-gray-500">
                     Email <span className="text-gray-400">(optional)</span>
                 </label>
                 <input type="email" name="email" defaultValue={email ?? ""}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500" />
             </div>
 
             <div className="flex items-center gap-2">

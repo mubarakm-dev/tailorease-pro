@@ -51,7 +51,7 @@ export function ChangePasswordForm({ email }: { email: string }) {
 
           <form action={verifyAction} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">Current Password</label>
+              <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-2">Current Password</label>
               <input
                 type="password"
                 name="currentPassword"
@@ -62,7 +62,7 @@ export function ChangePasswordForm({ email }: { email: string }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">Verification Code</label>
+              <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-2">Verification Code</label>
               <input
                 type="text"
                 name="otp"
@@ -71,11 +71,11 @@ export function ChangePasswordForm({ email }: { email: string }) {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-center text-2xl tracking-[0.25em] font-mono focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
                 placeholder="000000"
               />
-              <p className="text-xs text-gray-700 mt-1">6-digit code sent to your email</p>
+              <p className="text-xs text-gray-900 mt-1">6-digit code sent to your email</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">New Password</label>
+              <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-2">New Password</label>
               <input
                 type="password"
                 name="newPassword"
@@ -83,11 +83,11 @@ export function ChangePasswordForm({ email }: { email: string }) {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
                 placeholder="Enter new password"
               />
-              <p className="text-xs text-gray-700 mt-1">Minimum 8 characters</p>
+              <p className="text-xs text-gray-900 mt-1">Minimum 8 characters</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">Confirm New Password</label>
+              <label className="block text-sm font-medium text-gray-900 text-gray-900 mb-2">Confirm New Password</label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -110,7 +110,7 @@ export function ChangePasswordForm({ email }: { email: string }) {
                 onClick={() => {
                   setStep("request")
                 }}
-                className="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300"
+                className="px-6 py-2.5 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300"
               >
                 Back
               </button>

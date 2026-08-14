@@ -32,7 +32,7 @@ export default function TopBar({ companyName, onMenu }: { companyName: string; o
                 </svg>
             </button>
 
-            <div className="text-sm shrink-0 text-gray-700 whitespace-nowrap">
+            <div className="text-sm shrink-0 text-gray-900 whitespace-nowrap">
                 <span className="hidden sm:inline">{companyName} <span className="opacity-50">›</span> </span>
                 <span className="font-semibold text-gray-800">{section}</span>
             </div>
@@ -51,7 +51,7 @@ export default function TopBar({ companyName, onMenu }: { companyName: string; o
                 <Link
                     href="/dashboard/activity"
                     aria-label="Activity log"
-                    className="w-9 h-9 grid place-items-center rounded-lg border border-gray-200 text-gray-700 transition-all duration-300 hover:border-[#b07c34] hover:shadow-[0_8px_16px_rgba(176,124,52,0.15)] hover:-translate-y-0.5 hover:text-[#b07c34]"
+                    className="w-9 h-9 grid place-items-center rounded-lg border border-gray-200 text-gray-900 transition-all duration-300 hover:border-[#b07c34] hover:shadow-[0_8px_16px_rgba(176,124,52,0.15)] hover:-translate-y-0.5 hover:text-[#b07c34]"
                 >
                     <svg viewBox="0 0 24 24" className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="1.8">
                         <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
