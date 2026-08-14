@@ -26,19 +26,19 @@ export default function AddMeasurement({ customerId, templates }: { customerId: 
     return (
         <form action={formAction} className="p-5 flex flex-col gap-4 border-t border-gray-100 bg-gray-50/50">
             <input type="hidden" name="customerId" value={customerId} />
-            <h3 className="font-semibold text-sm">Add a measurement</h3>
+            <h3 className="font-semibold text-sm text-gray-900">Add a measurement</h3>
 
             <FormMessage state={state} />
 
             <div className="flex gap-3">
                 <div className="flex-1">
-                    <label className="block text-xs font-medium mb-1 text-gray-500">Template</label>
+                    <label className="block text-xs font-medium mb-1 text-gray-900">Template</label>
                     <select
                         name="templateId"
                         required
                         value={selectedId}
                         onChange={(e) => setSelectedId(e.target.value)}
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white"
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white text-gray-900"
                     >
                         <option value="">Choose a template…</option>
                         {templates.map((t: any) => (
@@ -47,8 +47,8 @@ export default function AddMeasurement({ customerId, templates }: { customerId: 
                     </select>
                 </div>
                 <div className="w-28">
-                    <label className="block text-xs font-medium mb-1 text-gray-500">Unit</label>
-                    <select name="unit" className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white">
+                    <label className="block text-xs font-medium mb-1 text-gray-900">Unit</label>
+                    <select name="unit" className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white text-gray-900">
                         <option value="cm">cm</option>
                         <option value="inch">inch</option>
                     </select>
@@ -61,12 +61,12 @@ export default function AddMeasurement({ customerId, templates }: { customerId: 
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {selected.fieldDefinitions.map((field: any) => (
                             <div key={field}>
-                                <label className="block text-xs font-medium mb-1 text-gray-500">{field}</label>
+                                <label className="block text-xs font-medium mb-1 text-gray-900">{field}</label>
                                 <input
                                     type="number"
                                     step="0.1"
                                     name={`v_${field}`}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white"
+                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white text-gray-900 placeholder:text-gray-500"
                                 />
                             </div>
                         ))}

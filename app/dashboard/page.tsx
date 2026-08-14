@@ -262,7 +262,7 @@ export default async function OverviewPage() {
                                     <span className="w-7 h-7 rounded-full grid place-items-center bg-slate-500 text-white text-xs font-semibold shrink-0">
                                         {name.charAt(0).toUpperCase()}
                                     </span>
-                                    <p className="text-sm flex-1">
+                                    <p className="text-sm flex-1 text-gray-900">
                                         <span className="font-semibold">{name}</span> {log.summary}
                                     </p>
                                     <span className="text-xs text-gray-900 whitespace-nowrap">{timeAgo(log.createdAt)}</span>

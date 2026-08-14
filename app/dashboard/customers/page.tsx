@@ -67,7 +67,7 @@ export default async function CustomersPage({
 
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-200">
-                    <h2 className="font-semibold text-sm">All customers</h2>
+                    <h2 className="font-semibold text-sm text-gray-900">All customers</h2>
                 </div>
                 {customers.length === 0 ? (
                     <p className="text-sm text-gray-900 px-5 py-8 text-center">
@@ -80,7 +80,7 @@ export default async function CustomersPage({
                                 {c.fullName.charAt(0).toUpperCase()}
                             </span>
                             <div className="min-w-0 flex-1">
-                                <p className="text-sm font-semibold truncate">{c.fullName}</p>
+                                <p className="text-sm font-semibold truncate text-gray-900">{c.fullName}</p>
                                 <p className="text-xs text-gray-900 truncate">
                                     {c.phone}{c.email ? ` · ${c.email}` : ""}
                                 </p>
@@ -98,12 +98,12 @@ export default async function CustomersPage({
                         {page > 1 ? (
                             <Link href={link({ page: page - 1 })} className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50">← Prev</Link>
                         ) : (
-                            <span className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-300">← Prev</span>
+                            <span className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500">← Prev</span>
                         )}
                         {page < totalPages ? (
                             <Link href={link({ page: page + 1 })} className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50">Next →</Link>
                         ) : (
-                            <span className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-300">Next →</span>
+                            <span className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500">Next →</span>
                         )}
                     </div>
                 </div>

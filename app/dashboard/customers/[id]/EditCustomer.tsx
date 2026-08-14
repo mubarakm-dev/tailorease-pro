@@ -22,12 +22,12 @@ export default function EditCustomer({ id, fullName, phone, email }: Props) {
         return (
             <div className="mt-2">
                 <div className="flex items-center gap-3">
-                    <h1 className="text-2xl font-semibold">{fullName}</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">{fullName}</h1>
                     <button type="button" onClick={() => setEditing(true)} className="text-xs text-[#b07c34] hover:underline">
                         Edit
                     </button>
                 </div>
-                <p className="text-gray-500 text-sm mt-1">
+                <p className="text-gray-900 text-sm mt-1">
                     {phone}{email ? ` · ${email}` : ""}
                 </p>
                 <FormMessage state={state} />

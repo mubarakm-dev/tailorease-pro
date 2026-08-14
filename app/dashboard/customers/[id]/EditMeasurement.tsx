@@ -35,10 +35,10 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
             <div className="px-5 py-4 border-b border-gray-100 last:border-b-0">
                 <div className="flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold">
-                        {templateName} <span className="text-xs text-gray-400 font-normal">({unit})</span>
+                        {templateName} <span className="text-xs text-gray-900 font-normal">({unit})</span>
                     </p>
                     <div className="flex items-center gap-3 shrink-0">
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-gray-900">
                             {createdAt.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
                         </span>
                         <button type="button" onClick={() => setEditing(true)} className="text-xs text-[#b07c34] hover:underline">
@@ -57,10 +57,10 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
                         </ConfirmButton>
                     </div>
                 </div>
-                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-600">
+                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-900">
                     {Object.entries(values).map(([field, value]: any) => (
                         <span key={field}>
-                            <span className="text-gray-400">{field}:</span> {value}
+                            <span className="text-gray-900">{field}:</span> {value}
                         </span>
                     ))}
                 </div>
@@ -75,7 +75,7 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
 
             <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-semibold">{templateName}</p>
-                <select name="unit" defaultValue={unit} className="border border-gray-300 rounded px-2 py-1 text-sm bg-white">
+                <select name="unit" defaultValue={unit} className="border border-gray-300 rounded px-2 py-1 text-sm bg-white text-gray-900">
                     <option value="cm">cm</option>
                     <option value="inch">inch</option>
                 </select>
@@ -88,7 +88,7 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
                     const isNew = !snapshotFields.includes(field) 
                     return (
                         <div key={field}>
-                            <label className="block text-xs font-medium mb-1 text-gray-500">
+                            <label className="block text-xs font-medium mb-1 text-gray-900">
                                 {field}
                                 {isNew && <span className="ml-1 text-[10px] uppercase tracking-wide text-[#b07c34]">new</span>}
                             </label>
@@ -97,7 +97,7 @@ export default function EditMeasurement({ id, templateName, unit, createdAt, val
                                 step="0.1"
                                 name={`v_${field}`}
                                 defaultValue={values[field] ?? ""}
-                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white"
+                                className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white text-gray-900 placeholder:text-gray-500"
                             />
                         </div>
                     )
