@@ -11,7 +11,7 @@ export default function CopyButton({ value }: { value: string }) {
             setCopied(true)
             setTimeout(() => setCopied(false), 1500)
         } catch {
-            // clipboard can fail (e.g. insecure context) — silently ignore
+           
         }
     }
 
