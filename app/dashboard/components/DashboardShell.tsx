@@ -17,6 +17,15 @@ export default function DashboardShell({ companyName, companyImage, staffName, r
     const [navOpen, setNavOpen] = useState(false)
     const [logoutConfirm, setLogoutConfirm] = useState(false)
 
+
+    if (typeof window !== 'undefined') {
+        if (navOpen) {
+            document.documentElement.style.overflow = 'hidden'
+        } else {
+            document.documentElement.style.overflow = ''
+        }
+    }
+
     return (
         <div className="flex min-h-screen bg-[#f1efe9]">
             <Sidebar
@@ -38,7 +47,7 @@ export default function DashboardShell({ companyName, companyImage, staffName, r
                 </footer>
             </div>
 
-            {/* Logout Confirmation Modal */}
+          
             {logoutConfirm && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
                     <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">

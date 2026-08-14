@@ -97,12 +97,12 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
       />
 
     <aside
-      className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 h-screen flex flex-col gap-1 bg-[#1c2439] border-r border-[#313b58] text-[#c7cbd8] p-4 transition-transform duration-200 md:sticky md:top-0 md:z-auto md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+      className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 h-screen flex flex-col bg-[#1c2439] border-r border-[#313b58] text-[#c7cbd8] p-4 transition-transform duration-200 md:sticky md:top-0 md:z-auto md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
       {/* Company brand */}
       <Link
         href="/dashboard"
-        className="flex items-center gap-3 rounded-xl bg-[#232c45] border border-[#313b58] p-2 mb-2 hover:bg-[#2a3555] transition-colors"
+        className="flex items-center gap-3 rounded-xl bg-[#232c45] border border-[#313b58] p-2 mb-2 hover:bg-[#2a3555] transition-colors shrink-0"
       >
         {companyImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -119,7 +119,7 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
       </Link>
 
       {/* Scrollable nav section */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto gap-1 flex flex-col">
         {/* Workspace */}
         <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Workspace</p>
         <nav className="flex flex-col gap-0.5">
@@ -141,8 +141,8 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
         )}
       </div>
 
-      {/* User pill + menu */}
-      <div className="relative">
+      {/* User pill + menu - always visible at bottom */}
+      <div className="relative shrink-0 mt-auto">
         {menuOpen && (
           <div className="absolute bottom-[calc(100%+8px)] left-0 right-0 bg-white text-[#1b2233] border border-gray-200 rounded-xl shadow-lg p-1.5">
             <Link
