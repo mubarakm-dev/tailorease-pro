@@ -128,7 +128,7 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
           ))}
         </nav>
 
-        {/* Administration — SUPER_ADMIN only */}
+        
         {isAdmin && (
           <>
             <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Administration</p>
@@ -141,29 +141,32 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
         )}
       </div>
 
-      {/* User pill + menu - always visible at bottom */}
-      <div className="relative shrink-0 mt-auto">
+
+      <div className="relative shrink-0 mt-auto" onClick={(e) => e.stopPropagation()}>
         {menuOpen && (
-          <div className="absolute bottom-[calc(100%+8px)] left-0 right-0 bg-white text-[#1b2233] border border-gray-200 rounded-xl shadow-lg p-1.5">
-            <Link
-              href="/dashboard/profile"
-              onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm hover:bg-gray-50"
-            >
-              My profile
-            </Link>
-            <div className="h-px bg-gray-200 my-1" />
-            <button
-              type="button"
-              onClick={() => {
-                setMenuOpen(false)
-                onLogoutClick()
-              }}
-              className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm text-red-600 hover:bg-gray-50 text-left"
-            >
-              Log out
-            </button>
-          </div>
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
+            <div className="absolute bottom-[calc(100%+8px)] left-0 right-0 bg-white text-[#1b2233] border border-gray-200 rounded-xl shadow-lg p-1.5 z-50">
+              <Link
+                href="/dashboard/profile"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm hover:bg-gray-50"
+              >
+                My profile
+              </Link>
+              <div className="h-px bg-gray-200 my-1" />
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false)
+                  onLogoutClick()
+                }}
+                className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm text-red-600 hover:bg-gray-50 text-left"
+              >
+                Log out
+              </button>
+            </div>
+          </>
         )}
         <button
           onClick={() => setMenuOpen((open) => !open)}
