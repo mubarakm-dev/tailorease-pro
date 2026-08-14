@@ -135,7 +135,7 @@ export default async function OverviewPage() {
                 )}
             </div>
 
-            {/* ORDERS PIPELINE */}
+        
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <div className="px-6 py-5 border-b border-gray-200">
                     <h2 className="font-semibold text-sm text-gray-900 placeholder:text-gray-500">Orders pipeline</h2>
@@ -247,7 +247,6 @@ export default async function OverviewPage() {
                     </section>
                 )}
 
-                {/* RECENT ACTIVITY */}
                 <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-lg hover:border-[#b07c34] transition-all duration-300">
                     <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
                         <h2 className="font-semibold text-sm text-gray-900 placeholder:text-gray-500">Recent activity</h2>

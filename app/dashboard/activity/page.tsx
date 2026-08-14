@@ -4,7 +4,6 @@ import Link from "next/link"
 
 const PER_PAGE = 30
 
-// "Today" / "Yesterday" / "Monday, August 4" — used as day-group headers
 function dayLabel(date: Date): string {
     const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
     const diffDays = Math.round((startOfDay(new Date()) - startOfDay(date)) / 86_400_000)
@@ -38,7 +37,7 @@ export default async function ActivityPage({
     const totalPages = Math.max(1, Math.ceil(total / PER_PAGE))
     const link = (p: number) => `/dashboard/activity${p > 1 ? `?page=${p}` : ""}`
 
-    // group the (already date-desc) rows into Today / Yesterday / date buckets
+    
     const groups: { label: string; items: typeof logs }[] = []
     for (const log of logs) {
         const label = dayLabel(log.createdAt)

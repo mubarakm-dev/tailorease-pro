@@ -38,7 +38,7 @@ export default function CustomerForm() {
                         className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500" />
                 </div>
                 <div className="sm:col-span-3">
-                    <SubmitButton className="bg-black text-white px-4 py-2 rounded text-sm hover:bg-gray-800" pendingText="Adding…">
+                    <SubmitButton className="bg-black px-4 py-2 rounded text-sm  text-gray-100 hover:bg-gray-800" pendingText="Adding…">
                         Add customer
                     </SubmitButton>
                 </div>

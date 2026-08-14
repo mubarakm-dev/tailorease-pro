@@ -118,27 +118,28 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
         </div>
       </Link>
 
-      {/* Workspace */}
-      <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Workspace</p>
-      <nav className="flex flex-col gap-0.5">
-        {workspace.map((item: any) => (
-          <NavLink key={item.href} item={item} active={isActive(item.href)} />
-        ))}
-      </nav>
+      {/* Scrollable nav section */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Workspace */}
+        <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Workspace</p>
+        <nav className="flex flex-col gap-0.5">
+          {workspace.map((item: any) => (
+            <NavLink key={item.href} item={item} active={isActive(item.href)} />
+          ))}
+        </nav>
 
-      {/* Administration — SUPER_ADMIN only */}
-      {isAdmin && (
-        <>
-          <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Administration</p>
-          <nav className="flex flex-col gap-0.5">
-            {administration.map((item: any) => (
-              <NavLink key={item.href} item={item} active={isActive(item.href)} admin />
-            ))}
-          </nav>
-        </>
-      )}
-
-      <div className="flex-1" />
+        {/* Administration — SUPER_ADMIN only */}
+        {isAdmin && (
+          <>
+            <p className="text-[10px] uppercase tracking-widest text-[#7e879f] px-2 pt-3 pb-1">Administration</p>
+            <nav className="flex flex-col gap-0.5">
+              {administration.map((item: any) => (
+                <NavLink key={item.href} item={item} active={isActive(item.href)} admin />
+              ))}
+            </nav>
+          </>
+        )}
+      </div>
 
       {/* User pill + menu */}
       <div className="relative">
