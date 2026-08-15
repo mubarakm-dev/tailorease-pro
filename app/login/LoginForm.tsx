@@ -47,16 +47,8 @@ export default function LoginForm({ resetSuccess }: { resetSuccess?: boolean }) 
                     </div>
 
                     {showResetMessage && (
-                        <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 shadow-sm animate-in fade-in duration-300">
-                            <div className="flex items-start gap-3">
-                                <svg className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                <div>
-                                    <p className="text-sm font-semibold text-emerald-900">Password reset successfully</p>
-                                    <p className="text-xs text-emerald-700 mt-1">Sign in with your new password.</p>
-                                </div>
-                            </div>
+                        <div className="bg-green-50 border border-green-200 text-green-700 p-3 rounded-lg mb-6 text-sm animate-in fade-in duration-300">
+                            Password reset successfully. Sign in with your new password.
                         </div>
                     )}
 
