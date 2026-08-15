@@ -1,12 +1,21 @@
 import "server-only"
-import { SendByte, SendByteError } from "@sendbyte/node"
+import nodemailer from "nodemailer"
+// import { SendByte, SendByteError } from "@sendbyte/node"
 
-const sendbyte = new SendByte(process.env.SENDBYTE_API_KEY!)
+// const sendbyte = new SendByte(process.env.SENDBYTE_API_KEY!)
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_EMAIL!,
+    pass: process.env.GMAIL_APP_PASSWORD!,
+  },
+})
 
 export const sendOTPEmail = async (to: string, code: string): Promise<void> => {
   try {
-    await sendbyte.emails.send({
-      from: "TailorEase <noreply@try.sendbyte.africa>",
+    await transporter.sendMail({
+      from: `TailorEase <${process.env.GMAIL_EMAIL}>`,
       to,
       subject: "Your TailorEase Verification Code",
       html: `
@@ -20,6 +29,20 @@ export const sendOTPEmail = async (to: string, code: string): Promise<void> => {
       `,
     })
   } catch (error) {
+    console.error("OTP email error:", error)
+    throw new Error("Failed to send verification email")
+  }
+}
+
+/* OLD SENDBYTE VERSION - kept for reference
+  try {
+    await sendbyte.emails.send({
+      from: "TailorEase <noreply@try.sendbyte.africa>",
+      to,
+      subject: "Your TailorEase Verification Code",
+      html: `...`,
+    })
+  } catch (error) {
     if (error instanceof SendByteError) {
       console.error({
         code: error.code,
@@ -29,11 +52,25 @@ export const sendOTPEmail = async (to: string, code: string): Promise<void> => {
     }
     throw new Error("Failed to send verification email")
   }
-}
+*/
 
 
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
+  try {
+    await transporter.sendMail({
+      from: `TailorEase <${process.env.GMAIL_EMAIL}>`,
+      to,
+      subject,
+      html,
+    })
+  } catch (error) {
+    console.error("Send email error:", error)
+    throw new Error("Failed to send email")
+  }
+}
+
+/* OLD SENDBYTE VERSION - kept for reference
   try {
     await sendbyte.emails.send({
       from: "TailorEase <noreply@try.sendbyte.africa>",
@@ -51,8 +88,7 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
     }
     throw new Error("Failed to send email")
   }
-
-}
+*/
 
 
 export async function sendCompanySuspendedEmail(to: string, companyName: string, ownerFullname: string): Promise<void> {
