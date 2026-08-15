@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useState } from "react"
 import Link from "next/link"
 import { resetPassword, ResetPasswordState } from "../actions"
 
@@ -14,6 +14,14 @@ export default function ResetForm({ token }: { token: string }) {
     (prev: ResetPasswordState, data: FormData) => resetPassword(token, prev, data),
     initialState
   )
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [passwordTouched, setPasswordTouched] = useState(false)
+  const [confirmTouched, setConfirmTouched] = useState(false)
+
+  const passwordError = passwordTouched && password.length > 0 && password.length < 8
+  const passwordMismatch = confirmTouched && confirmPassword.length > 0 && confirmPassword !== password
+  const hasValidationError = passwordError || passwordMismatch
 
   return (
     <div className="w-full max-w-md">
@@ -35,13 +43,18 @@ export default function ResetForm({ token }: { token: string }) {
             type="password"
             name="password"
             required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onBlur={() => setPasswordTouched(true)}
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
             placeholder="••••••••"
             autoComplete="new-password"
             disabled={isPending}
-            minLength={8}
           />
           <p className="text-xs text-gray-500 mt-1">At least 8 characters</p>
+          {passwordError && (
+            <p className="text-red-600 text-xs mt-1">Password must be at least 8 characters</p>
+          )}
         </div>
 
         <div>
@@ -50,17 +63,22 @@ export default function ResetForm({ token }: { token: string }) {
             type="password"
             name="confirmPassword"
             required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            onBlur={() => setConfirmTouched(true)}
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
             placeholder="••••••••"
             autoComplete="new-password"
             disabled={isPending}
-            minLength={8}
           />
+          {passwordMismatch && (
+            <p className="text-red-600 text-xs mt-1">Passwords do not match</p>
+          )}
         </div>
 
         <button
           type="submit"
-          disabled={isPending}
+          disabled={isPending || hasValidationError}
           className="w-full bg-[#B07C34] text-white py-2.5 rounded-lg font-semibold hover:bg-[#9a6a2a] disabled:opacity-60 transition mt-6"
         >
           {isPending ? "Resetting..." : "Reset password"}

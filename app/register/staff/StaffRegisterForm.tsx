@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useState } from "react"
 import Link from "next/link"
 import { registerStaff, StaffRegistrationState } from "./action"
 import FormMessage from "@/app/components/FormMessage"
@@ -12,6 +12,14 @@ const initialState: StaffRegistrationState = {
 
 export default function StaffRegisterForm() {
     const [state, formAction, isPending] = useActionState(registerStaff, initialState)
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [passwordTouched, setPasswordTouched] = useState(false)
+    const [confirmTouched, setConfirmTouched] = useState(false)
+
+    const passwordError = passwordTouched && password.length > 0 && password.length < 6
+    const passwordMismatch = confirmTouched && confirmPassword.length > 0 && confirmPassword !== password
+    const hasValidationError = passwordError || passwordMismatch
 
     return (
         <div className="min-h-screen bg-[#F1EFE9] flex flex-col">
@@ -63,17 +71,29 @@ export default function StaffRegisterForm() {
                             <div>
                                 <label className="block text-sm font-medium text-[#1B2233] mb-2">Password</label>
                                 <input type="password" name="password" required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    onBlur={() => setPasswordTouched(true)}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
                                     placeholder="••••••••"
                                 />
+                                {passwordError && (
+                                    <p className="text-red-600 text-xs mt-1">Password must be at least 6 characters</p>
+                                )}
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-[#1B2233] mb-2">Confirm Password</label>
                                 <input type="password" name="confirmPassword" required
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    onBlur={() => setConfirmTouched(true)}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34]"
                                     placeholder="••••••••"
                                 />
+                                {passwordMismatch && (
+                                    <p className="text-red-600 text-xs mt-1">Passwords do not match</p>
+                                )}
                             </div>
 
                             <div>
@@ -84,7 +104,7 @@ export default function StaffRegisterForm() {
                                 />
                             </div>
 
-                            <button type="submit" disabled={isPending}
+                            <button type="submit" disabled={isPending || hasValidationError}
                                 className="w-full bg-[#B07C34] text-white py-2.5 rounded-lg font-semibold hover:bg-[#9a6a2a] disabled:opacity-60 transition mt-6">
                                 {isPending ? "Registering..." : "Create Account"}
                             </button>

@@ -13,6 +13,14 @@ const initialState: RegisterCompanyState = {
 export default function RegisterCompanyForm() {
     const [state, formAction, isPending] = useActionState(registerCompany, initialState)
     const [fileError, setFileError] = useState<string | null>(null)
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [passwordTouched, setPasswordTouched] = useState(false)
+    const [confirmTouched, setConfirmTouched] = useState(false)
+
+    const passwordError = passwordTouched && password.length > 0 && password.length < 6
+    const passwordMismatch = confirmTouched && confirmPassword.length > 0 && confirmPassword !== password
+    const hasValidationError = passwordError || passwordMismatch
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -103,15 +111,27 @@ export default function RegisterCompanyForm() {
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Password</label>
                                         <input type="password" name="password" required
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            onBlur={() => setPasswordTouched(true)}
                                             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="••••••••" />
+                                        {passwordError && (
+                                            <p className="text-red-600 text-xs mt-1">Password must be at least 6 characters</p>
+                                        )}
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-[#1B2233] mb-2">Confirm Password</label>
                                         <input type="password" name="confirmPassword" required
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            onBlur={() => setConfirmTouched(true)}
                                             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#B07C34] focus:ring-1 focus:ring-[#B07C34] text-gray-900"
                                             placeholder="••••••••" />
+                                        {passwordMismatch && (
+                                            <p className="text-red-600 text-xs mt-1">Passwords do not match</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +163,7 @@ export default function RegisterCompanyForm() {
                                 </div>
                             </div>
 
-                            <button type="submit" disabled={isPending}
+                            <button type="submit" disabled={isPending || hasValidationError}
                                 className="w-full bg-[#B07C34] text-white py-2.5 rounded-lg font-semibold hover:bg-[#9a6a2a] disabled:opacity-60 transition mt-6">
                                 {isPending ? "Registering..." : "Create Account"}
                             </button>
