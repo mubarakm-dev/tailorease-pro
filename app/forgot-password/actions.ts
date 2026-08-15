@@ -65,6 +65,10 @@ export const requestPasswordReset = async (prevState: ForgotPasswordState, formD
       await sendPasswordResetEmail(email, resetLink, staff.fullName)
     } catch (emailError) {
       console.error("Email send failed:", emailError)
+      return {
+        success: false,
+        error: "Failed to send reset email. Please check that your email address is correct or try again later."
+      }
     }
 
     return {

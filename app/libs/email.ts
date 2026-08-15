@@ -4,16 +4,22 @@ import nodemailer from "nodemailer"
 
 // const sendbyte = new SendByte(process.env.SENDBYTE_API_KEY!)
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_EMAIL!,
-    pass: process.env.GMAIL_APP_PASSWORD!,
-  },
-})
+const getTransporter = () => {
+  if (!process.env.GMAIL_EMAIL || !process.env.GMAIL_APP_PASSWORD) {
+    throw new Error("Gmail credentials not configured in environment")
+  }
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  })
+}
 
 export const sendOTPEmail = async (to: string, code: string): Promise<void> => {
   try {
+    const transporter = getTransporter()
     await transporter.sendMail({
       from: `TailorEase <${process.env.GMAIL_EMAIL}>`,
       to,
@@ -58,6 +64,7 @@ export const sendOTPEmail = async (to: string, code: string): Promise<void> => {
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
   try {
+    const transporter = getTransporter()
     await transporter.sendMail({
       from: `TailorEase <${process.env.GMAIL_EMAIL}>`,
       to,
