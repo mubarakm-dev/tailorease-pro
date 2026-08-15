@@ -232,3 +232,46 @@ export async function sendPasswordResetEmail(to: string, resetLink: string, staf
   `
   await sendEmail(to, subject, html)
 }
+
+export async function sendNewCompanyPendingEmail(to: string, companyName: string, ownerFullname: string, companyCode: string): Promise<void> {
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "")
+  const adminLink = `${baseUrl}/admin`
+  const subject = "New company awaiting approval"
+  const html = `
+    <div style="font-family: sans-serif; max-width: 400px; margin: 0 auto; padding: 20px;">
+      <h2>New Company Pending Approval</h2>
+      <p>A new company has registered and verified their email, awaiting your approval:</p>
+      <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin: 16px 0;">
+        <p style="margin: 0 0 8px 0;"><strong>Company:</strong> ${companyName}</p>
+        <p style="margin: 0 0 8px 0;"><strong>Owner:</strong> ${ownerFullname}</p>
+        <p style="margin: 0;"><strong>Company Code:</strong> ${companyCode}</p>
+      </div>
+      <p style="text-align: center; margin: 24px 0;">
+        <a href="${adminLink}" style="display: inline-block; background: #b07c34; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600;">Review in Admin Dashboard</a>
+      </p>
+      <p style="color: #6b7280; font-size: 12px;">This is an automated message. Please do not reply to this email.</p>
+    </div>
+  `
+  await sendEmail(to, subject, html)
+}
+
+export async function sendStaffPendingApprovalEmail(to: string, companyName: string, staffFullname: string, staffEmail: string): Promise<void> {
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "")
+  const staffLink = `${baseUrl}/dashboard/staff`
+  const subject = "New staff awaiting your approval"
+  const html = `
+    <div style="font-family: sans-serif; max-width: 400px; margin: 0 auto; padding: 20px;">
+      <h2>New Staff Awaiting Approval</h2>
+      <p>A new staff member has registered with your company code and verified their email:</p>
+      <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin: 16px 0;">
+        <p style="margin: 0 0 8px 0;"><strong>Name:</strong> ${staffFullname}</p>
+        <p style="margin: 0;"><strong>Email:</strong> ${staffEmail}</p>
+      </div>
+      <p style="text-align: center; margin: 24px 0;">
+        <a href="${staffLink}" style="display: inline-block; background: #b07c34; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600;">Approve in Dashboard</a>
+      </p>
+      <p style="color: #6b7280; font-size: 12px;">This is an automated message. Please do not reply to this email.</p>
+    </div>
+  `
+  await sendEmail(to, subject, html)
+}

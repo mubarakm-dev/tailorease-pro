@@ -2,7 +2,7 @@
 
 import { prisma } from "../libs/prisma"
 import { createOtp, verifyOtp } from "../libs/otp"
-import { sendOTPEmail } from "../libs/email"
+import { sendOTPEmail, sendNewCompanyPendingEmail, sendStaffPendingApprovalEmail } from "../libs/email"
 import { verifyOtpSchema, resendOtpSchema } from "../libs/schemas/authSchema"
 
 export type VerifyState = {
@@ -31,8 +31,11 @@ export const verifyCode = async (prevState: VerifyState, formData: FormData): Pr
             return { error: result.error, success: false, canResend: result.canResend }
         }
 
-       
-        const staff = await prisma.staff.findUnique({ where: { email } })
+
+        const staff = await prisma.staff.findUnique({
+            where: { email },
+            include: { company: { select: { id: true, companyName: true, companyCode: true } } }
+        })
         if (staff) {
             await prisma.$transaction([
                 prisma.staff.updateMany({
@@ -44,9 +47,43 @@ export const verifyCode = async (prevState: VerifyState, formData: FormData): Pr
                     data: { status: "PENDING" },
                 }),
             ])
+
+            try {
+                if (staff.role === "SUPER_ADMIN") {
+                   
+                    const adminEmail = process.env.ADMIN_EMAIL
+                    if (adminEmail) {
+                        await sendNewCompanyPendingEmail(
+                            adminEmail,
+                            staff.company.companyName,
+                            staff.fullName,
+                            staff.company.companyCode
+                        )
+                    }
+                } else {
+                   
+                    const owner = await prisma.staff.findFirst({
+                        where: {
+                            companyId: staff.companyId,
+                            role: "SUPER_ADMIN"
+                        },
+                        select: { email: true, fullName: true }
+                    })
+                    if (owner) {
+                        await sendStaffPendingApprovalEmail(
+                            owner.email,
+                            staff.company.companyName,
+                            staff.fullName,
+                            staff.email
+                        )
+                    }
+                }
+            } catch (emailError) {
+                console.error("Failed to send pending approval notification:", emailError)
+             
+            }
         }
 
-        // owner (SUPER_ADMIN) waits on the platform; a regular staff waits on their company admin
         const message =
             staff?.role === "SUPER_ADMIN"
                 ? "Email verified. Your company is now awaiting platform approval."
@@ -73,7 +110,7 @@ export const resendCode = async (prevState: VerifyState, formData: FormData): Pr
         const code = await createOtp(email)
         await sendOTPEmail(email, code)
 
-        // stays on the form (success is reserved for a completed verification)
+
         return { success: false, error: null, message: "New code sent to your email", canResend: true }
     } catch (error) {
         return { error: "Failed to send a new code, please try again", success: false, canResend: true }
