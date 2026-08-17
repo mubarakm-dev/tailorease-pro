@@ -27,7 +27,7 @@ export default function DashboardShell({ companyName, companyImage, staffName, r
     }
 
     return (
-        <div className="flex min-h-screen bg-[#f1efe9]">
+        <div className="flex h-screen overflow-hidden bg-[#f1efe9]">
             <Sidebar
                 companyName={companyName}
                 companyImage={companyImage}
@@ -38,13 +38,15 @@ export default function DashboardShell({ companyName, companyImage, staffName, r
                 onLogoutClick={() => setLogoutConfirm(true)}
             />
 
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
                 <TopBar companyName={companyName} onMenu={() => setNavOpen(true)} />
-                <main className="flex-1">{children}</main>
-                <footer className="text-center text-xs text-gray-900 py-6 border-t border-gray-200 space-y-2">
-                    <p className="text-[#b07c34] font-semibold uppercase tracking-wider">Manage. Measure. Master.</p>
-                    <p>Powered by <span className="text-[#b07c34] font-semibold">TailorEase</span></p>
-                </footer>
+                <div className="flex-1 overflow-y-auto flex flex-col">
+                    <main className="flex-1">{children}</main>
+                    <footer className="text-center text-xs text-gray-900 py-6 border-t border-gray-200 space-y-2 shrink-0">
+                        <p className="text-[#b07c34] font-semibold uppercase tracking-wider">Manage. Measure. Master.</p>
+                        <p>Powered by <span className="text-[#b07c34] font-semibold">TailorEase</span></p>
+                    </footer>
+                </div>
             </div>
 
           

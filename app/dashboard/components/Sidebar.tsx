@@ -97,7 +97,7 @@ export default function Sidebar({ companyName, companyImage, staffName, role, mo
       />
 
     <aside
-      className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 h-screen max-h-dvh flex flex-col bg-[#1c2439] border-r border-[#313b58] text-[#c7cbd8] p-4 transition-transform duration-200 md:sticky md:top-0 md:z-auto md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+      className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 h-screen max-h-dvh flex flex-col bg-[#1c2439] border-r border-[#313b58] text-[#c7cbd8] p-4 transition-transform duration-200 md:static md:h-full md:max-h-full md:z-auto md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
       {/* Company brand */}
       <Link
