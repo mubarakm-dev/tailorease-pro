@@ -2,6 +2,8 @@
 
 A modern, multi-tenant SaaS platform for tailoring businesses to manage orders, customers, payments, and operations with precision.
 
+**[🚀 Live Demo](https://tailorease-pro.vercel.app/)** — Try the app now
+
 ## Overview
 
 TailorEase Pro is a comprehensive order and business management system built for tailoring shops. It enables seamless order tracking from intake to delivery, with integrated payment management, customer relationship tracking, and staff administration.
@@ -82,7 +84,7 @@ TailorEase Pro is a comprehensive order and business management system built for
 
 ### Infrastructure & Services
 - **Supabase Storage** - File uploads for order photos and documents
-- **SendByte Email API** - Transactional emails (password reset, notifications)
+- **Gmail SMTP** - Transactional emails (password reset, notifications)
 - **Vercel** - Deployment and hosting (serverless)
 
 ### Security & Auth
@@ -140,7 +142,9 @@ Edit `.env.local` with your values:
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/tailorease
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-SENDBYTE_API_KEY=your_api_key_here
+GMAIL_EMAIL=your_gmail@gmail.com
+GMAIL_APP_PASSWORD=your_app_specific_password
+ADMIN_EMAIL=admin@tailorease.com
 ```
 
 4. **Run database migrations:**
